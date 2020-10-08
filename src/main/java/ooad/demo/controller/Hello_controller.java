@@ -15,6 +15,6 @@ public class Hello_controller {
     public String hello(String id, String password){
 
         return "hello2";
-//        return "hello";
+
     }
 }
