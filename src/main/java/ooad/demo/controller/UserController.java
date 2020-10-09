@@ -47,7 +47,7 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/react/add")
     // password not null len >=6, sid must be int
-    public int login(int sid, String user_name, String password) {
+    public int addUser(int sid, String user_name, String password) {
         UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
         UserDB user_by_name = userMapper.selectUserDBByName(user_name);
 
