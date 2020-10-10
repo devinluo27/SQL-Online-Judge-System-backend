@@ -12,6 +12,6 @@ public class Hello_controller {
     @ResponseBody
     public String hello(String id, String password){
         return "hello2";
-//        return "hello";
+
     }
 }
