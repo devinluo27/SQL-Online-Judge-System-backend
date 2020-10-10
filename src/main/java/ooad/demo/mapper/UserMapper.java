@@ -10,14 +10,14 @@ import java.util.List;
 public interface UserMapper{
     List<UserDB> queryUserDBList();
 
-    public static final int age = 18;
-
     UserDB selectUserDBBySid(int sid);
     UserDB selectUserDBByName(String user_name);
 
     int addUserDB(UserDB userDB);
 
     int updateUserDB(UserDB userDB);
+
+    int resetPassword(int sid, String pwd);
 
     int deleteUserDB(int sid);
 

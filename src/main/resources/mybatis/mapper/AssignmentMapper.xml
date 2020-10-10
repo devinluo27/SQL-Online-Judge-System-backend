@@ -15,26 +15,14 @@
     </select>
 
     <insert id="addAssignment" parameterType="Assignment">
-    insert into assignment
+    insert into assignment(assignment_name, assignment_create_time, assignment_start_time, assignment_end_time, assignment_description)
+    values (#{assignment_name}, #{assignmet_create_time},#{assignment_start_time}, #{assignment_end_time}, #{assignment_description})
     </insert>
 
-    <select id="selectUserDBBySid" parameterType= "int" resultType="UserDB">
-    select * from user_db where sid = #{sid}
-    </select>
 
-    <insert id="addUserDB" parameterType="UserDB">
-    insert into user_db(sid, user_name, user_password)
-    values (#{sid}, #{user_name}, #{user_password})
-    </insert>
-
-    <update id="updateAssignment" parameterType="UserDB">
-    update user set user_name=#{user_name}, user_password=#{pwd}
-    where sid = #{sid}
-    </update>
-
-    <delete id="deleteUserDB" parameterType="int">
-        delete from user_db
-        where sid = #{sid}
+    <delete id="deleteAssignment" parameterType="int">
+        delete from assignment
+        where assignment_id = #{id}
     </delete>
 
 
