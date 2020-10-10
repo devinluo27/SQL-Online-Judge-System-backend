@@ -2,7 +2,6 @@ package ooad.demo.controller;
 
 
 
-import ooad.demo.mapper.AssignmentMapper;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.pojo.Assignment;
 import ooad.demo.pojo.Question;

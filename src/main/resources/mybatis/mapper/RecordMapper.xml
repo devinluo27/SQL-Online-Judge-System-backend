@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ooad.demo.mapper.RecordMapper">
+
+    <cache/>
+
+    <select id="queryRecordList" resultType="Record">
+    select * from record
+    </select>
+
+    <select id="selectRecordBySid" resultType="Record">
+    select * from record where record_sid = #{sid}
+    </select>
+
+    <select id="selectRecordBySidAndAssignment" resultType="Record">
+    select * from record r
+        join question q on r.record_question_id = q.question_id
+        where r.record_sid = #{sid} and q.question_of_assignemnt = #{assignment_id}
+    </select>
+
+
+    <insert id="addRecord" parameterType="Record">
+    insert into record(record_sid, record_question_id, record_status, record_time, record_code)
+    values (#{record_sid},#{record_question_id}, #{record_status}, #{record_time}, #{record_code})
+    </insert>
+
+
+    <delete id="deleteRecord">
+        delete from record
+        where record_question_id = #{question_id} and record_sid = #{sid}
+    </delete>
+
+
+</mapper>
