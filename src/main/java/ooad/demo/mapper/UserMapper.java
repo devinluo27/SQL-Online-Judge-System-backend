@@ -15,9 +15,9 @@ public interface UserMapper{
 
     int addUserDB(UserDB userDB);
 
-    int updateUserDB(UserDB userDB);
+    int resetUserDBName(int sid, String user_name);
 
-    int resetPassword(int sid, String pwd);
+    int resetUserDBPassword(int sid, String pwd);
 
     int deleteUserDB(int sid);
 

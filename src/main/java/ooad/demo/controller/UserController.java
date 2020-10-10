@@ -26,6 +26,13 @@ public class UserController {
     }
 
     @CrossOrigin
+    @GetMapping(value = "/react/findUserBySid")
+    public UserDB findUserDBBySid(int sid){
+        UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
+        return user_by_sid; //user_sid already exists
+    }
+
+    @CrossOrigin
     @GetMapping(value = "/react/login")
     // password not null, sid must be int
     public int login(int sid, String password) {
@@ -61,5 +68,17 @@ public class UserController {
         userMapper.addUserDB(new_user);
         return 1;
     }
+
+    @CrossOrigin
+    @GetMapping(value = "/react/resetPwd")
+    public int resetPassword(String sid, String pwd){
+        int id = Integer.parseInt(sid);
+        if (findUserDBBySid(id) == null){
+            return -1; // not exist
+        }
+        userMapper.resetUserDBPassword(id, pwd);
+        return 1;
+    }
+
 
 }

@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ooad.demo.mapper.UserMapper">
 
+
+
     <cache/>
 
     <select id="queryUserDBList" resultType="UserDB">
@@ -27,9 +29,12 @@
     values (#{sid}, #{user_name}, #{user_password})
     </insert>
 
-    <update id="updateUserDB" parameterType="UserDB">
-    update user set user_name=#{user_name}, user_password=#{pwd}
-    where sid = #{sid}
+    <update id="updateUserDBName">
+    update user_db set user_name=#{user_name} where sid = #{sid}
+    </update>
+
+    <update id="resetUserDBPassword">
+    update user_db set user_password=#{pwd} where sid = #{sid}
     </update>
 
     <delete id="deleteUserDB" parameterType="int">

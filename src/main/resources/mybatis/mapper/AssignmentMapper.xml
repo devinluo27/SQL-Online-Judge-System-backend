@@ -20,10 +20,37 @@
     </insert>
 
 
+    <update id="updateAssignment" parameterType="Assignment">
+    update assignment set
+    assignment_name=#{assignment_name},
+    assignment_start_time=#{assignment_start_time},
+    assignment_end_time=#{assignment_end_time},
+    assignment_description=#{assignment_description})
+    where assignment_id = #{assignment_id}
+    </update>
+
     <delete id="deleteAssignment" parameterType="int">
         delete from assignment
         where assignment_id = #{id}
     </delete>
+
+    <resultMap type="Assignment" id="aToqResultMap">
+        <id property="assignment_id" column="assignment_id" />
+
+        <collection property="questions" javaType="java.util.List" ofType="Question">
+            <id property="question_id" column="question_id" />
+            <result property="question_name" column="question_name" />
+            <result property="question_of_assignment" column="question_of_assignment" />
+            <result property="question_description" column="question_description" />
+            <result property="question_output" column="question_output" />
+            <result property="question_index" column="question_index" />
+        </collection>
+    </resultMap>
+
+    <select id="queryQuestionsByAssignment" resultMap="aToqResultMap">
+    select  * from assignment a
+        join question q on a.assignment_id = q.question_of_assignment;
+    </select>
 
 
 </mapper>

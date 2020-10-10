@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,15 +29,15 @@ public class AssignmentController {
 
     @CrossOrigin
     @GetMapping("/selectAssignmentById")
-    public Assignment selectAssignment(String assignment_id){
-        int id = Integer.parseInt(assignment_id);
-        Assignment assignment = assignmentMapper.selectAssignmentById(id);
+    public Assignment selectAssignment(String id){
+        int assignment_id = Integer.parseInt(id);
+        Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
         return  assignment;
     }
 
     @CrossOrigin
     @GetMapping("/addAssignment")
-//    pass the milisecond from 1970
+//    pass the milisecond from 1970 start_date end_date should be long
     public int addAssignment(String id, String name, String start_date, String end_date, String descrition){
         Date date = new Date();
         int assignment_id = Integer.parseInt(id);
@@ -49,6 +50,32 @@ public class AssignmentController {
         Assignment new_assignment = new Assignment(assignment_id, name, create_time, start_time, end_time, descrition);
         int ret = assignmentMapper.addAssignment(new_assignment);
         return ret;
+    }
+
+    @CrossOrigin
+    @GetMapping("/updateAssignment")
+//    pass the milisecond from 1970
+    public int updateAssignment(String id, String name, String start_date, String end_date, String descrition){
+        int assignment_id = Integer.parseInt(id);
+        Assignment cur_assignment = assignmentMapper.selectAssignmentById(assignment_id);
+        Timestamp create_time = cur_assignment.getAssignment_create_time();
+        long start_sec = Long.parseLong(start_date);
+        long end_sec = Long.parseLong(end_date);
+        Timestamp start_time = new Timestamp(start_sec);
+        Timestamp end_time = new Timestamp(end_sec);
+        Assignment new_assignment = new Assignment(assignment_id, name, create_time, start_time, end_time, descrition);
+        int ret = assignmentMapper.updateAssignment(new_assignment);
+        return ret;
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/queryQuestionsByAssignment")
+//    pass the id return assignment with associate questions
+    public Assignment queryQuestionsByAssignment(String id){
+        int assignment_id = Integer.parseInt(id);
+        Assignment cur_assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
+        return cur_assignment;
     }
 
 
