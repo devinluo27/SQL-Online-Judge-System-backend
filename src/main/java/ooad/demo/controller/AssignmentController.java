@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 
 @RestController
 public class AssignmentController {
@@ -32,6 +33,9 @@ public class AssignmentController {
     public Assignment selectAssignment(String id){
         int assignment_id = Integer.parseInt(id);
         Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
+//        List<Map> assignment = assignmentMapper.selectAssignmentById(assignment_id);
+        System.out.println(assignment);
+
         return  assignment;
     }
 
@@ -52,6 +56,7 @@ public class AssignmentController {
         return ret;
     }
 
+    //todo
     @CrossOrigin
     @GetMapping("/updateAssignment")
 //    pass the milisecond from 1970

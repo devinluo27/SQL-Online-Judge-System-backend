@@ -10,7 +10,6 @@ import java.io.Serializable;
 //@AllArgsConstructor
 public class UserDB implements Serializable {
 
-    private int id;
     private int sid;
     private String user_name;
     private String user_password;
@@ -19,8 +18,7 @@ public class UserDB implements Serializable {
         return user_name;
     }
 
-    public UserDB(int i, int sid, String user_name, String password) {
-        this.id = i;
+    public UserDB(int sid, String user_name, String password) {
         this.sid = sid;
         this.user_name = user_name;
         this.user_password = password;

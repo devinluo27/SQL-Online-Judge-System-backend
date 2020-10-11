@@ -64,7 +64,7 @@ public class UserController {
         else if( user_by_name != null){
             return -2; //user_name already exists
         }
-        UserDB new_user = new UserDB(0, sid, user_name, password);
+        UserDB new_user = new UserDB(sid, user_name, password);
         userMapper.addUserDB(new_user);
         return 1;
     }

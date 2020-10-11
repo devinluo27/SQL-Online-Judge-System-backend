@@ -15,6 +15,5 @@ public interface QuestionMapper {
     int addQuestion(Question question);
     int updateQuestion(Question question);
     int deleteQuestion(int d);
-
 }
 

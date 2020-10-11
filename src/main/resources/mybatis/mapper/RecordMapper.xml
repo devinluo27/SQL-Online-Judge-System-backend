@@ -6,6 +6,7 @@
 
     <cache/>
 
+
     <select id="queryRecordList" resultType="Record">
     select * from record
     </select>
@@ -14,16 +15,25 @@
     select * from record where record_sid = #{sid}
     </select>
 
-    <select id="selectRecordBySidAndAssignment" resultType="Record">
-    select * from record r
-        join question q on r.record_question_id = q.question_id
-        where r.record_sid = #{sid} and q.question_of_assignemnt = #{assignment_id}
+    <select id="selectRecordBySidAndQuestion" resultType="Record">
+    select * from record where record_sid = #{sid} and record_question_id = #{question_id}
     </select>
 
 
+    <select id="selectRecordBySidAndAssignment" resultType="Record">
+    select * from record r
+        join question q on r.record_question_id = q.question_id
+        where r.record_sid = #{sid} and q.question_of_assignment = #{assignment_id}
+    </select>
+
+
+<!--    <select id="runSql" parameterType="string" resultType="java.util.Map">-->
+<!--    #{code}-->
+<!--    </select>-->
+
     <insert id="addRecord" parameterType="Record">
     insert into record(record_sid, record_question_id, record_status, record_time, record_code)
-    values (#{record_sid},#{record_question_id}, #{record_status}, #{record_time}, #{record_code})
+    values (#{sid}, #{question_id}, #{record_status}, #{timestamp}, #{code})
     </insert>
 
 
@@ -31,6 +41,5 @@
         delete from record
         where record_question_id = #{question_id} and record_sid = #{sid}
     </delete>
-
 
 </mapper>
