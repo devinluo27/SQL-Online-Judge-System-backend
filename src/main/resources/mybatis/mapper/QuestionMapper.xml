@@ -29,5 +29,11 @@
         where question_id = #{id}
     </delete>
 
+    <select id="selectQuestionsByAssignment" resultType="Question">
+   select  distinct q.*, case when r.record_status is null then 0 else 1 end as is_finished
+    from
+        question q left outer join record r on q.question_id = r.record_question_id and record_sid = #{sid} and record_status = 1
+    where  q.question_of_assignment = #{assignment_id};
+    </select>
 
 </mapper>

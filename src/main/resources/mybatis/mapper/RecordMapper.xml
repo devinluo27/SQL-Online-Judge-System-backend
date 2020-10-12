@@ -27,9 +27,42 @@
     </select>
 
 
-<!--    <select id="runSql" parameterType="string" resultType="java.util.Map">-->
-<!--    #{code}-->
-<!--    </select>-->
+    <select id="runSql" parameterType="string" resultType="java.util.Map">
+    -- Check the set operation without sorting
+    select *
+    from (
+    -- STAND_ANS EXCEPT STUDENT_ANS
+             select *
+             from (
+    --STANDARD_SQL:
+                  #{standard}
+    -- EXCEPT INPUT_SQL:
+                  ) STAND_ANS1
+                 except
+             select *
+             from (
+    -- INPUT_SQL:
+                  #{code}
+                  ) INPUT_ANS1
+         ) EXCEPT_ANS1
+    UNION ALL
+    select *
+    from (
+    -- STUDENT_ANS EXCEPT STAND_ANS
+             select *
+             from (
+    -- INPUT_SQL:
+                 #{code}
+                  )INPUT_SQL2
+                 except
+             select *
+             from (
+    -- STANDARD_SQL
+                  #{standard}
+                  ) STANDARD_SQL2
+         );
+
+        </select>
 
     <insert id="addRecord" parameterType="Record">
     insert into record(record_sid, record_question_id, record_status, record_time, record_code)

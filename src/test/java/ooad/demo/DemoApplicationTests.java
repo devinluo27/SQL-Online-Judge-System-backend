@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ class DemoApplicationTests {
     @Test
     public void getPublicData(){
         String sql = "";
-        List<Map<String, Object>> list = recordMapper.runSql(sql);
+        List<LinkedHashMap<String, Object>> list = recordMapper.runSql(sql);
     }
 
 }

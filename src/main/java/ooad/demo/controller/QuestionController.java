@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,5 +23,33 @@ public class QuestionController implements Serializable {
     @GetMapping("/queryQuestionList")
     public List<Question> queryQuestionList(){
         return questionMapper.queryQuestionList();
+    }
+
+    @CrossOrigin
+    @GetMapping
+    public Question selectQuestionsById(String id){
+        int question_id;
+        try{
+            question_id = Integer.parseInt(id);
+        } catch (Exception e){
+            return null;
+        }
+        return questionMapper.selectQuestionById(question_id);
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/selectQuestionsByAssignment")
+    public List<Question>  selectQuestionsByAssignment(String sid, String as_id){
+        int student_id;
+        int assignment_id;
+        try{
+            student_id = Integer.parseInt(sid);
+            assignment_id = Integer.parseInt(as_id);
+        } catch (Exception e){
+            return null;
+        }
+        List<Question> list = questionMapper.selectQuestionsByAssignment(student_id, assignment_id);
+        return list;
     }
 }

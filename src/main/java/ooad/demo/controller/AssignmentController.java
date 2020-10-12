@@ -3,6 +3,7 @@ package ooad.demo.controller;
 
 import ooad.demo.mapper.AssignmentMapper;
 import ooad.demo.pojo.Assignment;
+import ooad.demo.pojo.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,13 +76,32 @@ public class AssignmentController {
 
 
     @CrossOrigin
-    @GetMapping("/queryQuestionsByAssignment")
+    @GetMapping("/queryQuestionsByAssignmentID")
 //    pass the id return assignment with associate questions
-    public Assignment queryQuestionsByAssignment(String id){
+    public List<Question> queryQuestionsByAssignment(String id){
         int assignment_id = Integer.parseInt(id);
-        Assignment cur_assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
-        return cur_assignment;
+        Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
+        return assignment.getQuestions();
     }
+
+
+//    @CrossOrigin
+//    @GetMapping("/queryAssignmentsWithSid")
+////    pass the id return assignment with associate questions
+//    public List<Assignment> queryQuestionsByAssignment(String sid, String as_id){
+//        int student_id;
+//        int assignment_id;
+//        try{
+//            student_id = Integer.parseInt(sid);
+//            assignment_id = Integer.parseInt(as_id);
+//        } catch (Exception e){
+//            return null;
+//        }
+//
+//        Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
+//        return assignment.getQuestions();
+//    }
+
 
 
 }

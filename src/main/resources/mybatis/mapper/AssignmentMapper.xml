@@ -49,8 +49,11 @@
 
     <select id="queryQuestionsByAssignment" resultMap="aToqResultMap">
     select  * from assignment a
-        join question q on a.assignment_id = q.question_of_assignment;
+        join question q on a.assignment_id = q.question_of_assignment
+        where a.assignment_id = #{id};
     </select>
+
+
 
 
 </mapper>

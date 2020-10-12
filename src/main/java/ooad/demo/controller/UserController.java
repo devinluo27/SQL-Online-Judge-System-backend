@@ -35,14 +35,18 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/react/login")
     // password not null, sid must be int
-    public int login(int sid, String password) {
+    public int login(String id, String password) {
+        int sid;
+        try {
+            sid = Integer.parseInt(id);
+        } catch (Exception e){
+            return -2;
+        }
         UserDB user = userMapper.selectUserDBBySid(sid);
         String pwd = userMapper.getPwd(sid);
-        System.out.println(sid);
-        System.out.println(user);
-        System.out.println(pwd);
+
         if (pwd == null){
-            return 0; // no such a sid
+            return -3; // no such a sid
         }
         else if (pwd.equals(password)){
             return 1; // login success

@@ -14,6 +14,7 @@ public class Question implements Serializable{
     private String question_description;
     private String question_output;
     private int question_index;
+    private int is_finished;
 
     public Question(int question_id, String question_name, int question_of_assignment, String question_description, String question_output, int question_index) {
         this.question_id = question_id;

@@ -25,6 +25,8 @@ public interface AssignmentMapper {
 
     Assignment queryQuestionsByAssignment(int id);
 
+    Assignment queryAssignmentSid(int sid, int assignment_id);
+
     int deleteAssignment(int id);
 
 }

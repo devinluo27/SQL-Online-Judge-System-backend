@@ -32,6 +32,10 @@ public class Assignment implements Serializable {
         this.assignment_description = descrition;
     }
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
     public Timestamp getAssignment_create_time() {
         return assignment_create_time;
     }
