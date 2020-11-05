@@ -38,10 +38,10 @@ public class RecordController implements Serializable {
 
     @CrossOrigin
     @GetMapping("/addRecord")
-    int addRecord(int sid, int question_id, String code){
+    int addRecord(int sid, int question_id, String code, String type){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        deleteARecord(sid, question_id);
-        return recordMapper.addRecord(sid, question_id, timestamp, code);
+        int status = 0;
+        return recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
     }
 
     @CrossOrigin
@@ -65,7 +65,14 @@ public class RecordController implements Serializable {
         return list;
     }
 
-    int setRecordStatus(int sid, int question_id, int status){
+    @CrossOrigin
+    @GetMapping("/judgeCode")
+    List<LinkedHashMap<String, Object>> judgeCode(String standard, String code) {
+        List<LinkedHashMap<String, Object>> a = recordMapper.judge(standard, code);
+        return a;
+    }
+
+        int setRecordStatus(int sid, int question_id, int status){
         return 0;
     }
 }

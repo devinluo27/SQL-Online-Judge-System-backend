@@ -31,6 +31,13 @@ class DemoApplicationTests {
     }
 
     @Test
+    public void judge(){
+        String standard = "select * from record";
+        String code = "select * from record";
+        Object a = recordMapper.judge(standard, code);
+    }
+
+    @Test
     public void getPublicData(){
         String sql = "";
         List<LinkedHashMap<String, Object>> list = recordMapper.runSql(sql);

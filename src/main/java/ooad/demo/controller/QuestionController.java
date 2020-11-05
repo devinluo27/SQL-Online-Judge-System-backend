@@ -26,7 +26,7 @@ public class QuestionController implements Serializable {
     }
 
     @CrossOrigin
-    @GetMapping
+    @GetMapping("/selectQuestionsById")
     public Question selectQuestionsById(String id){
         int question_id;
         try{

@@ -27,7 +27,7 @@
     </select>
 
 
-    <select id="runSql" parameterType="string" resultType="java.util.Map">
+    <select id="judge" parameterType="string" resultType="java.util.Map">
     -- Check the set operation without sorting
     select *
     from (
@@ -65,8 +65,8 @@
         </select>
 
     <insert id="addRecord" parameterType="Record">
-    insert into record(record_sid, record_question_id, record_status, record_time, record_code)
-    values (#{sid}, #{question_id}, #{record_status}, #{timestamp}, #{code})
+    insert into record(record_sid, record_question_id, record_status, record_time, record_code, record_code_type)
+    values (#{sid}, #{question_id}, #{record_status}, #{time}, #{code}, #{type})
     </insert>
 
 
