@@ -2,8 +2,11 @@ package ooad.demo;
 
 import ooad.demo.mapper.RecordMapper;
 import org.junit.jupiter.api.Test;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.BadSqlGrammarException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -31,10 +34,17 @@ class DemoApplicationTests {
     }
 
     @Test
-    public void judge(){
+    public void judge() {
         String standard = "select * from record";
-        String code = "select * from record";
-        Object a = recordMapper.judge(standard, code);
+        String code = "elect * from record";
+        List<LinkedHashMap<String, Object>>  a;
+        try {
+            a = recordMapper.judge(standard, code);
+        }
+        catch (DataAccessException e){
+
+        }
+//        System.out.println(a.size() == 0);
     }
 
     @Test

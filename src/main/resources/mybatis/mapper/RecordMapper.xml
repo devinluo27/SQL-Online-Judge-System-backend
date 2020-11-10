@@ -35,14 +35,14 @@
              select *
              from (
     --STANDARD_SQL:
-                  #{standard}
+                  ${standard}
     -- EXCEPT INPUT_SQL:
                   ) STAND_ANS1
                  except
              select *
              from (
     -- INPUT_SQL:
-                  #{code}
+                  ${code}
                   ) INPUT_ANS1
          ) EXCEPT_ANS1
     UNION ALL
@@ -52,15 +52,15 @@
              select *
              from (
     -- INPUT_SQL:
-                 #{code}
+                 ${code}
                   )INPUT_SQL2
                  except
              select *
              from (
     -- STANDARD_SQL
-                  #{standard}
+                  ${standard}
                   ) STANDARD_SQL2
-         );
+         ) a;
 
         </select>
 

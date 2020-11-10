@@ -3,11 +3,14 @@ package ooad.demo.controller;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
@@ -40,7 +43,8 @@ public class RecordController implements Serializable {
     @GetMapping("/addRecord")
     int addRecord(int sid, int question_id, String code, String type){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        int status = 0;
+        String standard = "select * from record";
+        int status = judgeCode(standard, code);
         return recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
     }
 
@@ -67,12 +71,17 @@ public class RecordController implements Serializable {
 
     @CrossOrigin
     @GetMapping("/judgeCode")
-    List<LinkedHashMap<String, Object>> judgeCode(String standard, String code) {
-        List<LinkedHashMap<String, Object>> a = recordMapper.judge(standard, code);
-        return a;
+    int judgeCode(String standard, String code) {
+        List<LinkedHashMap<String, Object>> a;
+        try {
+            a = recordMapper.judge(standard, code);
+        }catch (DataAccessException e){
+            return -1;
+        }
+        return a.size() == 0 ? 1 : 0;
     }
 
-        int setRecordStatus(int sid, int question_id, int status){
+    int setRecordStatus(int sid, int question_id, int status){
         return 0;
     }
 }
