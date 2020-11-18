@@ -3,6 +3,7 @@ package ooad.demo.controller;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.pojo.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +59,7 @@ public class UserController {
     @CrossOrigin
     @GetMapping(value = "/react/add")
     // password not null len >=6, sid must be int
-    public int addUser(int sid, String user_name, String password) {
+    public int addUser(int sid, String user_name, String password, String authority) {
         UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
         UserDB user_by_name = userMapper.selectUserDBByName(user_name);
 
@@ -68,7 +69,7 @@ public class UserController {
         else if( user_by_name != null){
             return -2; //user_name already exists
         }
-        UserDB new_user = new UserDB(sid, user_name, password);
+        UserDB new_user = new UserDB(sid, user_name, new BCryptPasswordEncoder().encode(password), authority);
         userMapper.addUserDB(new_user);
         return 1;
     }

@@ -13,14 +13,17 @@ public class UserDB implements Serializable {
     private int sid;
     private String user_name;
     private String user_password;
+    private String authority;
+    private int enabled = 1;
 
     public String getUser_name() {
         return user_name;
     }
 
-    public UserDB(int sid, String user_name, String password) {
+    public UserDB(int sid, String user_name, String password, String authority) {
         this.sid = sid;
         this.user_name = user_name;
         this.user_password = password;
+        this.authority = authority;
     }
 }
