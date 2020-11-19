@@ -61,7 +61,7 @@ public class AssignmentController {
     @CrossOrigin
     @GetMapping("/updateAssignment")
 //    pass the milisecond from 1970
-    public int updateAssignment(String id, String name, String start_date, String end_date, String descrition){
+    public int updateAssignment(String id, String name, String start_date, String end_date, String description){
         int assignment_id = Integer.parseInt(id);
         Assignment cur_assignment = assignmentMapper.selectAssignmentById(assignment_id);
         Timestamp create_time = cur_assignment.getAssignment_create_time();
@@ -69,7 +69,7 @@ public class AssignmentController {
         long end_sec = Long.parseLong(end_date);
         Timestamp start_time = new Timestamp(start_sec);
         Timestamp end_time = new Timestamp(end_sec);
-        Assignment new_assignment = new Assignment(assignment_id, name, create_time, start_time, end_time, descrition);
+        Assignment new_assignment = new Assignment(assignment_id, name, create_time, start_time, end_time, description);
         int ret = assignmentMapper.updateAssignment(new_assignment);
         return ret;
     }

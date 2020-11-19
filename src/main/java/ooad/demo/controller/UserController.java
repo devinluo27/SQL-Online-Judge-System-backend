@@ -1,20 +1,32 @@
 package ooad.demo.controller;
 
 import ooad.demo.mapper.UserMapper;
+import ooad.demo.mapper.VerifyCodeMapper;
 import ooad.demo.pojo.UserDB;
+import ooad.demo.pojo.VerifyCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 public class UserController {
 
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private VerifyCodeMapper verifyCodeMapper;
 
     @CrossOrigin
     @GetMapping("/queryUserList")
@@ -82,6 +94,55 @@ public class UserController {
             return -1; // not exist
         }
         userMapper.resetUserDBPassword(id, pwd);
+        return 1;
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/user/resetPwd")
+    public int resetPassword(String sid, int v_code, String pwd){
+        int id = Integer.parseInt(sid);
+        VerifyCode v = verifyCodeMapper.getVerifyCode(id);
+
+        // 不存在该用户
+        if (findUserDBBySid(id) == null){
+            return -1; // not exist
+        }
+
+        // no verify code == 验证码错误
+        if (v == null){
+            return -2;
+        }
+        // 验证码过期
+        if(System.currentTimeMillis() - v.getExpired_time().getTime() > 3e5){
+            return -3;
+        }
+
+        userMapper.resetUserDBPassword(id, passwordEncoder.encode(pwd));
+        return 1;
+    }
+
+
+
+    @Autowired
+    JavaMailSenderImpl mailSender;
+
+    @GetMapping(value = "/user/sendVerifyCode")
+    @ResponseBody
+    @Async
+    public int sendVerifyCode(String sid){
+        int id = Integer.parseInt(sid);
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setSubject("CS 307 Database Account Verification");
+        Random random = new Random();
+        int code = random.nextInt(899999) + 100000;
+        // TODO
+        Timestamp sendTime = new Timestamp(System.currentTimeMillis());
+
+        String response = "Your Verification code is " + code + ".\n Expired in 5 minutes.";
+        mailMessage.setText(response);
+        mailMessage.setTo( sid + "@mail.sustech.edu.cn");
+        mailMessage.setFrom("945517787@qq.com");
+//        mailSender.send(mailMessage);
         return 1;
     }
 

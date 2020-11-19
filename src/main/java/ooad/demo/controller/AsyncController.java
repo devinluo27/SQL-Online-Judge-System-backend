@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AsyncController {
     @Autowired
     AsyncService asyncService;
+
     @RequestMapping("/async")
     public String as(){
         asyncService.hello();

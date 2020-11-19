@@ -18,14 +18,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //首页都可以访问，功能页需要权限
         http.authorizeRequests().
                 antMatchers("/**").permitAll()
-                .antMatchers("/user/**").hasRole("student")
+//                .antMatchers("/user/**").hasRole("student")
                 .antMatchers("/admin/**").hasRole("admin");
 //        super.configure(http);
 
         // 没有权限自动登录页
         http.formLogin();
-//                .loginPage("login")
-//                .loginProcessingUrl("/login")
+//                .loginPage("/index.html")
+//                .loginProcessingUrl("/perform_login")
+//                .defaultSuccessUrl("/homepage.html",true)
 //                .usernameParameter("username")
 //                .passwordParameter("password");
 
