@@ -13,7 +13,7 @@ public class CookiesController {
     public String read(@CookieValue String username){
         return username;
     }
-    @GetMapping("write")
+    @GetMapping("/write")
     public String write(HttpServletResponse response){
         Cookie cookie = new Cookie("username", "uservalue3");
         cookie.setHttpOnly(true);

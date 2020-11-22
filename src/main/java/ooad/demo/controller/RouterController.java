@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class RouterController {
     @RequestMapping({"/", "/index"})
-    @ResponseBody
     public String index(){
-        return "index";
+        return "bcc";
+    }
+
+    @RequestMapping({"/", "/index1"})
+    public String index1(){
+        return "index1";
     }
 }

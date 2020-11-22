@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
-public class RecordController implements Serializable {
+public class RecordController{
     @Autowired
     private RecordMapper recordMapper;
 
@@ -40,7 +40,7 @@ public class RecordController implements Serializable {
     }
 
     @CrossOrigin
-    @GetMapping("/addRecord")
+    @GetMapping("/user/addRecord")
     int addRecord(int sid, int question_id, String code, String type){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String standard = "select * from record";

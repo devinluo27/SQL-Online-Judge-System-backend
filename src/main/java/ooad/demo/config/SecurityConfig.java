@@ -17,18 +17,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //首页都可以访问，功能页需要权限
         http.authorizeRequests().
-                antMatchers("/**").permitAll()
+                antMatchers("/**").permitAll();
 //                .antMatchers("/user/**").hasRole("student")
-                .antMatchers("/admin/**").hasRole("admin");
+//                .antMatchers("/admin/**").hasRole("admin");
 //        super.configure(http);
 
         // 没有权限自动登录页
-        http.formLogin();
-//                .loginPage("/index.html")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/homepage.html",true)
-//                .usernameParameter("username")
-//                .passwordParameter("password");
+        http.formLogin()
+                .loginPage("/index.html")
+                .loginProcessingUrl("/perform_login")
+                .defaultSuccessUrl("/homepage.html",true)
+                .usernameParameter("username")
+                .passwordParameter("password");
 
         //防止网站工具： get post
         http.csrf().disable();
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("logout");
 
         //cookies
-        http.rememberMe().rememberMeParameter("remember");
+//        http.rememberMe().rememberMeParameter("remember");
 
     }
 

@@ -14,7 +14,7 @@ public class VerifyCode implements Serializable {
     private int cid;
     private int user_id;
     private int v_code;
-    private Timestamp expired_time;
+    private Timestamp created_time;
 
     public int getUser_id() {
         return user_id;
@@ -28,8 +28,8 @@ public class VerifyCode implements Serializable {
         return cid;
     }
 
-    public Timestamp getExpired_time() {
-        return expired_time;
+    public Timestamp getCreated_time() {
+        return created_time;
     }
 }
 

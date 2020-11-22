@@ -3,11 +3,12 @@ package ooad.demo.pojo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
-public class Record {
+public class Record implements Serializable {
     private int record_id;
     private int record_sid;
     private int record_question_id;

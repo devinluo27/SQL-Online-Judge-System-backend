@@ -109,11 +109,12 @@ public class UserController {
         }
 
         // no verify code == 验证码错误
-        if (v == null){
+        if (v == null || v_code != v.getV_code()){
             return -2;
         }
+
         // 验证码过期
-        if(System.currentTimeMillis() - v.getExpired_time().getTime() > 3e5){
+        if(System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
             return -3;
         }
 
@@ -122,29 +123,35 @@ public class UserController {
     }
 
 
-
     @Autowired
     JavaMailSenderImpl mailSender;
 
+    /***
+     *
+     * @param sid
+     * @return mail sends succeed: 1
+     * need to wait: 0
+     */
     @GetMapping(value = "/user/sendVerifyCode")
     @ResponseBody
     @Async
     public int sendVerifyCode(String sid){
         int id = Integer.parseInt(sid);
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setSubject("CS 307 Database Account Verification");
-        Random random = new Random();
-        int code = random.nextInt(899999) + 100000;
-        // TODO
-        Timestamp sendTime = new Timestamp(System.currentTimeMillis());
-
-        String response = "Your Verification code is " + code + ".\n Expired in 5 minutes.";
-        mailMessage.setText(response);
-        mailMessage.setTo( sid + "@mail.sustech.edu.cn");
-        mailMessage.setFrom("945517787@qq.com");
-//        mailSender.send(mailMessage);
-        return 1;
+        VerifyCode v = verifyCodeMapper.getVerifyCode(id);
+        if (v == null || System.currentTimeMillis() - v.getCreated_time().getTime() > 30000){
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setSubject("CS 307 Database Account Verification");
+            Random random = new Random();
+            int code = random.nextInt(899999) + 100000;
+            verifyCodeMapper.insertVerifyCode(id, code);
+            String response = "Your Verification code is " + code + ".\n Expired in 5 minutes.";
+            mailMessage.setText(response);
+            mailMessage.setTo( sid + "@mail.sustech.edu.cn");
+            mailMessage.setFrom("945517787@qq.com");
+            mailSender.send(mailMessage);
+            return 1;
+        }
+        return 0;
     }
-
 
 }

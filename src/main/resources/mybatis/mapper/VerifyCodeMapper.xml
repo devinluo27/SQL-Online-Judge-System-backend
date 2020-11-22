@@ -16,7 +16,7 @@
     </select>
 
     <insert id="insertVerifyCode">
-   insert into verify_code (user_id, v_code, expired_time)
+   insert into verify_code (user_id, v_code, created_time)
             values (#{user_id, jdbcType=INTEGER}, #{v_code, jdbcType=INTEGER}, current_timestamp);
     </insert>
 

@@ -53,6 +53,16 @@ class DemoApplicationTests {
     UserController userController;
 
     @Test
+    public void contextLoads1() throws SQLException {
+        System.out.println("连接成功");
+        System.out.println("dataSource.getClass()内容***"+dataSource.getClass());
+
+        Connection connection = dataSource.getConnection();
+        System.out.println("connection内容***"+connection);
+        connection.close();
+
+    }
+    @Test
     void  vCodeTest2(){
         System.out.print(userController.resetPassword("123",123321,"123321"));
     }

@@ -10,8 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
 
     @Override
-    public void addResourceHandlers(
-            ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+
+        registry.addResourceHandler("/**")
+                .addResourceLocations("file:/Users/nongnong/Desktop/");
+
 
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("/WEB-INF/view/react/build/static/");
@@ -22,6 +26,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/*.ico")
                 .addResourceLocations("/WEB-INF/view/react/build/");
         registry.addResourceHandler("/index.html")
-                .addResourceLocations("/WEB-INF/view/react/build/index.html");
+                .addResourceLocations("/Users/nongnong/IdeaProjects/OOAD_1/src/main/webapp/WEB-INF/view/react/public/index.html");
     }
 }
