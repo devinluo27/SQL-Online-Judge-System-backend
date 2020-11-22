@@ -5,7 +5,6 @@
 <mapper namespace="ooad.demo.mapper.VerifyCodeMapper">
 
 
-
     <cache/>
 
     <select id="getVerifyCode" resultType="VerifyCode">

@@ -17,9 +17,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //首页都可以访问，功能页需要权限
         http.authorizeRequests().
-                antMatchers("/**").permitAll();
+                antMatchers("/**").permitAll()
+//                .antMatchers("/user/**").permitAll()
 //                .antMatchers("/user/**").hasRole("student")
-//                .antMatchers("/admin/**").hasRole("admin");
+                .antMatchers("/admin/**").hasRole("admin");
 //        super.configure(http);
 
         // 没有权限自动登录页

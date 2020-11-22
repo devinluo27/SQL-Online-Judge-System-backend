@@ -6,6 +6,7 @@ import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.pojo.Assignment;
 import ooad.demo.pojo.Question;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 import java.util.List;
 
-@RestController
+@Controller
 public class QuestionController implements Serializable {
     @Autowired
     private QuestionMapper questionMapper;
@@ -34,7 +35,9 @@ public class QuestionController implements Serializable {
         } catch (Exception e){
             return null;
         }
-        return questionMapper.selectQuestionById(question_id);
+        Question ret =  questionMapper.selectQuestionById(question_id);
+        System.out.println(ret.getQuestion_output());
+        return ret;
     }
 
 

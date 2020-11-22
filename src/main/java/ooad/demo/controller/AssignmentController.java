@@ -59,7 +59,7 @@ public class AssignmentController {
 
     //todo
     @CrossOrigin
-    @GetMapping("/updateAssignment")
+    @GetMapping("/admin/updateAssignment")
 //    pass the milisecond from 1970
     public int updateAssignment(String id, String name, String start_date, String end_date, String description){
         int assignment_id = Integer.parseInt(id);

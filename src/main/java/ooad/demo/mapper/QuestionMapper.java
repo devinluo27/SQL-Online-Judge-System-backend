@@ -4,6 +4,7 @@ import ooad.demo.pojo.Question;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -15,6 +16,8 @@ public interface QuestionMapper {
     int addQuestion(Question question);
     int updateQuestion(Question question);
     int deleteQuestion(int d);
+    Timestamp getDDL();
+
     List<Question> selectQuestionsByAssignment(int sid, int assignment_id);
 }
 

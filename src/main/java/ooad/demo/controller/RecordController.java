@@ -1,5 +1,6 @@
 package ooad.demo.controller;
 
+import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
@@ -20,6 +21,7 @@ import java.util.List;
 public class RecordController{
     @Autowired
     private RecordMapper recordMapper;
+    private QuestionMapper questionMapper;
 
     @CrossOrigin
     @GetMapping("/queryRecordList")
@@ -44,6 +46,7 @@ public class RecordController{
     int addRecord(int sid, int question_id, String code, String type){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String standard = "select * from record";
+        questionMapper.selectQuestionById(question_id);
         int status = judgeCode(standard, code);
         return recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
     }

@@ -4,7 +4,6 @@ import ooad.demo.pojo.VerifyCode;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
 
 @Mapper
 @Repository

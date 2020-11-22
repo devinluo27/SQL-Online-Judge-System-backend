@@ -22,6 +22,7 @@ import java.util.Random;
 public class UserController {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @Autowired
     private UserMapper userMapper;
 
@@ -29,7 +30,7 @@ public class UserController {
     private VerifyCodeMapper verifyCodeMapper;
 
     @CrossOrigin
-    @GetMapping("/queryUserList")
+    @GetMapping("/admin/queryUserList")
     public List<UserDB> queryUserDBList(){
         List<UserDB> userDBList = userMapper.queryUserDBList();
         for (UserDB  user: userDBList){
@@ -39,29 +40,35 @@ public class UserController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/react/findUserBySid")
+    @GetMapping(value = "/admin/findUserBySid")
     public UserDB findUserDBBySid(int sid){
         UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
         return user_by_sid; //user_sid already exists
     }
 
+    /***
+     *
+     * @param sid
+     * @param pwd
+     * @return
+     */
     @CrossOrigin
-    @GetMapping(value = "/react/login")
+    @GetMapping(value = "/user/login")
     // password not null, sid must be int
-    public int login(String id, String password) {
-        int sid;
+    public int login(String sid, String pwd) {
+        int id;
         try {
-            sid = Integer.parseInt(id);
+            id = Integer.parseInt(sid);
         } catch (Exception e){
             return -2;
         }
-        UserDB user = userMapper.selectUserDBBySid(sid);
-        String pwd = userMapper.getPwd(sid);
+        UserDB user = userMapper.selectUserDBBySid(id);
+        String correct_pwd = userMapper.getPwd(id);
 
         if (pwd == null){
             return -3; // no such a sid
         }
-        else if (pwd.equals(password)){
+        else if (correct_pwd.equals(pwd)){
             return 1; // login success
         }
         // incorrect password
@@ -69,7 +76,7 @@ public class UserController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/react/add")
+    @GetMapping(value = "/admin/addUser")
     // password not null len >=6, sid must be int
     public int addUser(int sid, String user_name, String password, String authority) {
         UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
@@ -86,39 +93,35 @@ public class UserController {
         return 1;
     }
 
-    @CrossOrigin
-    @GetMapping(value = "/react/resetPwd")
-    public int resetPassword(String sid, String pwd){
-        int id = Integer.parseInt(sid);
-        if (findUserDBBySid(id) == null){
-            return -1; // not exist
-        }
-        userMapper.resetUserDBPassword(id, pwd);
-        return 1;
-    }
 
+    /***
+     *
+     * @param sid
+     * @param v_code
+     * @param pwd
+     * @return
+     * -1: user doesn't exist
+     * -2: v_code error
+     * -3: v_code expired
+     *
+     */
     @CrossOrigin
     @GetMapping(value = "/user/resetPwd")
     public int resetPassword(String sid, int v_code, String pwd){
         int id = Integer.parseInt(sid);
         VerifyCode v = verifyCodeMapper.getVerifyCode(id);
 
-        // 不存在该用户
         if (findUserDBBySid(id) == null){
-            return -1; // not exist
+            return -1;
         }
-
-        // no verify code == 验证码错误
         if (v == null || v_code != v.getV_code()){
             return -2;
         }
-
-        // 验证码过期
         if(System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
             return -3;
         }
-
-        userMapper.resetUserDBPassword(id, passwordEncoder.encode(pwd));
+//        userMapper.resetUserDBPassword(id, passwordEncoder.encode(pwd));
+        userMapper.resetUserDBPassword(id, pwd);
         return 1;
     }
 
