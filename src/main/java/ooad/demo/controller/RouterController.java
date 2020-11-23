@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class RouterController {
-    @RequestMapping({"/", "/index"})
-    public String index(){
-        return "bcc";
-    }
-
-    @RequestMapping({"/", "/index1"})
-    public String index1(){
-        return "index1";
-    }
+//    @RequestMapping({"/", "/index"})
+//    public String index(){
+//        return "bcc";
+//    }
+//
+//    @RequestMapping({"/", "/index1"})
+//    public String index1(){
+//        return "index1";
+//    }
 }
