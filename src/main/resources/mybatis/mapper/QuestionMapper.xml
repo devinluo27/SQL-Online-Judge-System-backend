@@ -14,6 +14,13 @@
 
     </select>
 
+    <select id="getStandardAns" resultType="Question">
+    select *
+    from question q
+    where q.question_id = ${question_id};
+--     join assignment a on q.question_of_assignment = a.assignment_id;
+    </select>
+
     <select id="selectQuestionById" resultType="Question">
     select question_id, question_name,
     question_of_assignment, question_description,
@@ -36,9 +43,10 @@
     </delete>
 
     <select id="selectQuestionsByAssignment" resultType="Question">
-    select  distinct question_id, question_name,
-            question_of_assignment, question_description,
-            question_output, question_index
+    select  distinct q.question_id, q.question_name,
+            q.question_of_assignment, q.question_description,
+            
+            q.question_output, q.question_index,
         case
             when r.record_status is null then 0
             when r.record_status = -1 then 0
@@ -48,5 +56,6 @@
         question q left outer join record r on q.question_id = r.record_question_id and record_sid = #{sid} and record_status = 1
     where  q.question_of_assignment = #{assignment_id};
     </select>
+
 
 </mapper>

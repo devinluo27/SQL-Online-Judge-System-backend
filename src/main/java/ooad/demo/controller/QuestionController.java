@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 import java.util.List;
 
-@Controller
+@RestController
 public class QuestionController implements Serializable {
     @Autowired
     private QuestionMapper questionMapper;
@@ -36,7 +36,7 @@ public class QuestionController implements Serializable {
             return null;
         }
         Question ret =  questionMapper.selectQuestionById(question_id);
-        System.out.println(ret.getQuestion_output());
+//        System.out.println(ret.getQuestion_output());
         return ret;
     }
 

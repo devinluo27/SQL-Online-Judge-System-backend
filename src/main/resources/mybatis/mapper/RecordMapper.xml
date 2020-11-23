@@ -29,7 +29,8 @@
 
     <select id="judge" parameterType="string" resultType="java.util.Map">
     -- Check the set operation without sorting
-
+--     set search_path to task;
+--     set role tester;
     select *
     from (
     -- STAND_ANS EXCEPT STUDENT_ANS
@@ -62,7 +63,8 @@
                   ${standard}
                   ) STANDARD_SQL2
          ) a;
-
+--         set role dboj;
+--         set search_path to public;
         </select>
 
     <insert id="addRecord" parameterType="Record">

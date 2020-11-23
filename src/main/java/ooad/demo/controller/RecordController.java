@@ -21,6 +21,8 @@ import java.util.List;
 public class RecordController{
     @Autowired
     private RecordMapper recordMapper;
+
+    @Autowired
     private QuestionMapper questionMapper;
 
     @CrossOrigin
@@ -44,11 +46,18 @@ public class RecordController{
     @CrossOrigin
     @GetMapping("/user/addRecord")
     int addRecord(int sid, int question_id, String code, String type){
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String standard = "select * from record";
-        questionMapper.selectQuestionById(question_id);
-        int status = judgeCode(standard, code);
-        return recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
+        try {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    //        String standard = "select * from countries";
+    //        questionMapper.selectQuestionById(question_id);
+            String standard = questionMapper.getStandardAns(question_id).getQuestion_standard_ans();
+    //        System.out.println(standard);
+            int status = judgeCode(standard, code);
+            return recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
+        } catch (Exception e){
+            // 提交失败
+            return -1;
+        }
     }
 
     @CrossOrigin
@@ -79,6 +88,7 @@ public class RecordController{
         try {
             a = recordMapper.judge(standard, code);
         }catch (DataAccessException e){
+            System.out.println(e);
             return -1;
         }
         return a.size() == 0 ? 1 : 0;
