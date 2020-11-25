@@ -26,4 +26,8 @@ public class UserDB implements Serializable {
         this.user_password = password;
         this.authority = authority;
     }
+
+    public int getSid() {
+        return sid;
+    }
 }

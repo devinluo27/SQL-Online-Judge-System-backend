@@ -16,7 +16,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations("file:/Users/nongnong/Desktop/");
 
-
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("/WEB-INF/view/react/build/static/");
         registry.addResourceHandler("/*.js")

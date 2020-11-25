@@ -101,7 +101,6 @@ class DemoApplicationTests {
         catch (DataAccessException e){
 
         }
-//        System.out.println(a.size() == 0);
     }
 
     @Test
@@ -109,5 +108,6 @@ class DemoApplicationTests {
         String sql = "";
         List<LinkedHashMap<String, Object>> list = recordMapper.runSql(sql);
     }
+
 
 }

@@ -136,7 +136,6 @@ public class UserController {
      * need to wait: 0
      */
     @GetMapping(value = "/user/sendVerifyCode")
-    @ResponseBody
     @Async
     public int sendVerifyCode(String sid){
         int id = Integer.parseInt(sid);
