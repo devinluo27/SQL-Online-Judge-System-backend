@@ -25,6 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+//        System.out.println(username);
+
         if (username == null || "".equals(username)) {
             throw new RuntimeException("用户不能为空");
         }
@@ -40,6 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             List<SysPermission> sysPermissions = sysPermissionMapper.selectPermissionListByUser(userDB.getSid());
             // 声明用户授权
             sysPermissions.forEach(sysPermission -> {
+                // 将 permission code 添加给该用户
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(sysPermission.getPermission_code());
                 grantedAuthorities.add(grantedAuthority);
             });
