@@ -3,6 +3,7 @@ package ooad.demo;
 import ooad.demo.controller.UserController;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.mapper.VerifyCodeMapper;
+import ooad.demo.pojo.UserDB;
 import ooad.demo.pojo.VerifyCode;
 import org.junit.jupiter.api.Test;
 import org.postgresql.util.PSQLException;
@@ -12,6 +13,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -33,6 +36,9 @@ class DemoApplicationTests {
     VerifyCodeMapper verifyCodeMapper;
 
     @Autowired
+    UserController userController;
+
+    @Autowired
     JavaMailSenderImpl mailSender;
 
     @Test
@@ -49,8 +55,7 @@ class DemoApplicationTests {
         System.out.print(verifyCodeMapper.getVerifyCode(123));
     }
 
-    @Autowired
-    UserController userController;
+
 
     @Test
     public void contextLoads1() throws SQLException {
@@ -107,6 +112,17 @@ class DemoApplicationTests {
     public void getPublicData(){
         String sql = "";
         List<LinkedHashMap<String, Object>> list = recordMapper.runSql(sql);
+    }
+
+    @Test
+    public void getUser(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        List<UserDB> userDBList =  userController.queryUserDBList();
+        for (int i = 0; i < userDBList.size(); i++){
+             String encodePassword = passwordEncoder.encode(userDBList.get(i).getUser_password());
+             userDBList.get(i).setUser_password(encodePassword);
+
+        }
     }
 
 

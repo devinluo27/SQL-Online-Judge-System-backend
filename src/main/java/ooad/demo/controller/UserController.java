@@ -9,11 +9,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
@@ -93,6 +92,14 @@ public class UserController {
         return 1;
     }
 
+    @GetMapping(value = "/username")
+    @ResponseBody
+    public String currentUserNameSimple(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal == null)
+            return "Please login!";
+        return principal.getName();
+    }
 
     /***
      *
@@ -155,5 +162,9 @@ public class UserController {
         }
         return 0;
     }
+
+//    public int reset(int sid, String password){
+//        UserMapper.
+//    }
 
 }

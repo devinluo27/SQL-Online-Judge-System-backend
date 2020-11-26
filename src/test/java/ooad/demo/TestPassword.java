@@ -7,6 +7,6 @@ public class TestPassword {
         System.out.println(new BCryptPasswordEncoder().encode(pwd));
     }
     public static void main(String[] args) {
-        getpwd("2");
+        getpwd("11813221");
     }
 }

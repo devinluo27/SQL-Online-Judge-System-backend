@@ -23,4 +23,15 @@
     </select>
 
 
+    <select id="selectListByPath" resultType="SysPermission">
+        select per.*
+        from sys_request_path path
+        join sys_request_path_permission_relation as urlper
+              on path.id = urlper.url_id
+        join sys_permission as per
+              on per.id = urlper.permission_id
+        where path.url = #{requestUrl}
+    </select>
+
+
 </mapper>

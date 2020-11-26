@@ -30,7 +30,7 @@ public class AssignmentController {
     }
 
     @CrossOrigin
-    @GetMapping("/selectAssignmentById")
+    @GetMapping("/admin/selectAssignmentById")
     public Assignment selectAssignment(String id){
         int assignment_id = Integer.parseInt(id);
         Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
@@ -41,7 +41,7 @@ public class AssignmentController {
     }
 
     @CrossOrigin
-    @GetMapping("/addAssignment")
+    @GetMapping("/admin/addAssignment")
 //    pass the milisecond from 1970 start_date end_date should be long
     public int addAssignment(String id, String name, String start_date, String end_date, String descrition){
         Date date = new Date();
