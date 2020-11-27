@@ -3,6 +3,8 @@ package ooad.demo.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -10,7 +12,9 @@ import java.io.Serializable;
 //@AllArgsConstructor
 public class UserDB implements Serializable {
 
+    @NotNull
     private int sid;
+
     private String user_name;
     private String user_password;
     private String authority;
