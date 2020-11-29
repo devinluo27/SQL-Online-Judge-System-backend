@@ -3,6 +3,7 @@ package ooad.demo.pojo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -10,7 +11,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Record implements Serializable {
     private int record_id;
+    @NotNull
     private int record_sid;
+
     private int record_question_id;
     private int record_status;
     private Timestamp record_time;

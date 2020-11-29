@@ -11,11 +11,13 @@
     </select>
 
     <select id="getDDL" resultType="java.sql.Timestamp">
-
+        select  a.assignment_end_time from question q
+            join assignment a on a.assignment_id = q.question_of_assignment
+            where q.question_id = #{question_id}
     </select>
 
     <select id="getStandardAns" resultType="Question">
-    select *
+    select q.question_standard_ans
     from question q
     where q.question_id = ${question_id};
 --     join assignment a on q.question_of_assignment = a.assignment_id;
@@ -28,13 +30,26 @@
     </select>
 
     <insert id="addQuestion" parameterType="Question">
-    insert into question(question_name, question_of_assignment, question_description, question_output, question_index)
-    values (#{question_name}, #{question_of_assignment},#{question_description}, #{question_output}, #{question_index})
+    insert into question (question_id, question_name, question_of_assignment,
+    question_output, question_description, question_index, question_standard_ans, database_id)
+    values (#{question_id}, #{question_name}, #{question_of_assignment}, #{question_output}, #{question_description},
+     #{question_index}, #{question_standard_ans}, #{database_id})
     </insert>
 
 
     <update id="updateQuestion" parameterType="Question">
-
+        update question
+        <trim prefix="set" suffixOverrides=",">
+            <if test="question_id!=null">question_id=#{question_id},</if>
+            <if test="question_name!=null">question_name=#{question_name},</if>
+            <if test="question_of_assignment!=null">question_of_assignment=#{question_of_assignment},</if>
+            <if test="question_output!=null">question_output=#{question_output},</if>
+            <if test="relType!=null">question_description=#{question_description},</if>
+            <if test="question_index!=null">question_index=#{question_index},</if>
+            <if test="question_standard_ans!=null">question_standard_ans=#{question_standard_ans},</if>
+            <if test="database_id!=null">database_id=#{database_id},</if>
+        </trim>
+        where id=#{id}
     </update>
 
     <delete id="deleteQuestion" parameterType="int">
@@ -45,7 +60,6 @@
     <select id="selectQuestionsByAssignment" resultType="Question">
     select  distinct q.question_id, q.question_name,
             q.question_of_assignment, q.question_description,
-            
             q.question_output, q.question_index,
         case
             when r.record_status is null then 0

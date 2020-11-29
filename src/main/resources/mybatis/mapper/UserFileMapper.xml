@@ -6,9 +6,40 @@
 
     <cache/>
 
-    <select id="getAllFile" resultType="UserFile">
---     select * from user_file
+    <select id="getAllFileInfo" resultType="UserFile">
+     select * from user_files
     </select>
+
+    <select id="findByUserId" resultType="UserFile">
+        select * from  user_files
+        where user_id = ${id}
+    </select>
+
+    <select id="findByFileId" resultType="UserFile" >
+        select * from  user_files
+        where id = ${id}
+    </select>
+
+
+    <insert id="save" parameterType="UserFile">
+    insert into user_files (old_file_name, new_file_name, ext, relative_path, file_size, file_type,
+    is_img, down_counts, upload_time, user_id, question_id, assignment_id, sort_num)
+    values (#{old_file_name},
+    #{new_file_name}, #{ext}, #{relative_path}, #{file_size},
+    #{file_type}, #{is_img}, #{down_counts},
+    #{upload_time}, #{user_id}, #{question_id}, #{assignment_id}, #{sort_num})
+    </insert>
+
+    <delete id="delete">
+        delete from user_files
+        where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="UserFile">
+        update user_files
+        set down_counts = #{down_counts}
+        where id = #{id}
+    </update>
 
 
 </mapper>

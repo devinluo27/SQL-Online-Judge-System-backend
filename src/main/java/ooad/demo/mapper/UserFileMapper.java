@@ -15,11 +15,11 @@ public interface UserFileMapper {
     //保存用户的文件信息
     void save(UserFile userFile);
 
-    UserFile findById(Integer id);
+    UserFile findByFileId(Integer id);
 
     void update(UserFile userFile);
 
     void delete(Integer id);
 
-    List<UserFile> getAllFile();
+    List<UserFile> getAllFileInfo();
 }

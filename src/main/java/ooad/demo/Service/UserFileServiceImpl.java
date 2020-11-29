@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 
@@ -28,16 +27,16 @@ public class UserFileServiceImpl implements UserFileService {
     public void save(UserFile userFile) {
         //是否是图片解决方案：当类型中含有image时 说明当前类型一定为图片类型
 //        userFile.setIsImg()
-        String isImg = userFile.getType().startsWith("image") ? "是" : "否";
-        userFile.setIsImg(isImg);
-        userFile.setDowncounts(0);
-        userFile.setUploadTime(new Timestamp(System.currentTimeMillis()));
+        String isImg = userFile.getFile_type().startsWith("image") ? "yes" : "no";
+        userFile.setIs_img(isImg);
+        userFile.setDown_counts(0);
+        userFile.setUpload_time(new Timestamp(System.currentTimeMillis()));
         userFileMapper.save(userFile);
     }
 
     @Override
     public UserFile findById(Integer id) {
-        return userFileMapper.findById(id);
+        return userFileMapper.findByFileId(id);
     }
 
     @Override
@@ -50,8 +49,8 @@ public class UserFileServiceImpl implements UserFileService {
         userFileMapper.delete(id);
     }
 
-    public List<UserFile> getAllFile(){
-        return userFileMapper.getAllFile();
+    public List<UserFile> getAllFileInfo(){
+        return userFileMapper.getAllFileInfo();
     }
 
 }

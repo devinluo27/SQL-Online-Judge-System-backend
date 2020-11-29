@@ -30,7 +30,7 @@ public class AssignmentController {
     }
 
     @CrossOrigin
-    @GetMapping("/admin/selectAssignmentById")
+    @GetMapping("/user/selectAssignmentById")
     public Assignment selectAssignment(String id){
         int assignment_id = Integer.parseInt(id);
         Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
@@ -69,7 +69,7 @@ public class AssignmentController {
         long end_sec = Long.parseLong(end_date);
         Timestamp start_time = new Timestamp(start_sec);
         Timestamp end_time = new Timestamp(end_sec);
-        Assignment new_assignment = new Assignment(assignment_id, name, create_time, start_time, end_time, description);
+        Assignment new_assignment = new Assignment(assignment_id, name, cur_assignment.getAssignment_create_time(), start_time, end_time, description);
         int ret = assignmentMapper.updateAssignment(new_assignment);
         return ret;
     }

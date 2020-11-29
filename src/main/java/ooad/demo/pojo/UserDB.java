@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,8 @@ public class UserDB implements Serializable {
     private String user_password;
     private String authority;
     private int enabled = 1;
+    private Timestamp last_login_time;
+    private Timestamp created_time;
 
     public String getUser_name() {
         return user_name;

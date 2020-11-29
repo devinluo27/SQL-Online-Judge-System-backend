@@ -13,7 +13,6 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,37 +27,25 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/file")
+@RequestMapping("/files")
 public class FileController  {
 
     @Autowired
     private UserFileService userFileService;
 
-//    @GetMapping("/findAllJASON")
-//    @ResponseBody
-//    public List<UserFile> findAllJSON(HttpSession session){
-//        //在登录的session中获取用户的id
-//        User user = (User) session.getAttribute("user");
-//        //根据用户id查询有的文件信息
-//        List<UserFile> userFiles = userFileService.findByUserId(user.getId());
-//        return userFiles;
-//    }
-
     //    展示所有文件信息
-    @GetMapping("/findAllJASON")
+    @GetMapping("/findByUserId")
     @ResponseBody
-    public List<UserFile> findAllJSON(HttpServletRequest request){
+    public List<UserFile> findByUserId(HttpServletRequest request){
         //在登录的session中获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
         if (userPrincipal != null){
@@ -72,15 +59,19 @@ public class FileController  {
     /*
     * 删除文件信息
     * */
-    @GetMapping("deleteFile")
+    @GetMapping("/deleteFile")
     public void delete(@RequestParam("file_id") Integer id, HttpServletResponse response) throws IOException {
         response.setContentType("text/json;charset=utf-8");
         //根据id查询信息
         UserFile userFile = userFileService.findById(id);
-
+        if (userFile == null){
+            JsonResult result = ResultTool.fail();
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
         //删除文件
-        String realPath = ResourceUtils.getURL("classpath:").getPath() + "/static" + userFile.getPath();
-        File file = new File(realPath, userFile.getNewFileName());
+        String realPath = ResourceUtils.getURL("classpath:").getPath() + userFile.getRelative_path();
+        File file = new File(realPath, userFile.getNew_file_name());
 
         // 删除该文件
         if(file.exists())
@@ -92,24 +83,42 @@ public class FileController  {
         response.getWriter().write(JSON.toJSONString(result));
     }
 
-    //文件下载
+    /***
+     * 下载文件
+     * @param openStyle
+     * @param id 文件在数据库中对应的ID
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/download")
-    public void download(String openStyle, Integer id, HttpServletResponse response) throws IOException {
+    public void download(String openStyle, @RequestParam("file_id") Integer id, HttpServletResponse response) throws IOException {
         //获取打开方式
         openStyle = openStyle==null ? "attachment" : openStyle;
         //获取文件信息
         UserFile userFile = userFileService.findById(id);
+        // 判断文件是否存在
+        if (userFile == null){
+            JsonResult result = ResultTool.fail();
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+
         if("attachment".equals(openStyle)){
             //更新下载次数
-            userFile.setDowncounts(userFile.getDowncounts()+1);
+            userFile.setDown_counts(userFile.getDown_counts()+1);
             userFileService.update(userFile);
         }
         //根据文件信息中文件名字和文件存储路径获取文件输入流
-        String realPath = ResourceUtils.getURL("classpath:").getPath() + "/static" + userFile.getPath();
+        String realPath = ResourceUtils.getURL("classpath:").getPath() + userFile.getRelative_path();
+
+        // Test path variables
+//        System.out.println(realPath);
+//        System.out.println(ResourceUtils.getURL("classpath:").getPath());
+
         //获取文件输入流
-        FileInputStream is = new FileInputStream(new File(realPath, userFile.getNewFileName()));
+        FileInputStream is = new FileInputStream(new File(realPath, userFile.getNew_file_name()));
         //附件下载
-        response.setHeader("content-disposition",openStyle+";fileName"+ URLEncoder.encode(userFile.getOldFileName(),"UTF-8"));
+        response.setHeader("content-disposition",openStyle+";fileName="+ URLEncoder.encode(userFile.getOld_file_name(),"UTF-8"));
         //获取响应输出流
         ServletOutputStream os = response.getOutputStream();
         //文件拷贝
@@ -123,25 +132,27 @@ public class FileController  {
     * 上传文件处理 并保存文件信息到数据库中
     * */
     @PostMapping("/upload")
-    public void upload(@RequestParam("file") @ Valid MultipartFile  aaa,
+    public void upload(@RequestParam("file") @NotNull MultipartFile  aaa,
                        @RequestParam("assignment_id") @Validated @NotBlank(message = "作业号不允许为空")  @Max(100) String assignment_id,
 //                        BindingResult bindingResult,
+                       @RequestParam("question_id") String question_id,
+                       @RequestParam("sort_num") Integer sort_num,
                        HttpServletRequest request, HttpServletResponse response) throws IOException {
 //        if (bindingResult.hasErrors()){
 //            return;
 //        }
+
         response.setContentType("text/json;charset=utf-8");
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
 
-        String question_id = request.getParameter("question_id");
-
-        if (userPrincipal == null || assignment_id == null || question_id == null){
+        if (userPrincipal == null || assignment_id == null || question_id == null || aaa == null){
             //根据用户id查询有的文件信息
             JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
             response.getWriter().write(JSON.toJSONString(result));
             return;
         }
+
 
         //获取文件原始名称
         String originalFilename = aaa.getOriginalFilename();
@@ -154,7 +165,7 @@ public class FileController  {
         long size = aaa.getSize();
         //文件类型
         String type = aaa.getContentType();
-
+        System.out.println(type);
         //处理根据日期生成目录 classpath:/static/files
         //处理根据题目生成目录 classpath:/files_for_students
 
@@ -175,14 +186,23 @@ public class FileController  {
         aaa.transferTo(new File(post_file, newFileName));
 
         //将文件信息放入数据库中
+        // TODO: 异常处理
         UserFile userFile = new UserFile();
-        userFile.setOldFileName(originalFilename).setNewFileName(newFileName).setExt(extension).setSize(String.valueOf(size))
-                .setType(type).setUserId(Integer.parseInt(userPrincipal.getName()));
+        userFile.setOld_file_name(originalFilename)
+                .setNew_file_name(newFileName)
+                .setExt(extension)
+                .setFile_size(String.valueOf(size))
+                .setFile_type(type)
+                .setUser_id(Integer.parseInt(userPrincipal.getName()))
+                .setAssignment_id(Integer.parseInt(assignment_id))
+                .setQuestion_id(Integer.parseInt(question_id))
+                .setSort_num(sort_num);
 
-        userFile.setPath(relative_path);
+        userFile.setRelative_path(relative_path);
         System.out.println(userFile);
-        // 保存到数据库
-//        userFileService.save(userFile);
+
+        // 保存文件相关信息到数据库
+        userFileService.save(userFile);
 
         JsonResult result = ResultTool.success();
         response.getWriter().write(JSON.toJSONString(result));
@@ -192,11 +212,13 @@ public class FileController  {
 
     //    展示所有文件信息
     @GetMapping("/showAllFiles")
-    public void findAll(HttpSession session, HttpServletResponse response) throws IOException {
+    @ResponseBody
+    public List<UserFile> findAll(HttpServletResponse response) throws IOException {
 //        User user = (User) session.getAttribute("user");
-        List<UserFile> userFiles = userFileService.getAllFile();
+        List<UserFile> userFiles = userFileService.getAllFileInfo();
 //        model.addAttribute("files",userFiles);
-        response.setContentType("text/json;charset=utf-8");
-        response.getWriter().write(String.valueOf(userFiles));
+//        response.setContentType("text/json;charset=utf-8");
+//        response.getWriter().write(String.valueOf(userFiles));
+        return userFiles;
     }
 }

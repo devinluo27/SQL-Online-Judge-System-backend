@@ -11,10 +11,8 @@ import ooad.demo.pojo.Record;
 import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,21 +35,28 @@ public class RecordController{
     @Autowired
     private UserController userController;
 
-
     @CrossOrigin
-    @GetMapping("/queryRecordList")
+    @GetMapping("/admin/queryAllRecordListInfo")
     List<Record> queryRecordList(){
         return recordMapper.queryRecordList();
     }
 
     @CrossOrigin
-    @GetMapping("/selectRecordBySid")
-    List<Record> selectRecordBySid(int sid){
+    @GetMapping("/user/selectRecordBySid")
+    List<Record> selectRecordBySid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        response.setContentType("text/json;charset=utf-8");
+        if (request.getUserPrincipal() == null){
+            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+            response.getWriter().write(JSON.toJSONString(result));
+            return null;
+        }
+        int sid = Integer.parseInt(request.getUserPrincipal().getName());
         return recordMapper.selectRecordBySid(sid);
     }
 
     @CrossOrigin
-    @GetMapping("/selectRecordBySidAndAssignment")
+    @GetMapping("/user/selectRecordBySidAndAssignment")
     List<Record> selectRecordBySidAndAssignment(int sid, int assignment_id){
         return recordMapper.selectRecordBySidAndAssignment(sid, assignment_id);
     }
@@ -74,37 +79,38 @@ public class RecordController{
 //    }
 
     @CrossOrigin
-    @PostMapping("/addRecord")
-    void addRecord(HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
+    @PostMapping("/user/addRecord")
+    void addRecord(@RequestParam(value = "sid") int sid,
+                   @RequestParam(value = "question_id") int question_id,
+                   @RequestParam(value = "code") String code,
+                   @RequestParam(value = "code") String type,
+                   HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
 //        System.out.println(request.getParameter("question_id"));
         httpServletResponse.setContentType("text/json;charset=utf-8");
-        System.out.println(request.getCookies());
+//        System.out.println(request.getCookies());
+
         if (request.getUserPrincipal() == null){
             JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
             httpServletResponse.getWriter().write(JSON.toJSONString(result));
             return;
         }
-        try{
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            int sid = Integer.parseInt(request.getUserPrincipal().getName());
-            int question_id = Integer.parseInt(request.getParameter("question_id"));
-            String code = request.getParameter("code");
-            String type = request.getParameter("type");
-            String standard = questionMapper.getStandardAns(question_id).getQuestion_standard_ans();
-            int status = judgeCode(standard, code);
-            recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
-            JsonResult result = ResultTool.success();
-            httpServletResponse.getWriter().write(JSON.toJSONString(result));
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String standard = questionMapper.getStandardAns(question_id).getQuestion_standard_ans();
+        int status = 0;
+        try {
+            status = judgeCode(standard, code);
         } catch (Exception e){
+            recordMapper.addRecord(sid, question_id, -1, timestamp, code, type);
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
-            System.out.println(e.getStackTrace());
+            System.out.println(e.getMessage());
             //塞到HttpServletResponse中返回给前台
             httpServletResponse.getWriter().write(JSON.toJSONString(result));
+            return;
         }
+        recordMapper.addRecord(sid, question_id, status, timestamp, code, type);
+        JsonResult result = ResultTool.success();
+        httpServletResponse.getWriter().write(JSON.toJSONString(result));
 
-//        JsonResult result = ResultTool.success();
-//        httpServletResponse.setContentType("text/json;charset=utf-8");
-//        httpServletResponse.getWriter().write(JSON.toJSONString(result));
     }
 
     @CrossOrigin
@@ -112,6 +118,14 @@ public class RecordController{
     int deleteARecord(int sid, int question_id){
         return recordMapper.deleteARecord(sid, question_id);
     }
+
+    @CrossOrigin
+    @GetMapping("/admin/deleteRecord")
+    int deleteARecordByRid(int sid, int question_id){
+        return recordMapper.deleteARecord(sid, question_id);
+    }
+
+
 
     @CrossOrigin
     @GetMapping("/runSql")

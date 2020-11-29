@@ -15,8 +15,8 @@ public interface QuestionMapper {
     List<Question> queryQuestionByAssignment(int assignment_id);
     int addQuestion(Question question);
     int updateQuestion(Question question);
-    int deleteQuestion(int d);
-    Timestamp getDDL();
+    int deleteQuestion(int question_id);
+    Timestamp getDDL(int question_id);
     Question getStandardAns(int question_id);
 
     List<Question> selectQuestionsByAssignment(int sid, int assignment_id);

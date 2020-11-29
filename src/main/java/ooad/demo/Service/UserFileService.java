@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserFileService {
     List<UserFile> findByUserId(Integer id);
-    List<UserFile> getAllFile();
+    List<UserFile> getAllFileInfo();
 
 
     void save(UserFile userFile);

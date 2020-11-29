@@ -1,35 +1,55 @@
 package ooad.demo;
 
+import ooad.demo.ErrorHandler.CommonEnum;
+import ooad.demo.ErrorHandler.ResultBody;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 @ResponseBody
 public class WebExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(WebExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebExceptionHandler.class);
 
-//    @ExceptionHandler
-//    public ResultBean unknownAccount(UnknownAccountException e) {
-//        log.error("账号不存在", e);
-//        return ResultBean.error(1, "账号不存在");
+//
+//    @ExceptionHandler(value =NullPointerException.class)
+//    @ResponseBody
+//    public ResultBody exceptionHandler(HttpServletRequest req, NullPointerException e){
+//        logger.error("发生空指针异常！原因是:", e);
+//        return ResultBody.error(CommonEnum.BODY_NOT_MATCH);
 //    }
 //
-//    @ExceptionHandler
-//    public ResultBean incorrectCredentials(IncorrectCredentialsException e) {
-//        log.error("密码错误", e);
-//        return ResultBean.error(-2, "密码错误");
+//    /**
+//     * 处理空指针的异常
+//     * @param req
+//     * @param e
+//     * @return
+//     */
+//    @ExceptionHandler(value =NullPointerException.class)
+//    @ResponseBody
+//    public ResultBody exceptionHandler(HttpServletRequest req, NullPointerException e){
+//        logger.error("发生空指针异常！原因是:",e);
+//        return ResultBody.error(CommonEnum.BODY_NOT_MATCH);
 //    }
 //
-//    @ExceptionHandler
-//    public String unknownException(Exception e) {
-////        log.error("发生了未知异常", e);
-//        return e.toString();
-//        // 发送邮件通知技术人员.
-////        return ResultBean.error(-99, "系统出现错误, 请联系网站管理员!");
+//
+//    /**
+//     * 处理其他异常
+//     * @param req
+//     * @param e
+//     * @return
+//     */
+//    @ExceptionHandler(value =Exception.class)
+//    @ResponseBody
+//    public ResultBody exceptionHandler(HttpServletRequest req, Exception e){
+//        logger.error("未知异常！原因是:",e);
+//        return ResultBody.error(CommonEnum.INTERNAL_SERVER_ERROR);
 //    }
+
 
 }

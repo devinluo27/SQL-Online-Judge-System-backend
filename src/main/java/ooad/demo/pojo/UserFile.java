@@ -17,14 +17,21 @@ import java.sql.Timestamp;
 @Accessors(chain=true)
 public class UserFile implements Serializable {
     private Integer id;
-    private String oldFileName;
-    private String newFileName;
+    private String old_file_name;
+    private String new_file_name;
     private String ext;
-    private String path;
-    private String size;
-    private String type;
-    private String isImg;
-    private Integer downcounts = 0;
-    private Timestamp uploadTime = new Timestamp(System.currentTimeMillis());
-    private Integer userId;
+    private String relative_path;
+    private String file_size;
+    private String file_type;
+    private String is_img;
+    private Integer down_counts = 0;
+    private Timestamp upload_time = new Timestamp(System.currentTimeMillis());
+    private Integer user_id;
+    private Integer question_id;
+    private Integer assignment_id;
+    private String is_database;
+    private Integer sort_num;
+    private String file_description;
+    private String file_show_place;
+
 }

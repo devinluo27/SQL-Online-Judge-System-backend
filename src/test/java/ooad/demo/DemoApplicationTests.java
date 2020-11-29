@@ -1,7 +1,9 @@
 package ooad.demo;
 
+import ooad.demo.Service.UserFileService;
 import ooad.demo.controller.UserController;
 import ooad.demo.mapper.RecordMapper;
+import ooad.demo.mapper.UserMapper;
 import ooad.demo.mapper.VerifyCodeMapper;
 import ooad.demo.pojo.UserDB;
 import ooad.demo.pojo.VerifyCode;
@@ -40,6 +42,9 @@ class DemoApplicationTests {
 
     @Autowired
     JavaMailSenderImpl mailSender;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Test
     void  vCodeTest(){
@@ -120,9 +125,17 @@ class DemoApplicationTests {
         List<UserDB> userDBList =  userController.queryUserDBList();
         for (int i = 0; i < userDBList.size(); i++){
              String encodePassword = passwordEncoder.encode(userDBList.get(i).getUser_password());
-             userDBList.get(i).setUser_password(encodePassword);
-
+             UserDB user = userDBList.get(i);
+             userMapper.resetUserDBPassword(user.getSid(), encodePassword);
         }
+    }
+    
+
+    @Autowired
+    UserFileService userFileService;
+    @Test
+    public void fileDelete(){
+        userFileService.delete(1);
     }
 
 

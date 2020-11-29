@@ -29,7 +29,7 @@ public class UserController {
     private VerifyCodeMapper verifyCodeMapper;
 
     @CrossOrigin
-//    @GetMapping("/admin/queryUserList")
+    @GetMapping("/admin/queryUserList")
     public List<UserDB> queryUserDBList(){
         List<UserDB> userDBList = userMapper.queryUserDBList();
         for (UserDB  user: userDBList){
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @CrossOrigin
-//    @GetMapping(value = "/admin/findUserBySid")
+    @GetMapping(value = "/admin/findUserBySid")
     public UserDB findUserDBBySid(int sid){
         UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
         return user_by_sid; //user_sid already exists
