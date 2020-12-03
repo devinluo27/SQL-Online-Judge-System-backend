@@ -1,5 +1,6 @@
 package ooad.demo.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ public class UserDB implements Serializable {
     private int sid;
 
     private String user_name;
+    @JsonIgnore
     private String user_password;
+
     private String authority;
     private int enabled = 1;
     private Timestamp last_login_time;

@@ -3,6 +3,7 @@ package ooad.demo.pojo;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,8 @@ import java.util.List;
 import ooad.demo.pojo.Question;
 @Data
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Assignment implements Serializable {
     private int id;
     private int assignment_id;
@@ -23,21 +25,17 @@ public class Assignment implements Serializable {
     private String assignment_description;
 
     private List<Question> questions;
+    private int is_visible;
 
-    public Assignment(int id, String name, Timestamp create_time, Timestamp start_time, Timestamp end_time, String descrition) {
-        this.assignment_id = id;
-        this.assignment_name = name;
-        this.assignment_create_time = create_time;
-        this.assignment_end_time = end_time;
-        this.assignment_start_time = start_time;
-        this.assignment_description = descrition;
-    }
-
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public Timestamp getAssignment_create_time() {
-        return assignment_create_time;
+    public Assignment(int assignment_id, String assignment_name, Timestamp assignment_create_time,
+                      Timestamp assignment_start_time, Timestamp assignment_end_time,
+                      String assignment_description, int is_visible) {
+        this.assignment_id = assignment_id;
+        this.assignment_name = assignment_name;
+        this.assignment_create_time = assignment_create_time;
+        this.assignment_start_time = assignment_start_time;
+        this.assignment_end_time = assignment_end_time;
+        this.assignment_description = assignment_description;
+        this.is_visible = is_visible;
     }
 }

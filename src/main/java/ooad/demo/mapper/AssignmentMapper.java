@@ -13,7 +13,9 @@ import java.util.Set;
 @Repository
 public interface AssignmentMapper {
 
-    List<Assignment> queryAssignmentList();
+    List<Assignment> getVisibleAssignmentList();
+    List<Assignment> getAllAssignmentList();
+
 
     //todo
     Assignment selectAssignmentById(int id);
