@@ -1,6 +1,9 @@
 package ooad.demo;
 
+import com.jcraft.jsch.JSchException;
+import ooad.demo.Service.JudgeService;
 import ooad.demo.Service.UserFileService;
+import ooad.demo.controller.RecordController;
 import ooad.demo.controller.UserController;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.mapper.UserMapper;
@@ -19,6 +22,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -45,6 +49,29 @@ class DemoApplicationTests {
 
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    RecordController recordController;
+
+    @Autowired
+    JudgeService judgeService;
+
+    @Test
+    void judgeTest() throws IOException, JSchException, InterruptedException {
+        String standard_ans = "select * from movies";
+        for (int i = 0 ; i  < 100; i++) {
+            String code = "select * from movies";
+            long start = System.currentTimeMillis();
+            int sid = i % 3 + 1;
+            if (i % 5== 0){
+                code = "hello world!";
+            }
+            System.out.println(judgeService.judgeCodeDocker(sid, "1", code, standard_ans, false, 0, "sql" ));
+//            System.out.println(recordController.judgeCodeDocker("1", standard_ans, code, false, 0));
+            System.out.println(System.currentTimeMillis() - start);
+        }
+        Thread.sleep(10000000);
+
+    }
 
     @Test
     void  vCodeTest(){

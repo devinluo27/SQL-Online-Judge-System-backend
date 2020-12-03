@@ -14,6 +14,7 @@ import ooad.demo.pojo.Question;
 @NoArgsConstructor
 //@AllArgsConstructor
 public class Assignment implements Serializable {
+    private int id;
     private int assignment_id;
     private String assignment_name;
     private Timestamp assignment_create_time;

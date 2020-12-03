@@ -23,6 +23,7 @@ public class JsonResult<T> implements Serializable {
         this.errorMsg = success ? ResultCode.SUCCESS.getMessage() : ResultCode.COMMON_FAIL.getMessage();
     }
 
+
     public JsonResult(boolean success, ResultCode resultEnum) {
         this.success = success;
         this.errorCode = success ? ResultCode.SUCCESS.getCode() : (resultEnum == null ? ResultCode.COMMON_FAIL.getCode() : resultEnum.getCode());

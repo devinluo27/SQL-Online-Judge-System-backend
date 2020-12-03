@@ -7,7 +7,8 @@
     <cache/>
 
     <select id="queryAssignmentList" resultType="Assignment">
-    select * from assignment
+    select assignment_id, assignment_name,
+    assignment_start_time, assignment_end_time from assignment
     </select>
 
     <select id="selectAssignmentById" resultType="Assignment">

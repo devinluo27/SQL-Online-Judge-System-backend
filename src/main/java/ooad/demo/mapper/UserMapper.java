@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserMapper{
     List<UserDB> queryUserDBList();
 
-    UserDB selectUserDBBySid(int sid);
+    UserDB selectUserDBBySidAllInfo(int sid);
     UserDB selectUserDBByName(String user_name);
 
     int addUserDB(UserDB userDB);

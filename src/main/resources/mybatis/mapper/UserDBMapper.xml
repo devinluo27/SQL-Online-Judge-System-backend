@@ -7,19 +7,19 @@
     <cache/>
 
     <select id="queryUserDBList" resultType="UserDB">
-    select * from user_db
+    select sid, user_name, last_login_time, created_time from user_db
     </select>
 
     <select id="getPwd" resultType="String">
-    select user_password from user_db where sid = #{sid}
+    select sid from user_db where sid = #{sid}
     </select>
 
     <select id="selectUserDBByName" resultType="UserDB">
-    select * from user_db where user_name = #{user_name}
+    select user_name from user_db where user_name = #{user_name}
     </select>
 
-    <select id="selectUserDBBySid" parameterType= "int" resultType="UserDB">
-    select * from user_db where sid = #{sid}
+    <select id="selectUserDBBySidAllInfo" parameterType= "int" resultType="UserDB">
+    select sid, user_name, enabled, user_password from user_db where sid = #{sid}
     </select>
 
     <insert id="addUserDB" parameterType="UserDB">

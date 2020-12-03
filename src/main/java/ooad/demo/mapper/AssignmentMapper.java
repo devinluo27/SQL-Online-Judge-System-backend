@@ -12,6 +12,7 @@ import java.util.Set;
 @Mapper
 @Repository
 public interface AssignmentMapper {
+
     List<Assignment> queryAssignmentList();
 
     //todo

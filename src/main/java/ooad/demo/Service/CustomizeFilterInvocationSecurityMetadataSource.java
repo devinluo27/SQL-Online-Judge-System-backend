@@ -15,9 +15,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @Author: Hutengfei
+ * @Author: Yunhao
  * @Description:
- * @Date Create in 2019/9/3 21:06
+ * @Date
  */
 @Component
 public class CustomizeFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
@@ -29,15 +29,23 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         //获取请求地址
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
         //查询具体某个接口的权限
-        requestUrl = StringUtils.substringBefore(requestUrl, "?");
-//        System.out.println(requestUrl);
+        if(requestUrl.contains("?"))
+            requestUrl = StringUtils.substringBefore(requestUrl, "?");
+
+        System.out.println(requestUrl);
+
         List<SysPermission> permissionList =  sysPermissionMapper.selectListByPath(requestUrl);
+        System.out.println("size: " + permissionList.size());
+        for (SysPermission s: permissionList) {
+            System.out.println(s);
+        }
+
         if(permissionList == null || permissionList.size() == 0){
             //请求路径没有配置权限，表明该请求接口可以任意访问
             return null;
         }
         String[] attributes = new String[permissionList.size()];
-        for(int i = 0; i<permissionList.size(); i++){
+        for(int i = 0; i < permissionList.size(); i++){
             // permission code is a English word of a certain description
             attributes[i] = permissionList.get(i).getPermission_code();
         }

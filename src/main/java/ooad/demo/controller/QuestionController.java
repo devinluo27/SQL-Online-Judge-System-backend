@@ -2,21 +2,26 @@ package ooad.demo.controller;
 
 
 
+import com.alibaba.fastjson.JSON;
+import ooad.demo.config.JsonResult;
+import ooad.demo.config.ResultCode;
+import ooad.demo.config.ResultTool;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.pojo.Assignment;
 import ooad.demo.pojo.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
 @RestController
 public class QuestionController implements Serializable {
+
     @Autowired
     private QuestionMapper questionMapper;
 
@@ -35,24 +40,24 @@ public class QuestionController implements Serializable {
         } catch (Exception e){
             return null;
         }
-        Question ret =  questionMapper.selectQuestionById(question_id);
-//        System.out.println(ret.getQuestion_output());
-        return ret;
+        return questionMapper.selectQuestionById(question_id);
     }
 
 
     @CrossOrigin
-    @GetMapping("/selectQuestionsByAssignment")
-    public List<Question>  selectQuestionsByAssignment(String sid, String as_id){
-        int student_id;
-        int assignment_id;
-        try{
-            student_id = Integer.parseInt(sid);
-            assignment_id = Integer.parseInt(as_id);
-        } catch (Exception e){
+    @GetMapping("/user/selectQuestionsByAssignment")
+    public List<Question>  selectQuestionsByAssignment(
+            @RequestParam(value = "assignment_id") int assignment_id,
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        response.setContentType("text/json;charset=utf-8");
+        if (request.getUserPrincipal() == null){
+            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+            response.getWriter().write(JSON.toJSONString(result));
             return null;
         }
-        List<Question> list = questionMapper.selectQuestionsByAssignment(student_id, assignment_id);
+        int sid = Integer.parseInt(request.getUserPrincipal().getName());
+        List<Question> list = questionMapper.selectQuestionsByAssignment(sid, assignment_id);
         return list;
     }
 }

@@ -1,5 +1,9 @@
 package ooad.demo.controller;
 
+import com.alibaba.fastjson.JSON;
+import ooad.demo.config.JsonResult;
+import ooad.demo.config.ResultCode;
+import ooad.demo.config.ResultTool;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.mapper.VerifyCodeMapper;
 import ooad.demo.pojo.UserDB;
@@ -12,8 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
@@ -32,53 +37,50 @@ public class UserController {
     @GetMapping("/admin/queryUserList")
     public List<UserDB> queryUserDBList(){
         List<UserDB> userDBList = userMapper.queryUserDBList();
-        for (UserDB  user: userDBList){
-            System.out.println(user);
-        }
         return  userDBList;
     }
 
     @CrossOrigin
-    @GetMapping(value = "/admin/findUserBySid")
+//    @GetMapping(value = "/admin/findUserBySid")
     public UserDB findUserDBBySid(int sid){
-        UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
+        UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
         return user_by_sid; //user_sid already exists
     }
 
     /***
      *
-     * @param sid
-     * @param pwd
+     * @param
+     * @param
      * @return
      */
-    @CrossOrigin
-    @GetMapping(value = "/user/login")
-    // password not null, sid must be int
-    public int login(String sid, String pwd) {
-        int id;
-        try {
-            id = Integer.parseInt(sid);
-        } catch (Exception e){
-            return -2;
-        }
-        UserDB user = userMapper.selectUserDBBySid(id);
-        String correct_pwd = userMapper.getPwd(id);
+//    @CrossOrigin
+//    @GetMapping(value = "/user/login")
+//    // password not null, sid must be int
+//    public int login(String sid, String pwd) {
+//        int id;
+//        try {
+//            id = Integer.parseInt(sid);
+//        } catch (Exception e){
+//            return -2;
+//        }
+//        UserDB user = userMapper.selectUserDBBySid(id);
+//        String correct_pwd = userMapper.getPwd(id);
+//
+//        if (pwd == null){
+//            return -3; // no such a sid
+//        }
+//        else if (correct_pwd.equals(pwd)){
+//            return 1; // login success
+//        }
+//        // incorrect password
+//        return -1;
+//    }
 
-        if (pwd == null){
-            return -3; // no such a sid
-        }
-        else if (correct_pwd.equals(pwd)){
-            return 1; // login success
-        }
-        // incorrect password
-        return -1;
-    }
-
     @CrossOrigin
-//    @GetMapping(value = "/admin/addUser")
+    @GetMapping(value = "/admin/addUser")
     // password not null len >=6, sid must be int
     public int addUser(int sid, String user_name, String password, String authority) {
-        UserDB user_by_sid = userMapper.selectUserDBBySid(sid);
+        UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
         UserDB user_by_name = userMapper.selectUserDBByName(user_name);
 
         if(user_by_sid != null){
@@ -138,33 +140,39 @@ public class UserController {
 
     /***
      *
-     * @param sid
+     * @param
      * @return mail sends succeed: 1
      * need to wait: 0
      */
     @GetMapping(value = "/user/sendVerifyCode")
     @Async
-    public int sendVerifyCode(String sid){
-        int id = Integer.parseInt(sid);
-        VerifyCode v = verifyCodeMapper.getVerifyCode(id);
+    public void sendVerifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/json;charset=utf-8");
+        if (request.getUserPrincipal() == null){
+            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+        int sid = Integer.parseInt(request.getUserPrincipal().getName());
+        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
         if (v == null || System.currentTimeMillis() - v.getCreated_time().getTime() > 30000){
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setSubject("CS 307 Database Account Verification");
             Random random = new Random();
             int code = random.nextInt(899999) + 100000;
-            verifyCodeMapper.insertVerifyCode(id, code);
-            String response = "Your Verification code is " + code + ".\n Expired in 5 minutes.";
-            mailMessage.setText(response);
+            verifyCodeMapper.insertVerifyCode(sid, code);
+            String mail_response = "Your Verification code is " + code + ".\n Expired in 5 minutes.";
+            mailMessage.setText(mail_response);
             mailMessage.setTo( sid + "@mail.sustech.edu.cn");
             mailMessage.setFrom("945517787@qq.com");
             mailSender.send(mailMessage);
-            return 1;
+            JsonResult result = ResultTool.success();
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
         }
-        return 0;
+        JsonResult result = ResultTool.fail();
+        response.getWriter().write(JSON.toJSONString(result));
     }
 
-//    public int reset(int sid, String password){
-//        UserMapper.
-//    }
 
 }

@@ -19,10 +19,13 @@ public class Question implements Serializable{
     private String question_standard_ans;
     private Integer database_id;
     private Integer is_visible;
+    private Integer operation_type;
 
-    public Question(int question_id, String question_name, int question_of_assignment, String question_description,
-                    String question_output, int question_index, int is_finished,
-                    String question_standard_ans, int database_id) {
+    public Question(Integer id, Integer question_id, String question_name,
+                    Integer question_of_assignment, String question_description,
+                    String question_output, Integer question_index, Integer is_finished
+            , String question_standard_ans, Integer database_id, Integer is_visible, Integer operation_type) {
+        this.id = id;
         this.question_id = question_id;
         this.question_name = question_name;
         this.question_of_assignment = question_of_assignment;
@@ -32,5 +35,7 @@ public class Question implements Serializable{
         this.is_finished = is_finished;
         this.question_standard_ans = question_standard_ans;
         this.database_id = database_id;
+        this.is_visible = is_visible;
+        this.operation_type = operation_type;
     }
 }

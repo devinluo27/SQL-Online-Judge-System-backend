@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +34,7 @@ public class AssignmentController {
         int assignment_id = Integer.parseInt(id);
         Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
 //        List<Map> assignment = assignmentMapper.selectAssignmentById(assignment_id);
-        System.out.println(assignment);
+//        System.out.println(assignment);
 
         return  assignment;
     }

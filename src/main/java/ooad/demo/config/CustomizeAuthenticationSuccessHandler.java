@@ -31,7 +31,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
 
         //更新用户表上次登录时间、更新人、更新时间等字段
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDB userDB = userMapper.selectUserDBBySid(Integer.parseInt(userDetails.getUsername()));
+        UserDB userDB = userMapper.selectUserDBBySidAllInfo(Integer.parseInt(userDetails.getUsername()));
 
 //        userDB.setLastLoginTime(new Date());
 //        userDB.setUpdateTime(new Date());

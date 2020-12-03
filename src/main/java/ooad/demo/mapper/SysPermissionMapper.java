@@ -12,6 +12,4 @@ public interface SysPermissionMapper {
     List<SysPermission> selectPermissionListByUser(int sid);
     List<SysPermission> selectListByPath(String requestUrl);
 
-
 }
-

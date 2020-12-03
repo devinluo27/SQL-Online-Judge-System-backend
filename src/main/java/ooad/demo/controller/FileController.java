@@ -172,7 +172,7 @@ public class FileController  {
 //        String realPath = ResourceUtils.getURL("classpath:").getPath() + "/static/files"
 //                +"/A"+ assignment_id + "/Q" + question_id + "/";
         // TODO
-        String relative_path =  "/static/files_for_students" + "/A" + assignment_id + "/Q" + question_id + "/";
+        String relative_path =  "static/files_for_students" + "/A" + assignment_id + "/Q" + question_id + "/";
         String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
 
 //        String dateFormat = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -203,10 +203,10 @@ public class FileController  {
 
         // 保存文件相关信息到数据库
         userFileService.save(userFile);
-
-        JsonResult result = ResultTool.success();
+        String retrieve_url = realPath + newFileName;
+        JsonResult<String> result = ResultTool.success();
+        result.setData(retrieve_url);
         response.getWriter().write(JSON.toJSONString(result));
-
     }
 
 

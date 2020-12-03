@@ -19,7 +19,7 @@
     <select id="getStandardAns" resultType="Question">
     select q.question_standard_ans
     from question q
-    where q.question_id = ${question_id};
+    where q.question_id = #{question_id};
 --     join assignment a on q.question_of_assignment = a.assignment_id;
     </select>
 
