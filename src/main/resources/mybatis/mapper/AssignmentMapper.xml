@@ -7,7 +7,8 @@
     <cache/>
 
     <select id="getAllAssignmentList" resultType="Assignment">
-    select * from assignment
+    select assignment_id, assignment_name,
+    assignment_start_time, assignment_end_time, is_visible from assignment
     </select>
 
     <select id="getVisibleAssignmentList" resultType="Assignment">
@@ -16,7 +17,15 @@
     where is_visible = 1;
     </select>
 
+<!--    for user-->
     <select id="selectAssignmentById" resultType="Assignment">
+    select assignment_id, assignment_name,
+    assignment_start_time, assignment_end_time, assignment_description
+     from assignment where assignment_id = #{id} and is_visible = 1;
+    </select>
+
+<!--    for admin-->
+    <select id="selectAssignmentAllInfoById" resultType="Assignment">
     select * from assignment where assignment_id = #{id}
     </select>
 

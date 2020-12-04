@@ -14,8 +14,9 @@ import java.util.List;
 @Mapper
 @Repository
 public interface RecordMapper {
-    List<Record> queryRecordList();
-    List<Record> selectRecordBySid(int sid);
+    List<Record> queryAllRecordList(Integer page_num);
+
+    List<Record> selectRecordListBySid(int sid);
 
     Record selectRecordBySidAndQuestion(int sid, int question_id);
 
@@ -29,7 +30,7 @@ public interface RecordMapper {
 
     List<Record> selectRecordBySidAndAssignment(int sid, int assignment_id);
 
-    int addRecord(int sid, int question_id, int record_status, Timestamp time, String code, String type);
-    int deleteARecord(int sid, int question_id);
-    int setRecordStatus(int sid, int question_id, int status);
+    int addRecord(Record record);
+    int deleteARecord(Integer record_id);
+    int setRecordStatus(Integer record_id, Integer record_status);
 }

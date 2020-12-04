@@ -6,14 +6,19 @@
 
     <cache/>
 
-
-    <select id="queryRecordList" resultType="Record">
-    select * from record
+    <select id="queryAllRecordList" resultType="Record">
+    select record_id, record_sid, record_question_id, record_status, record_time,
+    record_code_type from record
+    order by record_id
+    offset 20 * (${page_num}-1)
+    limit 20
     </select>
 
-    <select id="selectRecordBySid" resultType="Record">
-    select * from record where record_sid = #{sid};
+    <select id="selectRecordListBySid" resultType="Record">
+    select record_id, record_sid, record_question_id, record_status, record_time,
+    record_code_type from record where record_sid = #{sid};
     </select>
+
 
     <select id="selectRecordBySidAndQuestion" resultType="Record">
     select * from record where record_sid = #{sid} and record_question_id = #{question_id}
@@ -26,6 +31,23 @@
         where r.record_sid = #{sid} and q.question_of_assignment = #{assignment_id}
     </select>
 
+    <update id="setRecordStatus">
+       update record
+        set record_status = #{record_status}
+            where record_id = #{record_id};
+    </update>
+
+
+    <insert id="addRecord" parameterType="Record" useGeneratedKeys="true" keyProperty="record_id" keyColumn="record_id" >
+    insert into record(record_sid, record_question_id, record_status, record_time, record_code, record_code_type)
+    values (#{record_sid}, #{record_question_id}, #{record_status}, #{record_time}, #{record_code}, #{record_code_type})
+    </insert>
+
+
+    <delete id="deleteRecord">
+        delete from record
+        where record_id = #{record_i}
+    </delete>
 
     <select id="judge" parameterType="string" resultType="java.util.Map">
     -- Check the set operation without sorting
@@ -67,15 +89,5 @@
 --         set search_path to public;
         </select>
 
-    <insert id="addRecord" parameterType="Record">
-    insert into record(record_sid, record_question_id, record_status, record_time, record_code, record_code_type)
-    values (#{sid}, #{question_id}, #{record_status}, #{time}, #{code}, #{type})
-    </insert>
-
-
-    <delete id="deleteRecord">
-        delete from record
-        where record_question_id = #{question_id} and record_sid = #{sid}
-    </delete>
 
 </mapper>

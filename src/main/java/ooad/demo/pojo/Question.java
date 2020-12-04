@@ -1,22 +1,34 @@
 package ooad.demo.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Question implements Serializable{
     private Integer id;
+    @NotNull
     private Integer question_id;
+    @NotNull
     private String question_name;
+
     private Integer question_of_assignment;
+    @NotNull
     private String question_description;
+
     private String question_output;
+    @NotNull
     private Integer question_index;
+
     private Integer is_finished;
     private String question_standard_ans;
+    @NotNull
     private Integer database_id;
     private Integer is_visible;
     private Integer operation_type;

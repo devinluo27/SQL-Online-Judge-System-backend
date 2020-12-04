@@ -6,57 +6,48 @@ import ooad.demo.Service.JudgeService;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
 import ooad.demo.config.ResultTool;
-import ooad.demo.judge.DockerPool;
-import ooad.demo.judge.Judge;
-import ooad.demo.judge.ManageDockers;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
-
 
 @RestController
 public class RecordController{
-    @Autowired
-    private RecordMapper recordMapper;
 
-    @Autowired
-    JudgeService judgeService;
+    private final RecordMapper recordMapper;
 
-    @Autowired
-    private QuestionMapper questionMapper;
+    final JudgeService judgeService;
 
-    @Autowired
-    private UserController userController;
+    private final QuestionMapper questionMapper;
 
-    @CrossOrigin
-    @GetMapping("/admin/queryAllRecordListInfo")
-    List<Record> queryRecordList(){
-        return recordMapper.queryRecordList();
+    private final UserController userController;
+
+    public RecordController(RecordMapper recordMapper, JudgeService judgeService, QuestionMapper questionMapper, UserController userController) {
+        this.recordMapper = recordMapper;
+        this.judgeService = judgeService;
+        this.questionMapper = questionMapper;
+        this.userController = userController;
     }
 
     @CrossOrigin
-    @GetMapping("/user/selectRecordInfoBySid")
-    List<Record> selectRecordBySid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @GetMapping("/admin/queryAllRecordListInfo")
+    List<Record> queryRecordList(@RequestParam("page_num") Integer page_num){
+        return recordMapper.queryAllRecordList(page_num);
+    }
+
+    @CrossOrigin
+    @GetMapping("/user/selectRecordListBySid")
+    List<Record> selectRecordListBySid(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){
             JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
@@ -64,14 +55,8 @@ public class RecordController{
             return null;
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
-        return recordMapper.selectRecordBySid(sid);
+        return recordMapper.selectRecordListBySid(sid);
     }
-
-//    @CrossOrigin
-//    @GetMapping("/user/selectRecordInfoBySid")
-//    List<Record> selectRecordByRid(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//
-//    }
 
 
     @CrossOrigin
@@ -108,18 +93,12 @@ public class RecordController{
 //    }
 
 
-    @CrossOrigin
-    @GetMapping("/admin/deleteRecord")
-    int deleteARecord(int sid, int question_id){
-        return recordMapper.deleteARecord(sid, question_id);
-    }
 
     @CrossOrigin
     @GetMapping("/admin/deleteRecordByRid")
-    int deleteARecordByRid(int sid, int question_id){
-        return recordMapper.deleteARecord(sid, question_id);
+    int deleteARecordByRid(@RequestParam(value = "record_id") Integer record_id){
+        return recordMapper.deleteARecord(record_id);
     }
-
 
 
     @CrossOrigin
@@ -176,13 +155,12 @@ public class RecordController{
 
     @CrossOrigin
     @PostMapping("/user/addRecord")
-    void addRecord(@RequestParam(value = "question_id") int question_id,
+    public void addRecord(@RequestParam(value = "question_id") int question_id,
                    @RequestParam(value = "code") String code,
                    @RequestParam(value = "type") String type,
                    HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException, JSchException {
-        httpServletResponse.setContentType("text/json;charset=utf-8");
-//        System.out.println(request.getCookies());
 
+        httpServletResponse.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){
             JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
             httpServletResponse.getWriter().write(JSON.toJSONString(result));
@@ -190,13 +168,16 @@ public class RecordController{
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
         Question q = questionMapper.getStandardAns(question_id);
-
         String standard_ans = q.getQuestion_standard_ans();
-        System.out.println("s ans: " + standard_ans);
-        int status = 0;
-        setRecordStatus(sid, "1", standard_ans, code,  type);
+        Integer database_id = q.getDatabase_id();
+        Record r = new Record(sid, question_id, 2, code, type);
+        // add record first
+        int is_success = recordMapper.addRecord(r);
+        int record_id = r.getRecord_id();
+        // add to docker to judge
+        System.out.println(r.getRecord_id());
+        submitToDocker(record_id, String.valueOf(database_id), standard_ans, code,  type);
 
         try {
 //            status = judgeCode(standard_ans, code);
@@ -217,11 +198,10 @@ public class RecordController{
 
     }
 
-    public void setRecordStatus(int sid, String question_id, String standard_ans, String code, String type) throws IOException, JSchException {
-        int status = judgeService.judgeCodeDocker(sid, "1", standard_ans, code, false, 1, type) == 100 ? 1 : 0;
-//        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        System.out.println("status: " + status);
-//        recordMapper.addRecord(sid, Integer.parseInt(question_id), status, currentTime, code, type);
+    public void submitToDocker(int record_id, String question_id, String standard_ans, String code, String type) throws IOException, JSchException {
+//        System.out.println(judgeService);
+//        System.out.println(record_id +"\n" + question_id + standard_ans + code + type);
+        Integer status = judgeService.judgeCodeDocker(record_id, question_id, standard_ans, code, false, 1, type);
     }
 
 }

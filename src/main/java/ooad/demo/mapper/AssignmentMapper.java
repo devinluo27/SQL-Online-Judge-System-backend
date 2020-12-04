@@ -18,9 +18,9 @@ public interface AssignmentMapper {
 
 
     //todo
+    Assignment selectAssignmentAllInfoById(int id);
     Assignment selectAssignmentById(int id);
-//    List<Map> selectAssignmentById(int id);
-//    String selectAssignmentById(int id);
+
 
     int addAssignment(Assignment assignment);
 

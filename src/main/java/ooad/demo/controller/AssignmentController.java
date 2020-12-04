@@ -1,17 +1,20 @@
 package ooad.demo.controller;
 
 
+import ooad.demo.config.JsonResult;
+import ooad.demo.config.ResultTool;
 import ooad.demo.mapper.AssignmentMapper;
 import ooad.demo.pojo.Assignment;
 import ooad.demo.pojo.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -21,30 +24,26 @@ public class AssignmentController {
     @Autowired
     private AssignmentMapper assignmentMapper;
 
+
+    /***
+     * The return msg depends on whether the user has permission "view_all_assignment"
+     * not is_visible assignments will be masked.
+     * @return
+     */
     @CrossOrigin
     @GetMapping("/user/queryAssigmentList")
-    public List<Assignment> queryAssigmentList(){
-        List<Assignment> assignmentList = assignmentMapper.getVisibleAssignmentList();
-        return  assignmentList;
-    }
-
-    @CrossOrigin
-    @GetMapping("/admin/queryAllAssigmentList")
     public List<Assignment> queryAllAssigmentList(){
         Collection<? extends GrantedAuthority> authorities =  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equals("modify_assignment")) {
-                System.out.println("auth" + authority.getAuthority());
-
+            if (authority.getAuthority().equals("view_all_assignment")) {
+                System.out.println("auth: " + authority.getAuthority());
                 return  assignmentMapper.getAllAssignmentList();
             }
         }
-        System.out.println("user:");
-        // for user
-        List<Assignment> assignmentList = assignmentMapper.getVisibleAssignmentList();
-        return  assignmentList;
+//        System.out.println("user:");
+        // for user without permission
+        return assignmentMapper.getVisibleAssignmentList();
     }
-
 
 
     @CrossOrigin
@@ -60,85 +59,63 @@ public class AssignmentController {
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("view_all_assignment")) {
                 System.out.println("auth" + authority.getAuthority());
-                return  assignmentMapper.selectAssignmentById(assignment_id);
+                return  assignmentMapper.selectAssignmentAllInfoById(assignment_id);
             }
         }
         Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
-//        List<Map> assignment = assignmentMapper.selectAssignmentById(assignment_id);
-//        System.out.println(assignment);
 
         return  assignment;
     }
 
 
-
-
-
+    /***
+     *
+     * @param assignment String assignment_id, long assignment_name,
+     *                   long assignment_start_time, String assignment_end_time,
+     *                   int is_visible
+     * pass the milisecond from 1970 start_date end_date should be long
+     * @param response
+     * @throws IOException
+     */
 
     @CrossOrigin
-    @GetMapping("/admin/addAssignment")
-//    pass the milisecond from 1970 start_date end_date should be long
-    public int addAssignment(String id, String name, String start_date, String end_date, String descrition){
-        int is_visible = 1;
-        Date date = new Date();
-        int assignment_id = Integer.parseInt(id);
-        long sec =  date.getTime();
-        Timestamp create_time = new Timestamp(sec);
-        long start_sec = Long.parseLong(start_date);
-        long end_sec = Long.parseLong(end_date);
-        Timestamp start_time = new Timestamp(start_sec);
-        Timestamp end_time = new Timestamp(end_sec);
-        Assignment new_assignment = new Assignment(assignment_id, name, create_time, start_time, end_time, descrition, is_visible);
-        int ret = assignmentMapper.addAssignment(new_assignment);
-        return ret;
+    @PostMapping("/admin/addAssignment")
+    public void addAssignment(@RequestBody @Validated Assignment assignment, HttpServletResponse response) throws IOException {
+        assignment.setAssignment_create_time(new Timestamp(System.currentTimeMillis()));
+        assignmentMapper.addAssignment(assignment);
+        JsonResult result = ResultTool.success();
+        response.getWriter().write(String.valueOf(result));
     }
 
-    //todo
+    /***
+     *
+     * @param assignment String assignment_id, long assignment_name,
+     *          long assignment_start_time, String assignment_end_time,
+     *           int is_visible
+     * @param id assignment id in database (primary key)
+     * @return
+     */
     @CrossOrigin
     @GetMapping("/admin/updateAssignment")
-//    pass the milisecond from 1970
-    public int updateAssignment(String id, String name, String start_date, String end_date, String description){
-        int is_visible = 1;
-        int assignment_id = Integer.parseInt(id);
-        Assignment cur_assignment = assignmentMapper.selectAssignmentById(assignment_id);
-        Timestamp create_time = cur_assignment.getAssignment_create_time();
-        long start_sec = Long.parseLong(start_date);
-        long end_sec = Long.parseLong(end_date);
-        Timestamp start_time = new Timestamp(start_sec);
-        Timestamp end_time = new Timestamp(end_sec);
-        Assignment new_assignment = new Assignment(assignment_id, name, cur_assignment.getAssignment_create_time(), start_time, end_time, description, is_visible);
-        int ret = assignmentMapper.updateAssignment(new_assignment);
-        return ret;
+    public void updateAssignment(@RequestBody @Validated Assignment assignment,
+                                @RequestParam(value = "id") Integer id, HttpServletResponse response) throws IOException {
+        assignment.setId(id);
+        assignmentMapper.updateAssignment(assignment);
+        JsonResult result = ResultTool.success();
+        response.getWriter().write(String.valueOf(result));
     }
 
 
+    /***
+     * pass the id return assignment with associate questions
+     * @param assignment_id
+     * @return
+     */
     @CrossOrigin
-    @GetMapping("/queryQuestionsByAssignmentID")
-//    pass the id return assignment with associate questions
-    public List<Question> queryQuestionsByAssignment(String id){
-        int assignment_id = Integer.parseInt(id);
+    @GetMapping("/user/queryQuestionsByAssignmentID")
+    public List<Question> queryQuestionsByAssignment(@RequestParam(value = "assignment_id") Integer assignment_id ){
         Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
         return assignment.getQuestions();
     }
-
-
-//    @CrossOrigin
-//    @GetMapping("/queryAssignmentsWithSid")
-////    pass the id return assignment with associate questions
-//    public List<Assignment> queryQuestionsByAssignment(String sid, String as_id){
-//        int student_id;
-//        int assignment_id;
-//        try{
-//            student_id = Integer.parseInt(sid);
-//            assignment_id = Integer.parseInt(as_id);
-//        } catch (Exception e){
-//            return null;
-//        }
-//
-//        Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
-//        return assignment.getQuestions();
-//    }
-
-
 
 }

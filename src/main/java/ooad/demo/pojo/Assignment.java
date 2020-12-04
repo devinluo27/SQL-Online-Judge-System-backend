@@ -11,21 +11,33 @@ import java.io.Serializable;
 import java.util.List;
 
 import ooad.demo.pojo.Question;
+
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Assignment implements Serializable {
-    private int id;
-    private int assignment_id;
+
+    private Integer id;
+    @NotNull
+    private Integer assignment_id;
+    @NotNull
     private String assignment_name;
+
     private Timestamp assignment_create_time;
+    @NotNull
     private Timestamp assignment_start_time;
+    @NotNull
     private Timestamp assignment_end_time;
+
     private String assignment_description;
 
     private List<Question> questions;
-    private int is_visible;
+
+    @NotNull
+    private Integer is_visible;
 
     public Assignment(int assignment_id, String assignment_name, Timestamp assignment_create_time,
                       Timestamp assignment_start_time, Timestamp assignment_end_time,

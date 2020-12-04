@@ -17,7 +17,7 @@
     </select>
 
     <select id="getStandardAns" resultType="Question">
-    select q.question_standard_ans
+    select q.question_standard_ans, q.database_id
     from question q
     where q.question_id = #{question_id};
 --     join assignment a on q.question_of_assignment = a.assignment_id;
