@@ -2,6 +2,7 @@ package ooad.demo;
 
 import com.jcraft.jsch.JSchException;
 import ooad.demo.Service.JudgeService;
+import ooad.demo.Service.JudgeServiceImpl;
 import ooad.demo.Service.UserFileService;
 import ooad.demo.controller.RecordController;
 import ooad.demo.controller.UserController;
@@ -55,21 +56,21 @@ class DemoApplicationTests {
     @Autowired
     JudgeService judgeService;
 
+
     @Test
     void judgeTest() throws IOException, JSchException, InterruptedException {
-        String standard_ans = "select * from movies";
-        for (int i = 0 ; i  < 100; i++) {
-            String code = "select * from movies";
-            long start = System.currentTimeMillis();
-            int sid = i % 3 + 1;
-            if (i % 5== 0){
-                code = "hello world!";
-            }
-            System.out.println(judgeService.judgeCodeDocker(sid, "1", code, standard_ans, false, 0, "sql" ));
-//            System.out.println(recordController.judgeCodeDocker("1", standard_ans, code, false, 0));
-            System.out.println(System.currentTimeMillis() - start);
-        }
-        Thread.sleep(10000000);
+        System.out.println(judgeService.a());
+//        String standard_ans = "select * from movies";
+//        for (int i = 0 ; i  < 100; i++) {
+//            String code = "select * from movies";
+//            long start = System.currentTimeMillis();
+//            int sid = i % 3 + 1;
+//            if (i % 5== 0){
+//                code = "hello world!";
+//            }
+//            System.out.println(System.currentTimeMillis() - start);
+//        }
+//        Thread.sleep(10000000);
 
     }
 

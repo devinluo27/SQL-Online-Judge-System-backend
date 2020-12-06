@@ -32,13 +32,14 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         if(requestUrl.contains("?"))
             requestUrl = StringUtils.substringBefore(requestUrl, "?");
 
-        System.out.println(requestUrl);
 
         List<SysPermission> permissionList =  sysPermissionMapper.selectListByPath(requestUrl);
-        System.out.println("size: " + permissionList.size());
-        for (SysPermission s: permissionList) {
-            System.out.println(s);
-        }
+
+//        System.out.println("size of Permission List: " + permissionList.size());
+//        System.out.println(requestUrl);
+//        for (SysPermission s: permissionList) {
+//            System.out.println(s);
+//        }
 
         if(permissionList == null || permissionList.size() == 0){
             //请求路径没有配置权限，表明该请求接口可以任意访问

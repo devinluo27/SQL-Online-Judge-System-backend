@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "judge.dockerPool.docker.num",
+      "type": "java.lang.String",
+      "description": "Description for judge.dockerPool.docker.num."
+  }
+] }

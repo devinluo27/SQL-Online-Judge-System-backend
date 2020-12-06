@@ -214,11 +214,7 @@ public class FileController  {
     @GetMapping("/showAllFiles")
     @ResponseBody
     public List<UserFile> findAll(HttpServletResponse response) throws IOException {
-//        User user = (User) session.getAttribute("user");
         List<UserFile> userFiles = userFileService.getAllFileInfo();
-//        model.addAttribute("files",userFiles);
-//        response.setContentType("text/json;charset=utf-8");
-//        response.getWriter().write(String.valueOf(userFiles));
         return userFiles;
     }
 }

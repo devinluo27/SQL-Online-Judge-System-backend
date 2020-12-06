@@ -101,10 +101,16 @@ public class RecordController{
      */
     @CrossOrigin
     @PostMapping("/user/addRecord")
-    public void addRecord(@RequestParam(value = "question_id") int question_id,
+    public void addRecord(
+//            @RequestBody Record record,
+            @RequestParam(value = "question_id") int question_id,
                    @RequestParam(value = "code") String code,
                    @RequestParam(value = "type") String sql_type,
                    HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+//        int question_id = record.getRecord_question_id();
+//        String code = record.getRecord_code();
+//        String sql_type = record.getRecord_code_type();
 
         response.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){

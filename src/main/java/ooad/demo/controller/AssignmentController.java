@@ -110,7 +110,6 @@ public class AssignmentController {
         response.getWriter().write(String.valueOf(result));
     }
 
-
     /***
      * pass the id return assignment with associate questions
      * @param assignment_id

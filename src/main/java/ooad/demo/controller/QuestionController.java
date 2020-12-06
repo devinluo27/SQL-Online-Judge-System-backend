@@ -1,7 +1,5 @@
 package ooad.demo.controller;
 
-
-
 import com.alibaba.fastjson.JSON;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
@@ -32,14 +30,8 @@ public class QuestionController implements Serializable {
     }
 
     @CrossOrigin
-    @GetMapping("/selectQuestionsById")
-    public Question selectQuestionsById(String id){
-        int question_id;
-        try{
-            question_id = Integer.parseInt(id);
-        } catch (Exception e){
-            return null;
-        }
+    @GetMapping("/user/selectQuestionsById")
+    public Question selectQuestionsById(@RequestParam(value = "question_id") Integer question_id){
         return questionMapper.selectQuestionById(question_id);
     }
 
