@@ -1,5 +1,6 @@
 package ooad.demo.controller;
 
+import cn.shuibo.annotation.Encrypt;
 import com.alibaba.fastjson.JSON;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
@@ -25,13 +26,12 @@ import java.util.Random;
 @RestController
 public class UserController {
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private VerifyCodeMapper verifyCodeMapper;
+
 
     @CrossOrigin
     @GetMapping("/admin/queryUserList")
@@ -47,34 +47,6 @@ public class UserController {
         return user_by_sid; //user_sid already exists
     }
 
-    /***
-     *
-     * @param
-     * @param
-     * @return
-     */
-//    @CrossOrigin
-//    @GetMapping(value = "/user/login")
-//    // password not null, sid must be int
-//    public int login(String sid, String pwd) {
-//        int id;
-//        try {
-//            id = Integer.parseInt(sid);
-//        } catch (Exception e){
-//            return -2;
-//        }
-//        UserDB user = userMapper.selectUserDBBySid(id);
-//        String correct_pwd = userMapper.getPwd(id);
-//
-//        if (pwd == null){
-//            return -3; // no such a sid
-//        }
-//        else if (correct_pwd.equals(pwd)){
-//            return 1; // login success
-//        }
-//        // incorrect password
-//        return -1;
-//    }
 
     @CrossOrigin
     @GetMapping(value = "/admin/addUser")
@@ -94,6 +66,7 @@ public class UserController {
         return 1;
     }
 
+    @Encrypt
     @GetMapping(value = "/username")
     @ResponseBody
     public String currentUserNameSimple(HttpServletRequest request) {

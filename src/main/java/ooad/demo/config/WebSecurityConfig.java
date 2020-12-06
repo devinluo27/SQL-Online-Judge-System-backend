@@ -75,9 +75,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
 
         http.authorizeRequests()
-//                .antMatchers("/user/addRecord").hasAuthority("query_user")
-//                .and()
-//                .authorizeRequests()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O o) {
@@ -93,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().permitAll().logoutSuccessHandler(logoutSuccessHandler).deleteCookies("JSESSIONID")
                 .and().sessionManagement().maximumSessions(3)
-                .expiredSessionStrategy(sessionInformationExpiredStrategy);//会话信息过期策略会话信息过期策略(账号被挤下线)
+                .expiredSessionStrategy(sessionInformationExpiredStrategy); //会话信息过期策略会话信息过期策略(账号被挤下线)
 
         http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class);
 

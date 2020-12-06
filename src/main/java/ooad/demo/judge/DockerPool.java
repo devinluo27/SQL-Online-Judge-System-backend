@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 
-//@ConfigurationProperties("DockPool")
 public class DockerPool {
     int DockerSeq;
     int ID;
@@ -56,19 +55,19 @@ public class DockerPool {
         this.InitDockerPool(DockerSeq);
     }
 
-    Remote.Log KillDocker(String DockerName) throws IOException, JSchException {
+    public Remote.Log KillDocker(String DockerName) throws IOException, JSchException {
         runningList.remove(DockerName);
         if (!sleepingList.contains(DockerName)) sleepingList.add(DockerName);
         return Remote.EXEC_CMD(new String[]{KillDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
-    Remote.Log RemoveDocker(String DockerName) throws IOException, JSchException {
+    public Remote.Log RemoveDocker(String DockerName) throws IOException, JSchException {
         runningList.remove(DockerName);
         sleepingList.remove(DockerName);
         return Remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
-    Remote.Log AwakeDocker(String DockerName) throws IOException, JSchException {
+    public Remote.Log AwakeDocker(String DockerName) throws IOException, JSchException {
         if (!runningList.contains(DockerName)) runningList.add(DockerName);
         sleepingList.remove(DockerName);
         return Remote.EXEC_CMD(new String[]{AwakeDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);

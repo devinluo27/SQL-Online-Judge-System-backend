@@ -33,7 +33,7 @@
 
     <update id="setRecordStatus">
        update record
-        set record_status = #{record_status}
+        set record_status = #{record_status}, running_time = #{running_time}
             where record_id = #{record_id};
     </update>
 

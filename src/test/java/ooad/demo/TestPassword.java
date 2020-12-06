@@ -6,6 +6,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TestPassword {
@@ -20,7 +21,12 @@ public class TestPassword {
         String dateDirPath = realPath + "/" + dateFormat + "/";
         File dateDir = new File(dateDirPath);
         if (!dateDir.exists()) dateDir.mkdirs();
-
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("a");
+        strings.add("b");
+        String[] ss = strings.toArray(new String[0]);
+        ss[1] = "ss";
+        System.out.println(strings.get(1));
 
     }
 }

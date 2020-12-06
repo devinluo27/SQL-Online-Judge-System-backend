@@ -2,17 +2,20 @@ package ooad.demo.judge;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Slf4j
 public class ManageDockersPool {
 
     private static volatile ManageDockersPool INSTANCE;
-    private static HashMap<String, DockerPool> dockersHashMap;
+    private static HashMap<String, DockerPool> dockersPoolHashMap;
+    private static ArrayList<Integer> dockerIDList;
     private static final Object createDockLock = new Object();
 
     private ManageDockersPool() {
-        dockersHashMap = new HashMap<>();
+        dockersPoolHashMap = new HashMap<>();
+        dockerIDList = new ArrayList<>();
     }
 
     public static ManageDockersPool getInstance() {
@@ -26,8 +29,15 @@ public class ManageDockersPool {
         return INSTANCE;
     }
 
-    public  HashMap<String, DockerPool> getDockersHashMap() {
-        return dockersHashMap;
+    public  HashMap<String, DockerPool> getDockersPoolHashMap() {
+        return dockersPoolHashMap;
     }
 
+    public Object getCreateDockLock() {
+        return createDockLock;
+    }
+
+    public ArrayList<Integer> getDockerIDList() {
+        return dockerIDList;
+    }
 }

@@ -30,8 +30,8 @@
     </select>
 
     <insert id="addAssignment" parameterType="Assignment">
-    insert into assignment(assignment_name, assignment_create_time, assignment_start_time, assignment_end_time, assignment_description)
-    values (#{assignment_name}, #{assignmet_create_time},#{assignment_start_time}, #{assignment_end_time}, #{assignment_description})
+    insert into assignment(assignment_id, assignment_name, assignment_create_time, assignment_start_time, assignment_end_time, assignment_description)
+    values (#{assignment_id}, #{assignment_name}, #{assignment_create_time},#{assignment_start_time}, #{assignment_end_time}, #{assignment_description})
     </insert>
 
 

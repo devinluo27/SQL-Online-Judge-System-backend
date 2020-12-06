@@ -1,6 +1,9 @@
 package ooad.demo.controller;
 
 
+import cn.shuibo.annotation.Decrypt;
+import cn.shuibo.annotation.Encrypt;
+import com.alibaba.fastjson.JSON;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultTool;
 import ooad.demo.mapper.AssignmentMapper;
@@ -45,13 +48,12 @@ public class AssignmentController {
         return assignmentMapper.getVisibleAssignmentList();
     }
 
-
     @CrossOrigin
     @GetMapping("/user/selectAssignmentById")
     public Assignment selectAssignment(HttpServletRequest request, String id){
         int assignment_id = Integer.parseInt(id);
         // check something
-        System.out.println("Authority:" + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+//        System.out.println("Authority:" + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 //        System.out.println("Credentials:" +  SecurityContextHolder.getContext().getAuthentication().getCredentials());
 //        System.out.println("Credentials:" +  SecurityContextHolder.getContext().getAuthentication().getCredentials());
 //        System.out.println("Details:" +  SecurityContextHolder.getContext().getAuthentication().getDetails());
@@ -79,12 +81,15 @@ public class AssignmentController {
      */
 
     @CrossOrigin
+    @Decrypt
     @PostMapping("/admin/addAssignment")
     public void addAssignment(@RequestBody @Validated Assignment assignment, HttpServletResponse response) throws IOException {
+        response.setContentType("text/json;charset=utf-8");
         assignment.setAssignment_create_time(new Timestamp(System.currentTimeMillis()));
         assignmentMapper.addAssignment(assignment);
         JsonResult result = ResultTool.success();
-        response.getWriter().write(String.valueOf(result));
+        response.getWriter().write(JSON.toJSONString(result));
+        System.out.println(assignment.getAssignment_name());
     }
 
     /***

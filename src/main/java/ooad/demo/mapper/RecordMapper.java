@@ -32,5 +32,5 @@ public interface RecordMapper {
 
     int addRecord(Record record);
     int deleteARecord(Integer record_id);
-    int setRecordStatus(Integer record_id, Integer record_status);
+    int setRecordStatus(Integer record_id, Integer record_status, Double running_time);
 }
