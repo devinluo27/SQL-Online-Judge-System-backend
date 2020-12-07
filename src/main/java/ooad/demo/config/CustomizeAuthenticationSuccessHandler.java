@@ -5,6 +5,7 @@ import ooad.demo.mapper.UserMapper;
 import ooad.demo.pojo.UserDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * @Author: Yunhao Luo
@@ -29,9 +31,10 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
 
-        //更新用户表上次登录时间、更新人、更新时间等字段
+        // 更新用户表上次登录时间、更新人、更新时间等字段
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        UserDB userDB = userMapper.selectUserDBBySidAllInfo(Integer.parseInt(userDetails.getUsername()));
+        Integer sid = Integer.parseInt(userDetails.getUsername());
+        userMapper.setLastLoginTime(sid);
 
 //        userDB.setLastLoginTime(new Date());
 //        userDB.setUpdateTime(new Date());
@@ -42,7 +45,19 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         //进而前台动态的控制菜单的显示等，具体根据自己的业务需求进行扩展
 
         //返回json数据
-        JsonResult result = ResultTool.success();
+        JsonResult<String> result = ResultTool.success();
+        Collection<? extends GrantedAuthority> authorities =  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        result.setData("user");
+        for (GrantedAuthority authority : authorities) {
+            if(authority.getAuthority().equals("admin")) {
+                result.setData("admin");
+                break;
+            }
+            else if (authority.getAuthority().equals("TA")){
+                result.setData("TA");
+                break;
+            }
+        }
         //处理编码方式，防止中文乱码的情况
         httpServletResponse.setContentType("text/json;charset=utf-8");
         //塞到HttpServletResponse中返回给前台

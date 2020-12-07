@@ -14,8 +14,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,6 +33,12 @@ public class UserController {
 
     @Autowired
     private VerifyCodeMapper verifyCodeMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    JavaMailSenderImpl mailSender;
 
 
     @CrossOrigin
@@ -49,7 +57,7 @@ public class UserController {
 
 
     @CrossOrigin
-    @GetMapping(value = "/admin/addUser")
+//    @GetMapping(value = "/user/addUser")
     // password not null len >=6, sid must be int
     public int addUser(int sid, String user_name, String password, String authority) {
         UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
@@ -89,11 +97,12 @@ public class UserController {
      */
     @CrossOrigin
     @GetMapping(value = "/user/resetPwd")
-    public int resetPassword(String sid, int v_code, String pwd){
-        int id = Integer.parseInt(sid);
-        VerifyCode v = verifyCodeMapper.getVerifyCode(id);
-
-        if (findUserDBBySid(id) == null){
+    public int resetPassword(
+            @RequestParam(value = "sid") Integer sid,
+            @RequestParam(value = "v_code") int v_code,
+            @RequestParam(value = "pwd") String pwd){
+        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
+        if (findUserDBBySid(sid) == null){
             return -1;
         }
         if (v == null || v_code != v.getV_code()){
@@ -102,14 +111,10 @@ public class UserController {
         if(System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
             return -3;
         }
-//        userMapper.resetUserDBPassword(id, passwordEncoder.encode(pwd));
-        userMapper.resetUserDBPassword(id, pwd);
+        userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
         return 1;
     }
 
-
-    @Autowired
-    JavaMailSenderImpl mailSender;
 
     /***
      *
@@ -146,6 +151,5 @@ public class UserController {
         JsonResult result = ResultTool.fail();
         response.getWriter().write(JSON.toJSONString(result));
     }
-
 
 }

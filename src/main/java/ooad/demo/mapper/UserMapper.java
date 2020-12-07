@@ -11,7 +11,10 @@ public interface UserMapper{
     List<UserDB> queryUserDBList();
 
     UserDB selectUserDBBySidAllInfo(int sid);
+
     UserDB selectUserDBByName(String user_name);
+
+    int setLastLoginTime(Integer sid);
 
     int addUserDB(UserDB userDB);
 

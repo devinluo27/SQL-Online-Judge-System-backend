@@ -25,34 +25,39 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SysPermissionMapper sysPermissionMapper;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+
         if (username == null || "".equals(username)) {
-            throw new RuntimeException("用户不能为空");
+            // TODO 不知道怎么处理异常
+//            throw new InternalAuthenticationServiceException("用户不能为空");
+            throw new UsernameNotFoundException("用户不能为空");
+//            throw new RuntimeException("用户不能为空");
         }
         //根据用户名查询用户
         UserDB userDB = userMapper.selectUserDBBySidAllInfo(Integer.parseInt(username));
         if (userDB == null) {
-            throw new RuntimeException("用户不存在");
+            throw new UsernameNotFoundException("用户不存在");
         }
         // list of authorities
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        if (userDB != null) {
-            //获取该用户所拥有的权限
-            List<SysPermission> sysPermissions = sysPermissionMapper.selectPermissionListByUser(userDB.getSid());
-            // 声明用户授权
-            // TODO
-//            System.out.println(sysPermissions.size());
-//            System.out.println(sysPermissions.get(0));
-            if (sysPermissions.get(0) != null) {
-                sysPermissions.forEach(sysPermission -> {
-                    // 将 permission code 添加给该用户
-                    GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(sysPermission.getPermission_code());
-                    grantedAuthorities.add(grantedAuthority);
-                });
-            }
+        //获取该用户所拥有的权限
+        List<SysPermission> sysPermissions = sysPermissionMapper.selectPermissionListByUser(userDB.getSid());
+        // 声明用户授权
+        // TODO
+//        System.out.println(sysPermissions.size());
+//        System.out.println(sysPermissions.get(0));
+
+        if (sysPermissions.get(0) != null) {
+            sysPermissions.forEach(sysPermission -> {
+                // 将 permission code 添加给该用户
+                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(sysPermission.getPermission_code());
+                grantedAuthorities.add(grantedAuthority);
+            });
         }
+
         boolean enable = true;
         boolean  accountNonExpired = true;
         boolean  credentialsNonExpired = true;

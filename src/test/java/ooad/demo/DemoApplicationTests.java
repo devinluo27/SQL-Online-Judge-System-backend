@@ -102,7 +102,7 @@ class DemoApplicationTests {
     }
     @Test
     void  vCodeTest2(){
-        System.out.print(userController.resetPassword("123",123321,"123321"));
+        System.out.print(userController.resetPassword(123,123321,"123321"));
     }
 
 

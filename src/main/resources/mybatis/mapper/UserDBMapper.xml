@@ -6,6 +6,12 @@
 
     <cache/>
 
+    <update id="setLastLoginTime">
+        update user_db
+        set last_login_time = current_timestamp
+        where sid = #{sid}
+    </update>
+
     <select id="queryUserDBList" resultType="UserDB">
     select sid, user_name, last_login_time, created_time from user_db
     </select>

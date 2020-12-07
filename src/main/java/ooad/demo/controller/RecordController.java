@@ -63,6 +63,20 @@ public class RecordController{
         return recordMapper.selectRecordListBySid(sid);
     }
 
+    @GetMapping("/user/selectRecordById")
+    Record selectRecordById(@RequestParam(value = "record_id") int record_id,
+                            HttpServletRequest request,
+                            HttpServletResponse response) throws IOException {
+        response.setContentType("text/json;charset=utf-8");
+        if (request.getUserPrincipal() == null){
+            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+            response.getWriter().write(JSON.toJSONString(result));
+            return null;
+        }
+        int sid = Integer.parseInt(request.getUserPrincipal().getName());
+        return recordMapper.selectARecordById(record_id, sid);
+    }
+
     @CrossOrigin
     @GetMapping("/user/selectRecordBySidAndAssignment")
     List<Record> selectRecordBySidAndAssignment(
@@ -111,6 +125,8 @@ public class RecordController{
 //        int question_id = record.getRecord_question_id();
 //        String code = record.getRecord_code();
 //        String sql_type = record.getRecord_code_type();
+
+        code = code.replace(';', ' ').trim();
 
         response.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){

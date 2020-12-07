@@ -20,6 +20,8 @@ public interface RecordMapper {
 
     Record selectRecordBySidAndQuestion(int sid, int question_id);
 
+    Record selectARecordById(Integer record_id, Integer sid);
+
 //    @Select("${code}")
 //    List<LinkedHashMap<String, Object>> runSql(@Param(value="code") String code);
 
