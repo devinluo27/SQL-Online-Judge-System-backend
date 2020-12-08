@@ -29,9 +29,11 @@ public class DemoApplication {
         for (Integer i : dockerIDList){
             String[] dockerNames = dockersPoolHashMap.get(String.valueOf(i)).getRunningList().toArray(new String[0]);
             for (String name: dockerNames) {
+                System.out.println("Removing" + name);
                 dockersPoolHashMap.get(String.valueOf(i)).RemoveDocker(name);
             }
         }
+        System.out.println("Finish Removing Dockers");
     }
 
 }

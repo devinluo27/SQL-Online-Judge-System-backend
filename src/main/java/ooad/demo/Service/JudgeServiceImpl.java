@@ -4,11 +4,11 @@ import com.jcraft.jsch.JSchException;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.Judge;
 import ooad.demo.judge.ManageDockersPool;
+import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
+import ooad.demo.pojo.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +19,23 @@ import java.util.Random;
 
 //@PropertySource(value = "classpath:application.yml")
 @Service
-//@ConfigurationProperties(prefix = "config")
+//@ConfigurationProperties(prefix = "judge")
+@Async
 public class JudgeServiceImpl implements JudgeService {
     @Autowired
     RecordMapper recordMapper;
 
+    @Autowired
+    QuestionMapper questionMapper;
+
+    @Autowired
+    FillDockerPool fillDockerPool;
+
     private static final Random random = new Random();
 
     @Value("${judge.dockerPool.docker.num}")
-    private static int dockerNum = 4;
+    private int dockerNum;
 
-    public static int getDockerNum() {
-        return dockerNum;
-    }
 
     public int a(){
         System.out.println("num" + dockerNum);
@@ -39,35 +43,97 @@ public class JudgeServiceImpl implements JudgeService {
     }
 
     @Async
-    public void judgeCodeDocker(int record_id, String question_id,
-                                String standard_ans, String code,
-                                boolean isOrder, int operation_type, String sql_type) throws IOException, JSchException {
-        if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(question_id) == null){
+    public void judgeCodeDocker(int record_id, Integer question_id,
+                                String code,
+                                boolean isOrder, String sql_type) throws IOException, JSchException {
+
+        Question q = questionMapper.getInfoForJudge(question_id);
+        String standard_ans = q.getQuestion_standard_ans();
+        String database_id = String.valueOf(q.getDatabase_id());
+        Integer operation_type = q.getOperation_type();
+
+
+        if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id) == null){
 //            synchronized (ManageDockersPool.getInstance().getDockersHashMap()){
             // who gets the lock first can create a dockerPool as follows
             synchronized (ManageDockersPool.getInstance().getCreateDockLock()){
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
-                if (manageDockersPool.getDockersPoolHashMap().get(question_id) == null ){
+                if (manageDockersPool.getDockersPoolHashMap().get(database_id) == null ){
+                    System.out.println("Hello");
                     HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
                     int randomDockerID = random.nextInt(100000000);
                     while (manageDockersPool.getDockerIDList().contains(randomDockerID)){
                         randomDockerID = random.nextInt(100000000);
                     }
-                    map.put(question_id,
+                    map.put(database_id,
                             new DockerPool(dockerNum, randomDockerID, 0,"film",
                                     "/data2/DBOJ/DockerTest/film.sql"));
                     manageDockersPool.getDockerIDList().add(randomDockerID);
                 }
             }
         }
+
         HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
-        ArrayList<String> dockers = (map.get(question_id)).getRunningList();
-        int rand = random.nextInt(dockers.size());
-        String dockID = dockers.get(rand);
+        ArrayList<String> dockers = (map.get(database_id)).getRunningList();
+//        ArrayList<String> availableDockers = (map.get(database_id)).getAvailableList();
+
+        DockerPool dockerPool = map.get(database_id);
+        fillDockerPool.checkAndFillDockerPool(dockerPool, dockerPool.getRunningList().size());
+
+//        if(dockerPool.getRunningList().size() < 0.5 * dockerPool.getPoolSize()){
+//            // DockerPool中没有docker了 重新建
+//            synchronized (dockerPool.getFillDockerPoolLock()){
+//                if((map.get(database_id)).getRunningList().size() < 0.5 * map.get(database_id).getPoolSize()){
+//                    dockerPool.rebuidDocker((int)(0.5 * map.get(database_id).getPoolSize() - 1));
+//                }
+//            }
+//        }
 
 //        System.out.println(dockID);
+        System.out.println("current_size_before_judge: " + dockerPool.getRunningList().size());
 
-        Judge.QUERY_RESULT response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, 0);
+        Judge.QUERY_RESULT response;
+        if(operation_type == 1){
+            // only query
+//            int rand = random.nextInt(dockers.size());
+//            String dockID = dockers.get(rand);
+            int rand;
+            String dockID;
+
+            synchronized ((map.get(database_id)).getRunningList()){
+                if(dockerPool.getRunningList().size() == 0){
+                    reFillDockerPool(dockerPool);
+                }
+                rand = random.nextInt(dockers.size());
+                dockID = dockers.get(rand);
+                map.get(database_id).getRunningList().remove(dockID);
+                map.get(database_id).getSleepingList().remove(dockID);
+            }
+
+            response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, 0);
+            System.out.println("remove_docker_id" + dockID);
+            for (String name: map.get(database_id).getRunningList()){
+                System.out.print(name + " ");
+            }
+            (map.get(database_id)).RemoveDocker(dockID);
+
+        }
+        else if(operation_type == 2){
+            // trigger
+            String dockID;
+            synchronized ((map.get(database_id)).getRunningList()){
+                int rand = random.nextInt(dockers.size());
+                dockID = dockers.get(rand);
+                map.get(database_id).getRunningList().remove(dockID);
+                map.get(database_id).getSleepingList().remove(dockID);
+            }
+            response =  new Judge.QUERY_RESULT(0, -1, "", "");
+            (map.get(database_id)).RemoveDocker(dockID);
+        }
+        else {
+            // error
+            response = new Judge.QUERY_RESULT(0, -1, "", "");
+        }
 
         int score = response.getScore();
         int status = 2;
@@ -78,5 +144,18 @@ public class JudgeServiceImpl implements JudgeService {
         }
         double running_time = response.getExec_time();
         recordMapper.setRecordStatus(record_id, status, running_time);
+        System.out.println("current_size_after_judge: " + dockerPool.getRunningList().size());
+
     }
+
+    // TODO: 死锁 当没有docker了 暂停全部判题 先建dockers 建一半的dockers
+    public void reFillDockerPool(DockerPool dockerPool) throws IOException, JSchException {
+        // DockerPool中没有docker了 重新建
+        synchronized (dockerPool.getFillDockerPoolLockReach0()){
+            if(dockerPool.getRunningList().size() < 0.5 * dockerPool.getPoolSize()){
+                dockerPool.rebuildDocker((int)(0.5 * dockerPool.getPoolSize() - 1));
+            }
+        }
+    }
+
 }

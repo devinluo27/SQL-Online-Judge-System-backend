@@ -47,16 +47,23 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         //返回json数据
         JsonResult<String> result = ResultTool.success();
         Collection<? extends GrantedAuthority> authorities =  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        result.setData("user");
+        int role_count = 0;
         for (GrantedAuthority authority : authorities) {
             if(authority.getAuthority().equals("admin")) {
-                result.setData("admin");
-                break;
+                role_count++;
             }
             else if (authority.getAuthority().equals("TA")){
-                result.setData("TA");
-                break;
+                role_count++;
             }
+        }
+        if (role_count == 1){
+            result.setData("TA");
+        }
+        else if(role_count == 2){
+            result.setData("admin");
+        }
+        else {
+            result.setData("user");
         }
         //处理编码方式，防止中文乱码的情况
         httpServletResponse.setContentType("text/json;charset=utf-8");

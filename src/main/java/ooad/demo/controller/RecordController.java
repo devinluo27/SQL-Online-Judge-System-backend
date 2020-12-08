@@ -150,7 +150,7 @@ public class RecordController{
 //        System.out.println(r.getRecord_id());
 
         try {
-            submitToDocker(record_id, String.valueOf(database_id), standard_ans, code, sql_type, operation_type);
+            submitToDocker(record_id, database_id, standard_ans, code, sql_type, operation_type);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());
@@ -164,10 +164,10 @@ public class RecordController{
 
     }
 
-    public void submitToDocker(int record_id, String question_id,
+    public void submitToDocker(int record_id, Integer question_id,
                                String standard_ans, String code,
                                String sql_type, int operation_type) throws IOException, JSchException {
-        judgeService.judgeCodeDocker(record_id, question_id, standard_ans, code, false, operation_type, sql_type);
+        judgeService.judgeCodeDocker(record_id, question_id, code, false, sql_type);
     }
 
 

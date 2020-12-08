@@ -14,6 +14,7 @@ import ooad.demo.pojo.VerifyCode;
 import org.junit.jupiter.api.Test;
 import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -56,10 +57,14 @@ class DemoApplicationTests {
     @Autowired
     JudgeService judgeService;
 
+    @Value("${test.num}")
+    int a;
 
     @Test
     void judgeTest() throws IOException, JSchException, InterruptedException {
+
         System.out.println(judgeService.a());
+        System.out.println("test: " + a);
 //        String standard_ans = "select * from movies";
 //        for (int i = 0 ; i  < 100; i++) {
 //            String code = "select * from movies";
