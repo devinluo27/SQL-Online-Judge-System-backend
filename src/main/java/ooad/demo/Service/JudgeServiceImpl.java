@@ -104,19 +104,20 @@ public class JudgeServiceImpl implements JudgeService {
                 if(dockerPool.getRunningList().size() == 0){
                     reFillDockerPool(dockerPool);
                 }
-                rand = random.nextInt(dockers.size());
-                dockID = dockers.get(rand);
+//                rand = random.nextInt(dockers.size());
+                dockID = dockers.get(0);
                 map.get(database_id).getRunningList().remove(dockID);
                 map.get(database_id).getSleepingList().remove(dockID);
             }
 
             response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, 0);
             System.out.println("remove_docker_id" + dockID);
-            for (String name: map.get(database_id).getRunningList()){
-                System.out.print(name + " ");
+            System.out.print("docker in service: ");
+            for (String name: dockerPool.getRunningList()){
+                System.out.print(name.substring(23) + " ");
             }
+            System.out.println();
             (map.get(database_id)).RemoveDocker(dockID);
-
         }
         else if(operation_type == 2){
             // trigger
@@ -152,9 +153,12 @@ public class JudgeServiceImpl implements JudgeService {
     public void reFillDockerPool(DockerPool dockerPool) throws IOException, JSchException {
         // DockerPool中没有docker了 重新建
         synchronized (dockerPool.getFillDockerPoolLockReach0()){
+            dockerPool.setStatus(0);
+            System.out.println("0 dockers and create!");
             if(dockerPool.getRunningList().size() < 0.5 * dockerPool.getPoolSize()){
                 dockerPool.rebuildDocker((int)(0.5 * dockerPool.getPoolSize() - 1));
             }
+            dockerPool.setStatus(1);
         }
     }
 

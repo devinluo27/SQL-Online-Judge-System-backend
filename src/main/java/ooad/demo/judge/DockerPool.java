@@ -5,37 +5,22 @@ import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class DockerPool {
     int poolSize;
     int DockerSeq;
     int ID;
     int DATABASE;
+    int status = 1;
+
     String FileName;
     String FilePATH;
     String[] CMD;
     volatile ArrayList<String>  runningList = new ArrayList<>();
     volatile ArrayList<String> sleepingList = new ArrayList<>();
-    final Object fillDockerPoolLock = new Object();
-
-    public Object getFillDockerPoolLockReach0() {
-        return fillDockerPoolLockReach0;
-    }
-
-    final Object fillDockerPoolLockReach0 = new Object();
-
     ArrayList<String> availableList = new ArrayList<>();
-
-    public Object getFillDockerPoolLock() {
-        return fillDockerPoolLock;
-    }
-
-    public ArrayList<String> getAvailableList() {
-        return availableList;
-    }
-
-    public int getPoolSize() {
-        return poolSize;
-    }
+    final Object fillDockerPoolLock = new Object();
+    final Object fillDockerPoolLockReach0 = new Object();
 
     static String KillDockerCMD = "docker kill #DockerNAME#";
     static String RemoveDockerCMD = "docker rm -f #DockerNAME#";
@@ -133,10 +118,11 @@ public class DockerPool {
         ArrayList<ArrayList<Remote.Log>> Logs = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-            System.out.println("running list: " + runningList);
+//            System.out.println("running list: " + runningList);
             String DockerName = "DBOJ" + "_" + DockerDB[DATABASE] + "_" + FileName + "_" + ID + "_" + ++DockerSeq;
             Logs.add(createDockerOnly(CMD.clone(), DockerName));
-            names.add(DockerName);
+            refillRunningListOnly(DockerName);
+//            names.add(DockerName);
         }
         return names;
     }
@@ -150,7 +136,41 @@ public class DockerPool {
         runningList.addAll(names);
     }
 
+    public synchronized void refillRunningListOnly(String name){
+        runningList.add(name);
+        System.out.println("Running list: " + runningList);
+    }
+
+
+    // TODO: getter and setter
     public ArrayList<String> getRunningList() {
         return runningList;
     }
+
+
+    public Object getFillDockerPoolLockReach0() {
+        return fillDockerPoolLockReach0;
+    }
+
+
+    public Object getFillDockerPoolLock() {
+        return fillDockerPoolLock;
+    }
+
+    public ArrayList<String> getAvailableList() {
+        return availableList;
+    }
+
+    public int getPoolSize() {
+        return poolSize;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 }

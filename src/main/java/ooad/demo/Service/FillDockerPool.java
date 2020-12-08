@@ -11,11 +11,14 @@ import java.io.IOException;
 public class FillDockerPool {
     @Async
     public void checkAndFillDockerPool(DockerPool dockerPool, int poolSize) throws IOException, JSchException {
-        if( poolSize < 0.5 * dockerPool.getPoolSize()){
+        if( poolSize < dockerPool.getPoolSize() / 2){
             // DockerPool中没有docker了 重新建
             synchronized (dockerPool.getFillDockerPoolLock()){
-                if(dockerPool.getRunningList().size() < 0.5 * dockerPool.getPoolSize()){
-                    dockerPool.rebuildDocker((int)(0.5 * dockerPool.getPoolSize() - 1));
+                if(dockerPool.getRunningList().size() < dockerPool.getPoolSize() / 2){
+                    // create 4 dockers
+                    int numRefill = dockerPool.getPoolSize() / 2;
+                    System.out.println("Refill DockerPool: * " + numRefill + " *with dockers");
+                    dockerPool.rebuildDocker(numRefill);
                 }
             }
         }
