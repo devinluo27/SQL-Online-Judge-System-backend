@@ -6,10 +6,12 @@ import ooad.demo.Service.JudgeService;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
 import ooad.demo.config.ResultTool;
+import ooad.demo.judge.ManageDockersPool;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -143,14 +145,12 @@ public class RecordController{
         Integer operation_type = q.getOperation_type();
 
         Record r = new Record(sid, question_id, PENDING, code, sql_type);
-        // add record first
+        // add record first PENDING Status
         recordMapper.addRecord(r);
         int record_id = r.getRecord_id();
-        // add to docker to judge
-//        System.out.println(r.getRecord_id());
-
         try {
-            submitToDocker(record_id, database_id, standard_ans, code, sql_type, operation_type);
+            // Docker Judge Function
+            submitToDocker(record_id, database_id, code, sql_type);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());
@@ -164,12 +164,18 @@ public class RecordController{
 
     }
 
-    public void submitToDocker(int record_id, Integer question_id,
-                               String standard_ans, String code,
-                               String sql_type, int operation_type) throws IOException, JSchException {
+    public void submitToDocker(int record_id, Integer question_id, String code,
+                               String sql_type) throws IOException, JSchException {
         judgeService.judgeCodeDocker(record_id, question_id, code, false, sql_type);
     }
 
+    @GetMapping("admin/getDockerPoolSize")
+    public void getDockerPoolSize(int database_id, HttpServletResponse response) throws IOException {
+        JsonResult<String> result = ResultTool.success();
+        int size = ManageDockersPool.getInstance().getDockersPoolHashMap().get(String.valueOf(database_id)).getRunningList().size();
+        result.setData("size: " + size);
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
     //    @CrossOrigin
 //    @GetMapping("/judgeCode")
@@ -198,5 +204,41 @@ public class RecordController{
 //        }
 //        return list;
 //    }
+    @Async
+    public void addRecord(
+//            @RequestBody Record record,
+            @RequestParam(value = "question_id") int question_id,
+            @RequestParam(value = "code") String code,
+            @RequestParam(value = "type") String sql_type
+            ) throws IOException {
+
+//        int question_id = record.getRecord_question_id();
+//        String code = record.getRecord_code();
+//        String sql_type = record.getRecord_code_type();
+
+        code = code.replace(';', ' ').trim();
+
+        int sid = 1;
+        Question q = questionMapper.getInfoForJudge(question_id);
+        String standard_ans = q.getQuestion_standard_ans();
+
+        // get question details for judge machine
+        Integer database_id = q.getDatabase_id();
+        Integer operation_type = q.getOperation_type();
+
+        Record r = new Record(sid, question_id, PENDING, code, sql_type);
+        // add record first PENDING Status
+        recordMapper.addRecord(r);
+        int record_id = r.getRecord_id();
+        try {
+            // Docker Judge Function
+            submitToDocker(record_id, database_id, code, sql_type);
+        } catch (Exception e){
+            JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
+            System.out.println(e.fillInStackTrace());
+            System.out.println(e.getMessage());
+            // 塞到HttpServletResponse中返回给前台
+        }
+    }
 
 }

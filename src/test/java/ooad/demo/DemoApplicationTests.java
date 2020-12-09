@@ -20,9 +20,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
+@EnableAsync
 class DemoApplicationTests {
     @Autowired
     DataSource dataSource;
@@ -80,6 +83,22 @@ class DemoApplicationTests {
     }
 
     @Test
+    void judgeTest_docker_1() throws IOException, JSchException, InterruptedException {
+        for (int i = 0; i < 100; i++){
+            recordController.addRecord(1, "select * from movies", "postgresql");
+            System.out.println("submit one");
+        }
+        System.out.println("==================Finished submission ===================");
+        System.out.println("==================Finished submission ===================");
+        long now = System.currentTimeMillis();
+        System.out.println(now);
+        while(System.currentTimeMillis() - now < 1000000000){}
+
+    }
+
+
+
+        @Test
     void  vCodeTest(){
         verifyCodeMapper.insertVerifyCode(123,123321);
 //        VerifyCode v = verifyCodeMapper.getVerifyCode(1223);

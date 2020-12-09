@@ -16,7 +16,8 @@ public class DockerPool {
     String FileName;
     String FilePATH;
     String[] CMD;
-    volatile ArrayList<String>  runningList = new ArrayList<>();
+    // TODO: voaltive 保护的是指向数组的引用
+    final ArrayList<String>  runningList = new ArrayList<>();
     volatile ArrayList<String> sleepingList = new ArrayList<>();
     ArrayList<String> availableList = new ArrayList<>();
     final Object fillDockerPoolLock = new Object();
@@ -68,8 +69,8 @@ public class DockerPool {
     }
 
     public Remote.Log RemoveDocker(String DockerName) throws IOException, JSchException {
-        runningList.remove(DockerName);
-        sleepingList.remove(DockerName);
+//        runningList.remove(DockerName);
+//        sleepingList.remove(DockerName);
         return Remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
@@ -109,9 +110,10 @@ public class DockerPool {
     }
 
 
-    public void rebuildDocker(int num) throws IOException, JSchException {
+    public int rebuildDocker(int num) throws IOException, JSchException {
         ArrayList<String> names = refillDockersOnly(num);
-        refillRunningListOnly(names);
+        return 1;
+//        refillRunningListOnly(names);
     }
 
     public ArrayList<String> refillDockersOnly(int num) throws IOException, JSchException {
@@ -132,13 +134,17 @@ public class DockerPool {
         return Remote.EXEC_CMD(CMD);
     }
 
-    public synchronized void refillRunningListOnly(ArrayList<String> names){
-        runningList.addAll(names);
-    }
+//    public synchronized void refillRunningListOnly(ArrayList<String> names){
+//        runningList.addAll(names);
+//    }
 
-    public synchronized void refillRunningListOnly(String name){
-        runningList.add(name);
-        System.out.println("Running list: " + runningList);
+    // TODO: ADD a docker to RunningList 并唤醒一个wait()的线程
+    public void refillRunningListOnly(String name){
+        synchronized (runningList){
+            runningList.add(name);
+            System.out.println("After ADDING Running list: " + runningList);
+            runningList.notify();
+        }
     }
 
 

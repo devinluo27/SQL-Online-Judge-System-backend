@@ -52,7 +52,6 @@ public class JudgeServiceImpl implements JudgeService {
         String database_id = String.valueOf(q.getDatabase_id());
         Integer operation_type = q.getOperation_type();
 
-
         if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id) == null){
 //            synchronized (ManageDockersPool.getInstance().getDockersHashMap()){
             // who gets the lock first can create a dockerPool as follows
@@ -77,47 +76,45 @@ public class JudgeServiceImpl implements JudgeService {
         ArrayList<String> dockers = (map.get(database_id)).getRunningList();
 //        ArrayList<String> availableDockers = (map.get(database_id)).getAvailableList();
 
-        DockerPool dockerPool = map.get(database_id);
-        fillDockerPool.checkAndFillDockerPool(dockerPool, dockerPool.getRunningList().size());
+        DockerPool usedDockerPool = map.get(database_id);
 
-//        if(dockerPool.getRunningList().size() < 0.5 * dockerPool.getPoolSize()){
-//            // DockerPool中没有docker了 重新建
-//            synchronized (dockerPool.getFillDockerPoolLock()){
-//                if((map.get(database_id)).getRunningList().size() < 0.5 * map.get(database_id).getPoolSize()){
-//                    dockerPool.rebuidDocker((int)(0.5 * map.get(database_id).getPoolSize() - 1));
-//                }
-//            }
-//        }
-
-//        System.out.println(dockID);
-        System.out.println("current_size_before_judge: " + dockerPool.getRunningList().size());
+        fillDockerPool.createADocker(usedDockerPool);
+        System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
         Judge.QUERY_RESULT response;
         if(operation_type == 1){
             // only query
 //            int rand = random.nextInt(dockers.size());
 //            String dockID = dockers.get(rand);
-            int rand;
             String dockID;
 
-            synchronized ((map.get(database_id)).getRunningList()){
-                if(dockerPool.getRunningList().size() == 0){
-                    reFillDockerPool(dockerPool);
+            synchronized (usedDockerPool.getRunningList()){
+                if(usedDockerPool.getRunningList().size() == 0){
+                    // 等待某个docker 建好后唤醒它
+                    // 放入等待队列
+                    try {
+                        System.out.println("Waiting! Rid: " + record_id);
+                        usedDockerPool.getRunningList().wait();
+                    } catch(InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-//                rand = random.nextInt(dockers.size());
                 dockID = dockers.get(0);
                 map.get(database_id).getRunningList().remove(dockID);
                 map.get(database_id).getSleepingList().remove(dockID);
             }
 
             response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, 0);
-            System.out.println("remove_docker_id" + dockID);
             System.out.print("docker in service: ");
-            for (String name: dockerPool.getRunningList()){
-                System.out.print(name.substring(23) + " ");
-            }
-            System.out.println();
+
+//            for (String name: usedDockerPool.getRunningList()){
+//                System.out.print(name.substring(24) + " ");
+//            }
+
+            System.out.println("remove_docker_id" + dockID);
             (map.get(database_id)).RemoveDocker(dockID);
+            System.out.println();
+
         }
         else if(operation_type == 2){
             // trigger
@@ -137,16 +134,16 @@ public class JudgeServiceImpl implements JudgeService {
         }
 
         int score = response.getScore();
-        int status = 2;
+        int status = 0;
         switch (score){
-            case 100: status =1; break; // accept
+            case 100: status = 1; break; // accept
             case 0:   status = -1; break; // wrong
             case -1:  status = -2;break; // exception
         }
         double running_time = response.getExec_time();
         recordMapper.setRecordStatus(record_id, status, running_time);
-        System.out.println("current_size_after_judge: " + dockerPool.getRunningList().size());
-
+        System.out.println("current_size_after_judge: " + usedDockerPool.getRunningList().size());
+        System.out.println(System.currentTimeMillis());
     }
 
     // TODO: 死锁 当没有docker了 暂停全部判题 先建dockers 建一半的dockers
