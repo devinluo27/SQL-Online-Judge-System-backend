@@ -16,9 +16,12 @@ public class DockerPool {
     String FileName;
     String FilePATH;
     String[] CMD;
+
     // TODO: voaltive 保护的是指向数组的引用
     final ArrayList<String>  runningList = new ArrayList<>();
     volatile ArrayList<String> sleepingList = new ArrayList<>();
+
+
     ArrayList<String> availableList = new ArrayList<>();
     final Object fillDockerPoolLock = new Object();
     final Object fillDockerPoolLockReach0 = new Object();
@@ -97,7 +100,6 @@ public class DockerPool {
     }
 
     public ArrayList<ArrayList<Remote.Log>> InitDockerPool(int num) throws IOException, JSchException {
-//        String[] CMD = DockerCMD[DATABASE];
         ArrayList<ArrayList<Remote.Log>> Logs = new ArrayList<>();
 
         for (int i = 0; i < CMD.length; i++)
@@ -111,22 +113,17 @@ public class DockerPool {
 
 
     public int rebuildDocker(int num) throws IOException, JSchException {
-        ArrayList<String> names = refillDockersOnly(num);
+        refillDockersAndUpdateList(num);
         return 1;
-//        refillRunningListOnly(names);
     }
 
-    public ArrayList<String> refillDockersOnly(int num) throws IOException, JSchException {
+    public void refillDockersAndUpdateList(int num) throws IOException, JSchException {
         ArrayList<ArrayList<Remote.Log>> Logs = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
         for (int i = 0; i < num; i++) {
-//            System.out.println("running list: " + runningList);
             String DockerName = "DBOJ" + "_" + DockerDB[DATABASE] + "_" + FileName + "_" + ID + "_" + ++DockerSeq;
             Logs.add(createDockerOnly(CMD.clone(), DockerName));
             refillRunningListOnly(DockerName);
-//            names.add(DockerName);
         }
-        return names;
     }
 
     public ArrayList<Remote.Log> createDockerOnly(String[] CMD, String DockerName) throws IOException, JSchException {
@@ -134,9 +131,6 @@ public class DockerPool {
         return Remote.EXEC_CMD(CMD);
     }
 
-//    public synchronized void refillRunningListOnly(ArrayList<String> names){
-//        runningList.addAll(names);
-//    }
 
     // TODO: ADD a docker to RunningList 并唤醒一个wait()的线程
     public void refillRunningListOnly(String name){
@@ -153,30 +147,5 @@ public class DockerPool {
         return runningList;
     }
 
-
-    public Object getFillDockerPoolLockReach0() {
-        return fillDockerPoolLockReach0;
-    }
-
-
-    public Object getFillDockerPoolLock() {
-        return fillDockerPoolLock;
-    }
-
-    public ArrayList<String> getAvailableList() {
-        return availableList;
-    }
-
-    public int getPoolSize() {
-        return poolSize;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 
 }

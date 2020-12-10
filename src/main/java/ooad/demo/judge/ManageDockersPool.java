@@ -11,7 +11,7 @@ public class ManageDockersPool {
     private static volatile ManageDockersPool INSTANCE;
     private static HashMap<String, DockerPool> dockersPoolHashMap;
     private static ArrayList<Integer> dockerIDList;
-    private static final Object createDockLock = new Object();
+    private static final Object createDockerPoolLock = new Object();
 
     private ManageDockersPool() {
         dockersPoolHashMap = new HashMap<>();
@@ -33,8 +33,8 @@ public class ManageDockersPool {
         return dockersPoolHashMap;
     }
 
-    public Object getCreateDockLock() {
-        return createDockLock;
+    public Object getCreateDockerPoolLock() {
+        return createDockerPoolLock;
     }
 
     public ArrayList<Integer> getDockerIDList() {

@@ -29,7 +29,7 @@ public class JudgeServiceImpl implements JudgeService {
     QuestionMapper questionMapper;
 
     @Autowired
-    FillDockerPool fillDockerPool;
+    FillDockerPoolService fillDockerPoolService;
 
     private static final Random random = new Random();
 
@@ -55,7 +55,7 @@ public class JudgeServiceImpl implements JudgeService {
         if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id) == null){
 //            synchronized (ManageDockersPool.getInstance().getDockersHashMap()){
             // who gets the lock first can create a dockerPool as follows
-            synchronized (ManageDockersPool.getInstance().getCreateDockLock()){
+            synchronized (ManageDockersPool.getInstance().getCreateDockerPoolLock()){
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
                 if (manageDockersPool.getDockersPoolHashMap().get(database_id) == null ){
                     System.out.println("Hello");
@@ -78,7 +78,8 @@ public class JudgeServiceImpl implements JudgeService {
 
         DockerPool usedDockerPool = map.get(database_id);
 
-        fillDockerPool.createADocker(usedDockerPool);
+//        fillDockerPoolService.createADocker(usedDockerPool);
+
         System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
         Judge.QUERY_RESULT response;
@@ -126,7 +127,7 @@ public class JudgeServiceImpl implements JudgeService {
                 map.get(database_id).getSleepingList().remove(dockID);
             }
             response =  new Judge.QUERY_RESULT(0, -1, "", "");
-            (map.get(database_id)).RemoveDocker(dockID);
+            (map.get(database_id)).RemoveDockerOnly(dockID);
         }
         else {
             // error
@@ -144,19 +145,6 @@ public class JudgeServiceImpl implements JudgeService {
         recordMapper.setRecordStatus(record_id, status, running_time);
         System.out.println("current_size_after_judge: " + usedDockerPool.getRunningList().size());
         System.out.println(System.currentTimeMillis());
-    }
-
-    // TODO: 死锁 当没有docker了 暂停全部判题 先建dockers 建一半的dockers
-    public void reFillDockerPool(DockerPool dockerPool) throws IOException, JSchException {
-        // DockerPool中没有docker了 重新建
-        synchronized (dockerPool.getFillDockerPoolLockReach0()){
-            dockerPool.setStatus(0);
-            System.out.println("0 dockers and create!");
-            if(dockerPool.getRunningList().size() < 0.5 * dockerPool.getPoolSize()){
-                dockerPool.rebuildDocker((int)(0.5 * dockerPool.getPoolSize() - 1));
-            }
-            dockerPool.setStatus(1);
-        }
     }
 
 }

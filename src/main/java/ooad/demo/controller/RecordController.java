@@ -2,6 +2,8 @@ package ooad.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jcraft.jsch.JSchException;
+import ooad.demo.Service.FillDockerPoolService;
+import ooad.demo.Service.InitDockerPoolService;
 import ooad.demo.Service.JudgeService;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
@@ -11,6 +13,7 @@ import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +41,12 @@ public class RecordController{
     private final UserController userController;
 
     private final int PENDING = 0;
+
+    @Autowired
+    private FillDockerPoolService fillDockerPoolService;
+
+    @Autowired
+    private InitDockerPoolService initDockerPoolService;
 
     public RecordController(RecordMapper recordMapper, JudgeService judgeService, QuestionMapper questionMapper, UserController userController) {
         this.recordMapper = recordMapper;
@@ -150,7 +159,7 @@ public class RecordController{
         int record_id = r.getRecord_id();
         try {
             // Docker Judge Function
-            submitToDocker(record_id, database_id, code, sql_type);
+            submitToDocker(record_id, question_id, database_id, code, sql_type);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());
@@ -164,9 +173,14 @@ public class RecordController{
 
     }
 
-    public void submitToDocker(int record_id, Integer question_id, String code,
+    public void submitToDocker(int record_id, Integer question_id, Integer database_id, String code,
                                String sql_type) throws IOException, JSchException {
+
+        initDockerPoolService.InitDockerPool(database_id);
+        fillDockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(String.valueOf(database_id)));
+
         judgeService.judgeCodeDocker(record_id, question_id, code, false, sql_type);
+
     }
 
     @GetMapping("admin/getDockerPoolSize")
@@ -232,7 +246,7 @@ public class RecordController{
         int record_id = r.getRecord_id();
         try {
             // Docker Judge Function
-            submitToDocker(record_id, database_id, code, sql_type);
+            submitToDocker(record_id, question_id, database_id, code, sql_type);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());

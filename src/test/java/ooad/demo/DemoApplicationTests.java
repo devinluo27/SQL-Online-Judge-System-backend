@@ -61,12 +61,12 @@ class DemoApplicationTests {
     JudgeService judgeService;
 
     @Value("${test.num}")
-    int a;
+    int a = 1;
 
     @Test
     void judgeTest() throws IOException, JSchException, InterruptedException {
 
-        System.out.println(judgeService.a());
+//        System.out.println(judgeService.a());
         System.out.println("test: " + a);
 //        String standard_ans = "select * from movies";
 //        for (int i = 0 ; i  < 100; i++) {

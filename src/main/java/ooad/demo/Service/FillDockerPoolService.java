@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class FillDockerPool {
+public class FillDockerPoolService {
 //    @Async
 //    public void checkAndFillDockerPool(DockerPool dockerPool, int poolSize) throws IOException, JSchException {
 //        if( poolSize < dockerPool.getPoolSize() / 2){
