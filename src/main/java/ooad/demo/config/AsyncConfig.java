@@ -19,7 +19,7 @@ public class AsyncConfig {
     private int corePoolSize = 4;
 
     @Value("${thread.maxPoolSize}")
-    private int maxPoolSize = 300;
+    private int maxPoolSize = 30;
 
     @Value("${thread.queueCapacity}")
     private int queueCapacity = 4;

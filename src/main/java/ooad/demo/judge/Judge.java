@@ -106,11 +106,14 @@ public class Judge {
         String CMD = QUERY_SQL[DATABASE];
         CMD = Ordered ? CMD.replaceAll("#CONFIG#", QUERY_CONFIG[DATABASE]) : CMD.replaceAll("#CONFIG#", "");
         CMD = CMD.replaceAll("#DockerNAME#", DockerName).replaceAll("#ANS_SQL#", ANS_SQL).replaceAll("#TEST_SQL#", TEST_SQL);
-        Remote.Log logs = Remote.EXEC_CMD(new String[]{CMD}).get(0);
-
+        Remote.Log logs = new Remote.Log(-1, "" ,"");
+        try {
+            logs = Remote.EXEC_CMD(new String[]{CMD}).get(0);
+        } catch (Exception e){
+            return new QUERY_RESULT(-2, -1.0, logs.OUT, logs.ERROR);
+        }
 //        System.out.println("OUT: " + logs.OUT);
 //        System.out.println("ERROR: " + logs.ERROR);
-
         String[] result = logs.OUT.split("\n");
         if (result.length != 4) return new QUERY_RESULT(-1, -1, logs.OUT, logs.ERROR);
         int SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;

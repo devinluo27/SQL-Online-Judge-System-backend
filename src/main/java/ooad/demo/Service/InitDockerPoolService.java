@@ -18,7 +18,17 @@ public class InitDockerPoolService {
     @Value("${judge.dockerPool.docker.num}")
     private int dockerNum;
 
-    public void  InitDockerPool(Integer database_id_int) throws IOException, JSchException {
+    private final String query = "query";
+    private final String trigger = "trigger";
+
+    /***
+     *
+     * @param database_id_int
+     * @param operation_type 1: select 2: trigger
+     * @throws IOException
+     * @throws JSchException
+     */
+    public void  InitDockerPool(Integer database_id_int, Integer operation_type) throws IOException, JSchException {
         String database_id = String.valueOf(database_id_int);
         if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id) == null){
 //            synchronized (ManageDockersPool.getInstance().getDockersHashMap()){
@@ -26,7 +36,7 @@ public class InitDockerPoolService {
             synchronized (ManageDockersPool.getInstance().getCreateDockerPoolLock()){
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
                 if (manageDockersPool.getDockersPoolHashMap().get(database_id) == null ){
-                    System.out.println("Hello");
+                    System.out.println("Init dockersPool " + database_id);
                     HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
                     int randomDockerID = random.nextInt(100000000);
                     while (manageDockersPool.getDockerIDList().contains(randomDockerID)){

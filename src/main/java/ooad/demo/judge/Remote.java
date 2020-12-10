@@ -6,9 +6,12 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.ArrayList;
+
+@Service
 public class Remote {
 
     public static class Log{
@@ -21,8 +24,14 @@ public class Remote {
             this.ERROR = ERROR;
         }
     }
-    @Value("${judge.remoteHost}")
+//    @Value("${judge.remoteHost}")
     private String remoteHost = "10.20.83.122";
+
+    private int remotePort = 22;
+
+    private String remoteUsername = "dboj_manager";
+
+    private String remotePassword = "789ab73077cb";
 
     public static ArrayList<Log> EXEC_CMD(String[] CMD) throws JSchException, IOException {
         String host =  "10.20.83.122";

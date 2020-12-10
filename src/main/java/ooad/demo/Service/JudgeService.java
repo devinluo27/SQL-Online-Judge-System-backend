@@ -9,5 +9,4 @@ public interface JudgeService {
     void judgeCodeDocker(int record_id, Integer question_id,
                           String code, boolean isOrder,
                           String type) throws IOException, JSchException;
-    int a();
 }
