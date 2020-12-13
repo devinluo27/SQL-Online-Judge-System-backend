@@ -53,13 +53,22 @@ public class DockerPool {
     }};
 
 
-
-    public DockerPool(int DockerSeq, int ID, int DATABASE, String FileName, String FilePATH) throws IOException, JSchException {
+    /***
+     *  DBMS: 0 Postgresql, 1: SQLite, 2: MySQL
+     * @param DockerSeq
+     * @param ID
+     * @param DBMS
+     * @param FileName
+     * @param FilePATH
+     * @throws IOException
+     * @throws JSchException
+     */
+    public DockerPool(int DockerSeq, int ID, int DBMS, String FileName, String FilePATH) throws IOException, JSchException {
         this.DockerSeq = 0;
         this.poolSize = DockerSeq;
         this.ID = ID;
-        this.DATABASE = DATABASE;
-        CMD = DockerCMD[DATABASE];
+        this.DATABASE = DBMS;
+        CMD = DockerCMD[DBMS];
         this.FileName = FileName;
         this.FilePATH = FilePATH;
         this.InitDockerPool(DockerSeq);

@@ -102,9 +102,9 @@ public class Judge {
     }};
 
 
-    public static QUERY_RESULT EXEC_QUERY(String ANS_SQL, String TEST_SQL, String DockerName, boolean Ordered, int DATABASE) throws IOException, JSchException {
-        String CMD = QUERY_SQL[DATABASE];
-        CMD = Ordered ? CMD.replaceAll("#CONFIG#", QUERY_CONFIG[DATABASE]) : CMD.replaceAll("#CONFIG#", "");
+    public static QUERY_RESULT EXEC_QUERY(String ANS_SQL, String TEST_SQL, String DockerName, boolean Ordered, int DBMS) throws IOException, JSchException {
+        String CMD = QUERY_SQL[DBMS];
+        CMD = Ordered ? CMD.replaceAll("#CONFIG#", QUERY_CONFIG[DBMS]) : CMD.replaceAll("#CONFIG#", "");
         CMD = CMD.replaceAll("#DockerNAME#", DockerName).replaceAll("#ANS_SQL#", ANS_SQL).replaceAll("#TEST_SQL#", TEST_SQL);
         Remote.Log logs = new Remote.Log(-1, "" ,"");
         try {
@@ -122,9 +122,10 @@ public class Judge {
         return new QUERY_RESULT(SCORE, EXEC_TIME, logs.OUT, logs.ERROR);
     }
 
-    public static QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DATABASE, String TARGET_TABLE) throws IOException, JSchException {
+    public static QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE) throws IOException, JSchException {
         TEST_SQL = TEST_SQL.replaceAll("\\$\\$", "####");
-        String[] CMD = TRIGGER_SQL[DATABASE];
+        TEST_SQL = java.util.regex.Matcher.quoteReplacement(TEST_SQL);
+        String[] CMD = TRIGGER_SQL[DBMS];
         for (int i = 0; i < CMD.length; i++)
             CMD[i] = CMD[i]
                     .replaceAll("#DockerNAME#", DockerName)

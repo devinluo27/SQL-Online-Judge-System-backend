@@ -34,6 +34,9 @@ public class Question implements Serializable{
     private Integer operation_type;
     private Boolean is_order;
 
+    @NotNull
+    private String question_sql_type;
+
     public Question(Integer id, Integer question_id, String question_name,
                     Integer question_of_assignment, String question_description,
                     String question_output, Integer question_index, Integer is_finished

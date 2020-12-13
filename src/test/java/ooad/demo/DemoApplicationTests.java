@@ -7,6 +7,7 @@ import ooad.demo.Service.UserFileService;
 import ooad.demo.controller.RecordController;
 import ooad.demo.controller.UserController;
 import ooad.demo.judge.ManageDockersPool;
+import ooad.demo.judge.Remote;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.mapper.VerifyCodeMapper;
@@ -31,9 +32,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import ooad.demo.judge.Remote;
 
 @SpringBootTest
 @EnableAsync
@@ -60,6 +63,9 @@ class DemoApplicationTests {
 
     @Autowired
     JudgeService judgeService;
+
+    @Autowired
+    Remote remote;
 
     @Value("${test.num}")
     int a = 1;
@@ -96,10 +102,13 @@ class DemoApplicationTests {
         while(System.currentTimeMillis() - now < 1000000000){}
 
     }
-
+    @Test
     void judgeTest_docker_2() throws IOException, JSchException, InterruptedException {
 //        ManageDockersPool.getInstance().getDockersPoolHashMap().get("1-")
-
+        String[] strings = new String[1];
+        strings[0] = "echo haha";
+        ArrayList<Remote.Log> r = remote.EXEC_CMD(strings);
+        System.out.println(r.get(0).getOUT());
     }
 
 
@@ -196,5 +205,15 @@ class DemoApplicationTests {
         userFileService.delete(1);
     }
 
+    @Test
+    public void copyToRemote() throws IOException {
+
+//        userFileService.copyToRemoteHost(1);
+    }
+
+    @Test
+    public void copyToRemote1() throws Exception {
+        remote.uploadFile(9);
+    }
 
 }

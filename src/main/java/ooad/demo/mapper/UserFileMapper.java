@@ -1,5 +1,6 @@
 package ooad.demo.mapper;
 
+import ooad.demo.pojo.Record;
 import ooad.demo.pojo.UserFile;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,7 @@ public interface UserFileMapper {
     void delete(Integer id);
 
     List<UserFile> getAllFileInfo();
+
+    UserFile getLocalRealPath(Integer file_id);
+
 }

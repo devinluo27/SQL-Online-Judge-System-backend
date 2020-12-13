@@ -52,4 +52,61 @@ public class QuestionController implements Serializable {
         List<Question> list = questionMapper.selectQuestionsByAssignment(sid, assignment_id);
         return list;
     }
+
+    /***
+     *     private Integer id;
+     *     @NotNull
+     *     private Integer question_id;
+     *
+     *     @NotNull
+     *     private String question_name;
+     *
+     *     @NotNull
+     *     private Integer question_of_assignment;
+     *
+     *     @NotNull
+     *     private String question_description;
+     *
+     *     @NotNull
+     *     private String question_output;
+     *
+     *     @NotNull
+     *     private Integer question_index;
+     *
+     *     private Integer is_finished; not for teachers
+     *
+     *     @NotNull
+     *     private String question_standard_ans;
+     *
+     *     @NotNull
+     *     private Integer database_id;
+     *
+     *     @NotNull
+     *     private Integer is_visible; 0 invisible or 1 visible
+     *
+     *     private Integer operation_type; "query": 1 or "trigger": 2
+     *
+     *     @NotNull
+     *     private Boolean is_order; true or false
+     * @param question
+     */
+    @CrossOrigin
+    @PostMapping("/admin/addQuestion")
+    public void addQuestion(@RequestBody Question question){
+
+    }
+
+    @CrossOrigin
+    @PostMapping("/admin/updateQuestion")
+    public void updateQuestion(@RequestBody Question question){
+
+    }
+
+    @CrossOrigin
+    @GetMapping("/admin/deleteQuestion")
+    public void deleteQuestion(@RequestParam(value = "question_id") Integer question_id){
+
+    }
+
+
 }

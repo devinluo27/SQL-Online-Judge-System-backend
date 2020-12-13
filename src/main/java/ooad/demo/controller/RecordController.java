@@ -2,8 +2,7 @@ package ooad.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jcraft.jsch.JSchException;
-import ooad.demo.Service.FillDockerPoolService;
-import ooad.demo.Service.InitDockerPoolService;
+import ooad.demo.Service.DockerPoolService;
 import ooad.demo.Service.JudgeService;
 import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
@@ -47,10 +46,8 @@ public class RecordController{
     private final String trigger = "_trigger";
 
     @Autowired
-    private FillDockerPoolService fillDockerPoolService;
+    private DockerPoolService dockerPoolService;
 
-    @Autowired
-    private InitDockerPoolService initDockerPoolService;
 
     public RecordController(RecordMapper recordMapper, JudgeService judgeService, QuestionMapper questionMapper, UserController userController) {
         this.recordMapper = recordMapper;
@@ -131,14 +128,14 @@ public class RecordController{
     @CrossOrigin
     @PostMapping("/user/addRecord")
     public void addRecord(
-//            @RequestBody Record record,
+            @RequestBody Record record,
             @RequestParam(value = "question_id") int question_id,
                    @RequestParam(value = "code") String code,
                    @RequestParam(value = "type") String sql_type,
                    HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 //        int question_id = record.getRecord_question_id();
-//        String code = record.getRecord_code();
+         code = record.getRecord_code();
 //        String sql_type = record.getRecord_code_type();
 
         code = code.replace(';', ' ').trim();
@@ -177,16 +174,16 @@ public class RecordController{
     public void submitToDocker(int record_id, Integer question_id, Question question, String code,
                                String sql_type) throws IOException, JSchException {
 
-        String dockerPoolMapKey = initDockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
+        String dockerPoolMapKey = dockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
         // Trigger Judge will remove a docker
         // TODO: change
         if(question.getOperation_type() == 2 || question.getOperation_type() == 1){
-            fillDockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
+            dockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
         }
         judgeService.judgeCodeDocker(record_id, question_id, code, question.getIs_order(), sql_type);
     }
 
-    @GetMapping("admin/getDockerPoolSize")
+    @GetMapping("/admin/getDockerPoolSize")
     public void getDockerPoolSize(int database_id, HttpServletResponse response) throws IOException {
         JsonResult<String> result = ResultTool.success();
         int sizeQuery = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + query).getRunningList().size();
@@ -195,7 +192,18 @@ public class RecordController{
         response.getWriter().write(JSON.toJSONString(result));
     }
 
+    /***
+     * rejudge  the last submitted record of the given question_id
+     * @param question_id
+     */
+    @GetMapping("/admin/rejudgeByQuestionId")
+    public void rejudgeByQuestionId(
+            @RequestParam(value = "question_id") Integer question_id){
 
+    }
+
+
+    // for testing only
     @Async
     public void addRecord(
 //            @RequestBody Record record,

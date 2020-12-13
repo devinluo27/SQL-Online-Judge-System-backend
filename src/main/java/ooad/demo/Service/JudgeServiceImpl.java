@@ -4,19 +4,16 @@ import com.jcraft.jsch.JSchException;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.Judge;
 import ooad.demo.judge.ManageDockersPool;
-import ooad.demo.judge.Remote;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 //@PropertySource(value = "classpath:application.yml")
 @Service
@@ -30,10 +27,8 @@ public class JudgeServiceImpl implements JudgeService {
     QuestionMapper questionMapper;
 
     @Autowired
-    FillDockerPoolService fillDockerPoolService;
+    DockerPoolService dockerPoolService;
 
-    @Autowired
-    InitDockerPoolService initDockerPoolService;
 
     private final String query = "_query";
 
@@ -84,8 +79,8 @@ public class JudgeServiceImpl implements JudgeService {
                 usedDockerPool.getRunningList().remove(dockID);
                 usedDockerPool.getSleepingList().remove(dockID);
             }
-
-            response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, Integer.parseInt(database_id));
+            //  TODO: 硬编码 postgres： 0
+            response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, 0);
             System.out.print("docker in service: ");
 
             System.out.println("remove_docker_id" + dockID);
@@ -110,7 +105,20 @@ public class JudgeServiceImpl implements JudgeService {
                 usedDockerPool.getRunningList().remove(dockID);
                 usedDockerPool.getSleepingList().remove(dockID);
             }
-            response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, Integer.parseInt(database_id));
+            //  TODO: 更换各种硬编码 postgres： 0
+            System.out.println("DockerId: " + dockID);
+
+            response =  Judge.EXEC_TRIGGER("/data2/DBOJ/week14Sigiin/week14_sign_in_ans.sql",
+                    code,
+                    "/data2/DBOJ/week14Sigiin/week14_sign_in_test.sql",
+                    10,
+                    dockID,
+                    0,
+                    "cars"
+                    );
+
+//            response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, 0);
+
             System.out.println("remove_docker_id" + dockID);
             usedDockerPool.RemoveDockerOnly(dockID);
             System.out.println();

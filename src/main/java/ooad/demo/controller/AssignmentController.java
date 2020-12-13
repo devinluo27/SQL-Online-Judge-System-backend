@@ -72,8 +72,11 @@ public class AssignmentController {
 
     /***
      *
-     * @param assignment String assignment_id, long assignment_name,
-     *                   long assignment_start_time, String assignment_end_time,
+     * @param assignment String assignment_id,
+     *                   String assignment_name,
+     *                   String assignment_description,
+     *                   long assignment_start_time,
+     *                   long assignment_end_time,
      *                   int is_visible
      * pass the milisecond from 1970 start_date end_date should be long
      * @param response
@@ -121,5 +124,12 @@ public class AssignmentController {
         Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
         return assignment.getQuestions();
     }
+
+    @GetMapping("admin/deleteAssignment")
+    public void deleteAssignment(
+            @RequestParam(value = "assignment_id") Integer assignment_id){
+
+    }
+
 
 }

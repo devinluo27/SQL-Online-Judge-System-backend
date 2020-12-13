@@ -41,5 +41,10 @@
         where id = #{id}
     </update>
 
+    <select id="getLocalRealPath" resultType="UserFile">
+        select relative_path, new_file_name
+        from user_files
+        where id = #{file_id}
+    </select>
 
 </mapper>

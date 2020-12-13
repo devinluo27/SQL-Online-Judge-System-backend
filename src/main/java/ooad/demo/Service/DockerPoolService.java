@@ -3,7 +3,11 @@ package ooad.demo.Service;
 import com.jcraft.jsch.JSchException;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.ManageDockersPool;
+import ooad.demo.mapper.DataBaseMapper;
+import ooad.demo.pojo.Database;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,9 +15,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 @Service
-public class InitDockerPoolService {
-
+public class DockerPoolService {
     private static final Random random = new Random();
+
+    @Autowired
+    DataBaseMapper dataBaseMapper;
 
     @Value("${judge.dockerPool.docker.num}")
     private int dockerNum;
@@ -21,6 +27,18 @@ public class InitDockerPoolService {
     private final String query = "_query";
 
     private final String trigger = "_trigger";
+
+
+    @Async
+    public void createADocker(DockerPool dockerPool) throws IOException, JSchException {
+        System.out.println("Refill DockerPool: * " + 1 + " * with dockers");
+            int flag = 0;
+            try {
+                flag = dockerPool.rebuildDocker(1);
+            } catch (JSchException jSchException){
+                createADocker(dockerPool);
+            }
+    }
 
     /***
      *
@@ -49,13 +67,33 @@ public class InitDockerPoolService {
                     while (manageDockersPool.getDockerPoolIDList().contains(randomDockerID)){
                         randomDockerID = random.nextInt(100000000);
                     }
+                    Database database = dataBaseMapper.selectDatabaseById(database_id);
+                    String database_name = database.getDatabase_remote_name();
+                    // TODO: 文件后缀更新
+                    String database_full_address = database.getDatabase_remote_path() + database_name + ".sql";
                     map.put(mapKey,
-                            new DockerPool(dockerNum, randomDockerID, 0,"film",
-                                    "/data2/DBOJ/DockerTest/film.sql"));
+//                            new DockerPool(dockerNum, randomDockerID, 0,"film",
+//                                    "/data2/DBOJ/DockerTest/film.sql")
+                            new DockerPool(dockerNum, randomDockerID, 0, database_name,
+                                    database_full_address)
+                    );
                     manageDockersPool.getDockerPoolIDList().add(randomDockerID);
                 }
             }
         }
         return mapKey;
     }
+
+    /***
+     * judge whether a docker pool has been init
+     * @param database_id
+     * @param operation_type
+     * @return
+     */
+    public boolean isInitDockerPool(int database_id, int operation_type){
+        return false;
+    }
+
+
+
 }
