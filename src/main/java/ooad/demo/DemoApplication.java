@@ -24,9 +24,9 @@ public class DemoApplication {
 
     @PreDestroy
     public static void destroy() throws IOException, JSchException {
-        ArrayList<Integer> dockerIDList = ManageDockersPool.getInstance().getDockerIDList();
+        ArrayList<Integer> dockerPoolIDList = ManageDockersPool.getInstance().getDockerPoolIDList();
         HashMap<String, DockerPool> dockersPoolHashMap = ManageDockersPool.getInstance().getDockersPoolHashMap();
-        for (Integer i : dockerIDList){
+        for (Integer i : dockerPoolIDList){
             String[] dockerNames = dockersPoolHashMap.get(String.valueOf(i)).getRunningList().toArray(new String[0]);
             for (String name: dockerNames) {
                 System.out.println("Removing" + name);

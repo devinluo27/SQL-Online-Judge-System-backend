@@ -42,6 +42,10 @@ public class RecordController{
 
     private final int PENDING = 0;
 
+    private final String query = "_query";
+
+    private final String trigger = "_trigger";
+
     @Autowired
     private FillDockerPoolService fillDockerPoolService;
 
@@ -147,11 +151,8 @@ public class RecordController{
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         Question q = questionMapper.getInfoForJudge(question_id);
-        String standard_ans = q.getQuestion_standard_ans();
 
         // get question details for judge machine
-        Integer database_id = q.getDatabase_id();
-        Integer operation_type = q.getOperation_type();
 
         Record r = new Record(sid, question_id, PENDING, code, sql_type);
         // add record first PENDING Status
@@ -159,7 +160,7 @@ public class RecordController{
         int record_id = r.getRecord_id();
         try {
             // Docker Judge Function
-            submitToDocker(record_id, question_id, database_id, code, sql_type);
+            submitToDocker(record_id, question_id, q, code, sql_type);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());
@@ -173,58 +174,35 @@ public class RecordController{
 
     }
 
-    public void submitToDocker(int record_id, Integer question_id, Integer database_id, String code,
+    public void submitToDocker(int record_id, Integer question_id, Question question, String code,
                                String sql_type) throws IOException, JSchException {
 
-        initDockerPoolService.InitDockerPool(database_id);
-        fillDockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(String.valueOf(database_id)));
-
-        judgeService.judgeCodeDocker(record_id, question_id, code, false, sql_type);
-
+        String dockerPoolMapKey = initDockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
+        // Trigger Judge will remove a docker
+        // TODO: change
+        if(question.getOperation_type() == 2 || question.getOperation_type() == 1){
+            fillDockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
+        }
+        judgeService.judgeCodeDocker(record_id, question_id, code, question.getIs_order(), sql_type);
     }
 
     @GetMapping("admin/getDockerPoolSize")
     public void getDockerPoolSize(int database_id, HttpServletResponse response) throws IOException {
         JsonResult<String> result = ResultTool.success();
-        int size = ManageDockersPool.getInstance().getDockersPoolHashMap().get(String.valueOf(database_id)).getRunningList().size();
-        result.setData("size: " + size);
+        int sizeQuery = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + query).getRunningList().size();
+        int sizeTrigger = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + trigger).getRunningList().size();
+        result.setData("sizeQuery: " + sizeQuery + "sizeTrigger: " + sizeTrigger);
         response.getWriter().write(JSON.toJSONString(result));
     }
 
-    //    @CrossOrigin
-//    @GetMapping("/judgeCode")
-//    int judgeCode(String standard, String code) {
-//        List<LinkedHashMap<String, Object>> a;
-//        try {
-//            a = recordMapper.judge(standard, code);
-//        }catch (DataAccessException e){
-//            System.out.println(e);
-//            return -1;
-//        }
-//        return a.size() == 0 ? 1 : 0;
-//    }
 
-//    @CrossOrigin
-////    @GetMapping("/runSql")
-//    List<LinkedHashMap<String, Object>> runSql(String code){
-//        List<LinkedHashMap<String, Object>> list = recordMapper.runSql(code);
-//        String[] ans = new String[list.size()];
-//        int i = 0;
-//        for (LinkedHashMap<String, Object> map : list) {
-//            for(Object o: map.values()){
-//                ans[i] += String.valueOf(o);
-//            }
-//            i++;
-//        }
-//        return list;
-//    }
     @Async
     public void addRecord(
 //            @RequestBody Record record,
             @RequestParam(value = "question_id") int question_id,
             @RequestParam(value = "code") String code,
             @RequestParam(value = "type") String sql_type
-            ) throws IOException {
+            ) {
 
 //        int question_id = record.getRecord_question_id();
 //        String code = record.getRecord_code();
@@ -246,7 +224,7 @@ public class RecordController{
         int record_id = r.getRecord_id();
         try {
             // Docker Judge Function
-            submitToDocker(record_id, question_id, database_id, code, sql_type);
+            submitToDocker(record_id, question_id, q, code, sql_type);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());

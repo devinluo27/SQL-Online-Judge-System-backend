@@ -18,36 +18,44 @@ public class InitDockerPoolService {
     @Value("${judge.dockerPool.docker.num}")
     private int dockerNum;
 
-    private final String query = "query";
-    private final String trigger = "trigger";
+    private final String query = "_query";
+
+    private final String trigger = "_trigger";
 
     /***
      *
-     * @param database_id_int
+     * @param database_id
      * @param operation_type 1: select 2: trigger
      * @throws IOException
      * @throws JSchException
      */
-    public void  InitDockerPool(Integer database_id_int, Integer operation_type) throws IOException, JSchException {
-        String database_id = String.valueOf(database_id_int);
-        if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id) == null){
+    public String InitDockerPool(Integer database_id, Integer operation_type) throws IOException, JSchException {
+        String mapKey;
+        if(operation_type == 1){
+            mapKey = database_id + query;
+        }
+        else {
+            mapKey = database_id + trigger;
+        }
+        if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(mapKey) == null){
 //            synchronized (ManageDockersPool.getInstance().getDockersHashMap()){
             // who gets the lock first can create a dockerPool as follows
             synchronized (ManageDockersPool.getInstance().getCreateDockerPoolLock()){
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
-                if (manageDockersPool.getDockersPoolHashMap().get(database_id) == null ){
-                    System.out.println("Init dockersPool " + database_id);
+                if (manageDockersPool.getDockersPoolHashMap().get(mapKey) == null){
+                    System.out.println("Init dockersPool " + mapKey);
                     HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
                     int randomDockerID = random.nextInt(100000000);
-                    while (manageDockersPool.getDockerIDList().contains(randomDockerID)){
+                    while (manageDockersPool.getDockerPoolIDList().contains(randomDockerID)){
                         randomDockerID = random.nextInt(100000000);
                     }
-                    map.put(database_id,
+                    map.put(mapKey,
                             new DockerPool(dockerNum, randomDockerID, 0,"film",
                                     "/data2/DBOJ/DockerTest/film.sql"));
-                    manageDockersPool.getDockerIDList().add(randomDockerID);
+                    manageDockersPool.getDockerPoolIDList().add(randomDockerID);
                 }
             }
         }
+        return mapKey;
     }
 }

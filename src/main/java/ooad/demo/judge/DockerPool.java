@@ -141,11 +141,24 @@ public class DockerPool {
         }
     }
 
-
     // TODO: getter and setter
     public ArrayList<String> getRunningList() {
         return runningList;
     }
 
+    static String HealthyCheckCMD = "docker ps --filter name=#DockerNAME# --filter status=#STATUS# --format \"{{.Names}}\"";
+    static String checkIfRunningCMD = "docker ps --filter name=#DockerNAME# --filter status=running --format \"{{.Names}}\"";
+
+    public boolean HealthyCheck(String DockerNAME, String STATUS) throws IOException, JSchException {
+        String CMD = HealthyCheckCMD.replaceAll("#DockerNAME#",DockerNAME).replaceAll("#STATUS#", STATUS);
+        Remote.Log log = Remote.EXEC_CMD(new String[]{CMD}).get(0);
+        return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
+    }
+
+    public static boolean checkIfRunning(String DockerNAME) throws IOException, JSchException {
+        String CMD = checkIfRunningCMD.replaceAll("#DockerNAME#",DockerNAME);
+        Remote.Log log = Remote.EXEC_CMD(new String[]{CMD}).get(0);
+        return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
+    }
 
 }

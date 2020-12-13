@@ -32,6 +32,7 @@ public class Question implements Serializable{
     private Integer database_id;
     private Integer is_visible;
     private Integer operation_type;
+    private Boolean is_order;
 
     public Question(Integer id, Integer question_id, String question_name,
                     Integer question_of_assignment, String question_description,

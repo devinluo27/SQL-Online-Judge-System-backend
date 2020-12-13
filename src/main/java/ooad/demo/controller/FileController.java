@@ -217,4 +217,73 @@ public class FileController  {
         List<UserFile> userFiles = userFileService.getAllFileInfo();
         return userFiles;
     }
+
+    @PostMapping("/uploadDatabase")
+    public void uploadDatabase(@RequestParam("file") @NotNull MultipartFile  file,
+                       @RequestParam("database_id") Integer database_id,
+                       HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        response.setContentType("text/json;charset=utf-8");
+        //获取用户的id
+        Principal userPrincipal = request.getUserPrincipal();
+
+        if (userPrincipal == null || file == null || database_id == null ){
+            //根据用户id查询有的文件信息
+            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+
+        //获取文件原始名称
+        String originalFilename = file.getOriginalFilename();
+        //获取文件后缀
+        String extension = "."+FilenameUtils.getExtension(file.getOriginalFilename());
+        //生成新的文件名称
+        String newFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + UUID.randomUUID().toString().replace("-", "") + extension;
+
+        //文件大小
+        long size = file.getSize();
+        //文件类型
+        String type = file.getContentType();
+        System.out.println(type);
+        //处理根据日期生成目录 classpath:/static/files
+        //处理根据题目生成目录 classpath:/files_for_students
+
+        // TODO
+        String relative_path =  "static/database/";
+        String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
+
+        File post_file = new File(realPath);
+
+        if (!post_file.exists()) post_file.mkdirs();
+
+        System.out.println(post_file);
+        //处理文件上传
+        file.transferTo(new File(post_file, newFileName));
+        //将文件信息放入数据库中
+        // TODO: 异常处理
+        UserFile userFile = new UserFile();
+        userFile.setOld_file_name(originalFilename)
+                .setNew_file_name(newFileName)
+                .setExt(extension)
+                .setFile_size(String.valueOf(size))
+                .setFile_type(type)
+                .setUser_id(Integer.parseInt(userPrincipal.getName()))
+                .setAssignment_id(-1)
+                .setQuestion_id(-1)
+                .setSort_num(-1);
+
+        userFile.setRelative_path(relative_path);
+        System.out.println(userFile);
+
+        // 保存文件相关信息到数据库
+        // TODO: Copy file to Judge Server
+        userFileService.save(userFile);
+        String retrieve_url = realPath + newFileName;
+        JsonResult<String> result = ResultTool.success();
+        result.setData(retrieve_url);
+        response.getWriter().write(JSON.toJSONString(result));
+    }
+
+
 }

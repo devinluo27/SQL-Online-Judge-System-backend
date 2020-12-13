@@ -35,8 +35,10 @@ public class JudgeServiceImpl implements JudgeService {
     @Autowired
     InitDockerPoolService initDockerPoolService;
 
-//    @Autowired
-//    Remote remote;
+    private final String query = "_query";
+
+    private final String trigger = "_trigger";
+
 
     @Async
     public void judgeCodeDocker(int record_id, Integer question_id,
@@ -47,11 +49,17 @@ public class JudgeServiceImpl implements JudgeService {
         String standard_ans = q.getQuestion_standard_ans();
         String database_id = String.valueOf(q.getDatabase_id());
         Integer operation_type = q.getOperation_type();
+        String mapKey;
+        if(operation_type == 1){
+            mapKey = database_id + query;
+        }
+        else {
+            mapKey = database_id + trigger;
+        }
 
         HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
-        DockerPool usedDockerPool = map.get(database_id);
+        DockerPool usedDockerPool = map.get(mapKey);
         ArrayList<String> dockers = usedDockerPool.getRunningList();
-
 
         System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
@@ -73,8 +81,8 @@ public class JudgeServiceImpl implements JudgeService {
                     }
                 }
                 dockID = dockers.get(0);
-                map.get(database_id).getRunningList().remove(dockID);
-                map.get(database_id).getSleepingList().remove(dockID);
+                usedDockerPool.getRunningList().remove(dockID);
+                usedDockerPool.getSleepingList().remove(dockID);
             }
 
             response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, Integer.parseInt(database_id));
@@ -99,8 +107,8 @@ public class JudgeServiceImpl implements JudgeService {
                     }
                 }
                 dockID = dockers.get(0);
-                map.get(database_id).getRunningList().remove(dockID);
-                map.get(database_id).getSleepingList().remove(dockID);
+                usedDockerPool.getRunningList().remove(dockID);
+                usedDockerPool.getSleepingList().remove(dockID);
             }
             response =  Judge.EXEC_QUERY(standard_ans, code, dockID, isOrder, Integer.parseInt(database_id));
             System.out.println("remove_docker_id" + dockID);

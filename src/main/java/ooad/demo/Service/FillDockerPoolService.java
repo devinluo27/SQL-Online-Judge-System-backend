@@ -27,13 +27,11 @@ public class FillDockerPoolService {
     @Async
     public void createADocker(DockerPool dockerPool) throws IOException, JSchException {
         System.out.println("Refill DockerPool: * " + 1 + " * with dockers");
-//        if (dockerPool.getRunningList().size() < dockerPool.getPoolSize()){
             int flag = 0;
             try {
                 flag = dockerPool.rebuildDocker(1);
             } catch (JSchException jSchException){
                 createADocker(dockerPool);
             }
-//        }
     }
 }

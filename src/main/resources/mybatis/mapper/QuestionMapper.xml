@@ -21,7 +21,7 @@
     </select>
 
     <select id="getInfoForJudge" resultType="Question">
-    select q.question_standard_ans, q.database_id, q.operation_type
+    select q.question_standard_ans, q.database_id, q.operation_type, q.is_order
     from question q
     where q.question_id = #{question_id};
 --     join assignment a on q.question_of_assignment = a.assignment_id;

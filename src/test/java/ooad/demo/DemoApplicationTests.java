@@ -6,6 +6,7 @@ import ooad.demo.Service.JudgeServiceImpl;
 import ooad.demo.Service.UserFileService;
 import ooad.demo.controller.RecordController;
 import ooad.demo.controller.UserController;
+import ooad.demo.judge.ManageDockersPool;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.mapper.VerifyCodeMapper;
@@ -93,6 +94,11 @@ class DemoApplicationTests {
         long now = System.currentTimeMillis();
         System.out.println(now);
         while(System.currentTimeMillis() - now < 1000000000){}
+
+    }
+
+    void judgeTest_docker_2() throws IOException, JSchException, InterruptedException {
+//        ManageDockersPool.getInstance().getDockersPoolHashMap().get("1-")
 
     }
 
