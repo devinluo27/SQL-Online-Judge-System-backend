@@ -34,6 +34,7 @@ public class Question implements Serializable{
     private Integer operation_type;
     private Boolean is_order;
 
+    // postgresql or sqlite or mysql
     @NotNull
     private String question_sql_type;
 

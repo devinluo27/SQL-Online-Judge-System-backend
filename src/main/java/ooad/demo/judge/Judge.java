@@ -3,7 +3,9 @@ package ooad.demo.judge;
 import com.jcraft.jsch.JSchException;
 
 import java.io.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Judge {
 
@@ -125,8 +127,10 @@ public class Judge {
     public static QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE) throws IOException, JSchException {
         TEST_SQL = TEST_SQL.replaceAll("\\$\\$", "####");
         TEST_SQL = java.util.regex.Matcher.quoteReplacement(TEST_SQL);
-        String[] CMD = TRIGGER_SQL[DBMS];
-        for (int i = 0; i < CMD.length; i++)
+        // TODO: Deepcopy is required.
+        String[] CMD = Arrays.copyOf(TRIGGER_SQL[DBMS], TRIGGER_SQL[DBMS].length);
+        System.out.println("EXEC_TRIGGER: " + DockerName);
+        for (int i = 0; i < CMD.length; i++){
             CMD[i] = CMD[i]
                     .replaceAll("#DockerNAME#", DockerName)
                     .replaceAll("#TEST_DATA_PATH#", TEST_DATA_PATH)
@@ -135,6 +139,10 @@ public class Judge {
                     .replaceAll("#TEST_CONFIG#", String.valueOf(Math.max(TEST_CONFIG, 1)))
                     .replaceAll("#TEST_SQL#", TEST_SQL)
                     .replaceAll("####", " \\\\\\$\\$ ");
+            // print commands
+//            System.out.println("Command " + i + ": " + CMD[i]);
+        }
+
         ArrayList<Remote.Log> logs = Remote.EXEC_CMD(CMD);
         int score = Math.max(Integer.parseInt(logs.get(logs.size() - 1).OUT.replaceAll(" ", "").replaceAll("\n", "")), 0);
         return new QUERY_RESULT(score, (double) logs.get(logs.size() - 3).exec_time, logs.get(logs.size() - 4).OUT + "\n" + logs.get(logs.size() - 3).OUT + "\n" + logs.get(logs.size() - 3).ERROR, logs.get(logs.size() - 4).ERROR);

@@ -27,6 +27,9 @@ public class TestPassword {
         String[] ss = strings.toArray(new String[0]);
         ss[1] = "ss";
         System.out.println(strings.get(1));
+        String s = "123";
+        s.replaceAll("1","9");
+        System.out.println(s);
 
     }
 }

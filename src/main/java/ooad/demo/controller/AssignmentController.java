@@ -39,7 +39,7 @@ public class AssignmentController {
         Collection<? extends GrantedAuthority> authorities =  SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("view_all_assignment")) {
-                System.out.println("auth: " + authority.getAuthority());
+//                System.out.println("auth: " + authority.getAuthority());
                 return  assignmentMapper.getAllAssignmentList();
             }
         }

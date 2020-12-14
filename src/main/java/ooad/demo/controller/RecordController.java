@@ -135,10 +135,10 @@ public class RecordController{
                    HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 //        int question_id = record.getRecord_question_id();
-         code = record.getRecord_code();
+//         code = record.getRecord_code();
 //        String sql_type = record.getRecord_code_type();
 
-        code = code.replace(';', ' ').trim();
+//        code = code.replace(';', ' ').trim();
 
         response.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){
@@ -147,17 +147,16 @@ public class RecordController{
             return;
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
-        Question q = questionMapper.getInfoForJudge(question_id);
-
         // get question details for judge machine
+        Question question = questionMapper.getInfoForJudge(question_id);
 
-        Record r = new Record(sid, question_id, PENDING, code, sql_type);
+        Record r = new Record(sid, question_id, PENDING, code, question.getQuestion_sql_type());
         // add record first PENDING Status
         recordMapper.addRecord(r);
         int record_id = r.getRecord_id();
         try {
             // Docker Judge Function
-            submitToDocker(record_id, question_id, q, code, sql_type);
+            submitToDocker(record_id, question, code);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());
@@ -171,16 +170,16 @@ public class RecordController{
 
     }
 
-    public void submitToDocker(int record_id, Integer question_id, Question question, String code,
-                               String sql_type) throws IOException, JSchException {
+    private void submitToDocker(int record_id,  Question question, String code) throws IOException, JSchException {
 
+        // 什么sql语言与建dockerPool无关
         String dockerPoolMapKey = dockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
         // Trigger Judge will remove a docker
         // TODO: change
         if(question.getOperation_type() == 2 || question.getOperation_type() == 1){
             dockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
         }
-        judgeService.judgeCodeDocker(record_id, question_id, code, question.getIs_order(), sql_type);
+        judgeService.judgeCodeDocker(record_id, question, code);
     }
 
     @GetMapping("/admin/getDockerPoolSize")
