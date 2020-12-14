@@ -231,7 +231,7 @@ public class RecordController{
         int record_id = r.getRecord_id();
         try {
             // Docker Judge Function
-            submitToDocker(record_id, question_id, q, code, sql_type);
+            submitToDocker(record_id, q, code);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             System.out.println(e.fillInStackTrace());
