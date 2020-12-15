@@ -114,6 +114,7 @@ public class JudgeServiceImpl implements JudgeService {
             //  TODO: 更换各种硬编码 postgres： 0
 
             System.out.println("DockerId: " + dockID);
+
             response =  Judge.EXEC_TRIGGER("/data2/DBOJ/week14Sigiin/week14_sign_in_ans.sql",
                     code,
                     "/data2/DBOJ/week14Sigiin/week14_sign_in_test.sql",
