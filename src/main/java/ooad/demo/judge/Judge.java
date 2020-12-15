@@ -1,6 +1,7 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
+import com.sun.tools.classfile.ConstantPool;
 
 import java.io.*;
 
@@ -144,7 +145,16 @@ public class Judge {
         }
 
         ArrayList<Remote.Log> logs = Remote.EXEC_CMD(CMD);
-        int score = Math.max(Integer.parseInt(logs.get(logs.size() - 1).OUT.replaceAll(" ", "").replaceAll("\n", "")), 0);
+        int score = 0;
+        try {
+            score = logs.get(logs.size() - 1).OUT != null
+                    && logs.get(logs.size() - 1).OUT.length() > 0 ?
+                    Math.max(Integer.parseInt(logs.get(logs.size() - 1).OUT
+                            .replaceAll(" ", "")
+                            .replaceAll("\n", "")), 0) : 0;
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
         return new QUERY_RESULT(score, (double) logs.get(logs.size() - 3).exec_time, logs.get(logs.size() - 4).OUT + "\n" + logs.get(logs.size() - 3).OUT + "\n" + logs.get(logs.size() - 3).ERROR, logs.get(logs.size() - 4).ERROR);
     }
 }

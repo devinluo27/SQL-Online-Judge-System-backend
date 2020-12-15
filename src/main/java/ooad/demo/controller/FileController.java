@@ -8,10 +8,13 @@ import ooad.demo.config.JsonResult;
 import ooad.demo.config.ResultCode;
 import ooad.demo.config.ResultTool;
 import ooad.demo.judge.Remote;
+import ooad.demo.mapper.DataBaseMapper;
+import ooad.demo.pojo.Database;
 import ooad.demo.pojo.UserFile;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +37,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
@@ -44,7 +48,30 @@ public class FileController  {
     private UserFileService userFileService;
 
     @Autowired
+    private DataBaseMapper dataBaseMapper;
+
+    @Autowired
     private Remote remote;
+
+    @Value("${judge.remote.file-path}")
+    private  String remoteFilePath = "/data2/DBOJ/JudgeFile/";
+
+    @Value("${judge.remote.database-path}")
+    private String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
+
+    private String localRemoteFileRelativePATH =  "/static/remote_files/";
+
+    private String localRemoteDatabaseFileRelativePATH =  "/static/remote_files/database/";
+
+    private static class FileInfo{
+        int file_id;
+        String newFileName;
+        public FileInfo(int file_id, String newFileName) {
+            this.file_id = file_id;
+            this.newFileName = newFileName;
+        }
+    }
+
 
     //    展示所有文件信息
     @GetMapping("/files/findByUserId")
@@ -200,8 +227,7 @@ public class FileController  {
                 .setFile_type(type)
                 .setUser_id(Integer.parseInt(userPrincipal.getName()))
                 .setAssignment_id(Integer.parseInt(assignment_id))
-                .setQuestion_id(Integer.parseInt(question_id))
-                .setSort_num(sort_num);
+                .setQuestion_id(Integer.parseInt(question_id));
 
         userFile.setRelative_path(relative_path);
         System.out.println(userFile);
@@ -273,8 +299,7 @@ public class FileController  {
                 .setFile_type(type)
                 .setUser_id(Integer.parseInt(userPrincipal.getName()))
                 .setAssignment_id(-1)
-                .setQuestion_id(-1)
-                .setSort_num(-1);
+                .setQuestion_id(-1);
 
         userFile.setRelative_path(relative_path);
         System.out.println(userFile);
@@ -286,6 +311,7 @@ public class FileController  {
         result.setData(retrieve_url);
         response.getWriter().write(JSON.toJSONString(result));
     }
+
 
 
 
@@ -297,48 +323,90 @@ public class FileController  {
         return userFiles;
     }
 
-    @PostMapping("/files/uploadDatabase")
-    public void uploadDatabase(@RequestParam(value = "file") MultipartFile  file,
-//                       @RequestParam(value = "database_index") Integer database_index,
-                       @RequestParam(value = "database_name") String database_name,
-                       @RequestParam(value = "database_description") String database_description,
-                       HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    @PostMapping("/files/uploadToRemoteDatabase")
+    public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
+                             @RequestParam(value = "database_name") String database_name,
+                             @RequestParam(value = "database_description") String database_description,
+                             HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/json;charset=utf-8");
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (userPrincipal == null || file.isEmpty() || extension == null || !extension.toLowerCase().equals("sql")){
+            //根据用户id查询有的文件信息
+            System.out.println(extension);
+            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+        FileInfo fileInfo = uploadToRemoteInternal(file, Integer.parseInt(userPrincipal.getName()), true);
+        if (fileInfo.file_id == -1){
+            JsonResult<String> result = ResultTool.fail();
+            result.setData("upload to remote failed!");
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+        Database database = new Database(fileInfo.file_id, database_name, database_description, remoteDatabasePath, fileInfo.newFileName);
+        dataBaseMapper.addDatabase(database);
+        JsonResult<String> result = ResultTool.success();
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
-        if (userPrincipal == null || file == null || database_name == null ){
+
+    @PostMapping("/files/uploadToRemote")
+    public void uploadToRemote(@RequestParam(value = "file") MultipartFile  file,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
+        response.setContentType("text/json;charset=utf-8");
+        //获取用户的id
+        Principal userPrincipal = request.getUserPrincipal();
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (userPrincipal == null || file.isEmpty()){
             //根据用户id查询有的文件信息
             JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
             response.getWriter().write(JSON.toJSONString(result));
             return;
         }
+        FileInfo fileInfo = uploadToRemoteInternal(file, Integer.parseInt(userPrincipal.getName()), false);
+        if (fileInfo.file_id == -1){
+            JsonResult<String> result = ResultTool.fail();
+            result.setData("upload to remote failed!");
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+        JsonResult<String> result = ResultTool.success();
+        result.setData(String.valueOf(fileInfo.file_id));
+        response.getWriter().write(JSON.toJSONString(result));
+    }
 
+    private FileInfo uploadToRemoteInternal(MultipartFile  file, int user_id, boolean is_database) throws Exception {
         //获取文件原始名称
         String originalFilename = file.getOriginalFilename();
         //获取文件后缀
-        String extension = "."+FilenameUtils.getExtension(file.getOriginalFilename());
+        String extension = "." + FilenameUtils.getExtension(file.getOriginalFilename());
         //生成新的文件名称
         String newFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + UUID.randomUUID().toString().replace("-", "") + extension;
-
         //文件大小
         long size = file.getSize();
         //文件类型
         String type = file.getContentType();
-        System.out.println(type);
-
-        // TODO: 文件夹名: 学生不可访问
-        String relative_path =  "static/database/";
+        // TODO: 本地文件夹名: 学生不可访问
+        String relative_path;
+        String remoteFullPath;
+        if (is_database){
+            relative_path =  localRemoteDatabaseFileRelativePATH;
+            remoteFullPath = remoteDatabasePath + newFileName;
+        }
+        else {
+            relative_path =  localRemoteFileRelativePATH;
+            remoteFullPath = remoteFilePath + newFileName;
+        }
         String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
-
         File post_file = new File(realPath);
-
         if (!post_file.exists()) post_file.mkdirs();
-
-        System.out.println(post_file);
         //处理文件上传
         file.transferTo(new File(post_file, newFileName));
+        Thread.sleep(1000);
         //将文件信息放入数据库中
         // TODO: 异常处理
         UserFile userFile = new UserFile();
@@ -347,23 +415,24 @@ public class FileController  {
                 .setExt(extension)
                 .setFile_size(String.valueOf(size))
                 .setFile_type(type)
-                .setUser_id(Integer.parseInt(userPrincipal.getName()))
+                .setUser_id(user_id)
                 .setAssignment_id(-1)
                 .setQuestion_id(-1)
-                .setSort_num(-1);
-
+                .setIs_database(is_database);
         userFile.setRelative_path(relative_path);
-        System.out.println(userFile);
-
+        userFile.setRemote_path(remoteFullPath);
         // 保存文件相关信息到数据库
-        // TODO: Copy file to Judge Server
         userFileService.save(userFile);
-        String retrieve_url = realPath + newFileName;
-        JsonResult<String> result = ResultTool.success();
-        result.setData(retrieve_url);
-        response.getWriter().write(JSON.toJSONString(result));
+        int file_id = userFile.getId();
+        FileInfo fileInfo = new FileInfo(file_id, newFileName);
+        // 复制文件到远程服务器
+        boolean is_success = remote.uploadFile(file_id, remoteFullPath);
+        if (!is_success){
+            fileInfo.file_id = -1;
+            return fileInfo;
+        }
+        return fileInfo;
     }
-
 
 
     @GetMapping("/admin/initDatabaseDocker")
@@ -387,7 +456,7 @@ public class FileController  {
     @GetMapping("/admin/copyToRemote")
     @ResponseBody
     public String copyToRemote(Integer file_id) throws Exception {
-        remote.uploadFile(file_id);
+//        remote.uploadFile(file_id, );
         return "1";
     }
 

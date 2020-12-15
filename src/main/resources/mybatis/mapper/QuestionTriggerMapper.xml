@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ooad.demo.mapper.QuestionTriggerMapper">
+
+    <cache/>
+
+    <select id="getQuestionTriggerByQid" resultType="QuestionTrigger">
+        select * from question_trigger
+        where question_id = #{question_id}
+    </select>
+
+    <insert id="addQuestionTrigger" parameterType="QuestionTrigger">
+        insert into question_trigger (question_id, ans_table_path, test_data_path, test_config, target_table)
+            VALUES (#{question_id}, #{ans_table_path}, #{test_data_path}, #{test_config}, #{target_table})
+    </insert>
+
+</mapper>

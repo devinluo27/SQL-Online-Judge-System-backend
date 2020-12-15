@@ -47,14 +47,15 @@ public class DockerPoolService {
      * @throws IOException
      * @throws JSchException
      */
-    public String InitDockerPool(Integer database_id, Integer operation_type) throws IOException, JSchException {
+    public String InitDockerPool(Integer database_id, String operation_type) throws IOException, JSchException {
         String mapKey;
-        if(operation_type == 1){
+        if(operation_type.equals("query")){
             mapKey = database_id + query;
         }
         else {
             mapKey = database_id + trigger;
         }
+        // TODO: OPERATION_TYPE CHECK
         if (ManageDockersPool.getInstance().getDockersPoolHashMap().get(mapKey) == null){
 //            synchronized (ManageDockersPool.getInstance().getDockersHashMap()){
             // who gets the lock first can create a dockerPool as follows
@@ -90,8 +91,15 @@ public class DockerPoolService {
      * @param operation_type
      * @return
      */
-    public boolean isInitDockerPool(int database_id, int operation_type){
-        return false;
+    public boolean isInitDockerPool(int database_id, String operation_type){
+        String mapKey;
+        if(operation_type.equals("query")){
+            mapKey = database_id + query;
+        }
+        else {
+            mapKey = database_id + trigger;
+        }
+        return ManageDockersPool.getInstance().getDockersPoolHashMap().get(mapKey) != null;
     }
 
 

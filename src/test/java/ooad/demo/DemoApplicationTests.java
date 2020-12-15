@@ -213,7 +213,7 @@ class DemoApplicationTests {
 
     @Test
     public void copyToRemote1() throws Exception {
-        remote.uploadFile(9);
+//        remote.uploadFile(9);
     }
 
 }

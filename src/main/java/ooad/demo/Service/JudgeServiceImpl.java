@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 //@PropertySource(value = "classpath:application.yml")
 @Service
@@ -29,6 +30,8 @@ public class JudgeServiceImpl implements JudgeService {
     @Autowired
     DockerPoolService dockerPoolService;
 
+    private Random random = new Random();
+
 
     private final String query = "_query";
 
@@ -41,7 +44,7 @@ public class JudgeServiceImpl implements JudgeService {
 
         String standard_ans = question.getQuestion_standard_ans();
         String database_id = String.valueOf(question.getDatabase_id());
-        int operation_type = question.getOperation_type();
+        String operation_type = question.getOperation_type();
         int question_id = question.getQuestion_id();
         String string_sql_type = question.getQuestion_sql_type();
         int sql_type = getSqlTypeIndex(string_sql_type);
@@ -50,7 +53,7 @@ public class JudgeServiceImpl implements JudgeService {
         String mapKey;
 
         // 获得 哈希表的键值
-        if(operation_type == 1){
+        if(operation_type.equals("query")){
             mapKey = database_id + query;
         }
         else {
@@ -65,9 +68,8 @@ public class JudgeServiceImpl implements JudgeService {
 
         Judge.QUERY_RESULT response;
         // only query
-        if(operation_type == 1){
-//            int rand = random.nextInt(dockers.size());
-//            String dockID = dockers.get(rand);
+        if(operation_type.equals("query")){
+            int rand = random.nextInt(dockers.size());
             String dockID;
             synchronized (usedDockerPool.getRunningList()){
                 if(usedDockerPool.getRunningList().size() == 0){
@@ -80,19 +82,14 @@ public class JudgeServiceImpl implements JudgeService {
                         e.printStackTrace();
                     }
                 }
-                dockID = dockers.get(0);
-                usedDockerPool.getRunningList().remove(dockID);
-                usedDockerPool.getSleepingList().remove(dockID);
+                dockID = dockers.get(rand);
             }
             //  TODO: 硬编码 postgres： 0
             response =  Judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
-            System.out.print("docker in service: ");
-
-            System.out.println("remove_docker_id" + dockID);
-            usedDockerPool.RemoveDockerOnly(dockID);
+            System.out.println("query_docker_id" + dockID);
             System.out.println();
         }
-        else if(operation_type == 2){
+        else if(operation_type.equals("trigger")){
             // trigger
             System.out.println("Trigger: ");
             String dockID;
@@ -112,7 +109,6 @@ public class JudgeServiceImpl implements JudgeService {
                 usedDockerPool.getSleepingList().remove(dockID);
             }
             //  TODO: 更换各种硬编码 postgres： 0
-
             System.out.println("DockerId: " + dockID);
 
             response =  Judge.EXEC_TRIGGER("/data2/DBOJ/week14Sigiin/week14_sign_in_ans.sql",
@@ -129,7 +125,7 @@ public class JudgeServiceImpl implements JudgeService {
             System.out.println();
         }
         else {
-            // error
+            // error TODO: not trigger or query case
             response = new Judge.QUERY_RESULT(-2, -1, "", "");
         }
 

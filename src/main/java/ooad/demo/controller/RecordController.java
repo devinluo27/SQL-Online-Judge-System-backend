@@ -176,7 +176,7 @@ public class RecordController{
         String dockerPoolMapKey = dockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
         // Trigger Judge will remove a docker
         // TODO: change
-        if(question.getOperation_type() == 2 || question.getOperation_type() == 1){
+        if(question.getOperation_type().equals("trigger")){
             dockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
         }
         judgeService.judgeCodeDocker(record_id, question, code);
@@ -223,7 +223,7 @@ public class RecordController{
 
         // get question details for judge machine
         Integer database_id = q.getDatabase_id();
-        Integer operation_type = q.getOperation_type();
+        String operation_type = q.getOperation_type();
 
         Record r = new Record(sid, question_id, PENDING, code, sql_type);
         // add record first PENDING Status

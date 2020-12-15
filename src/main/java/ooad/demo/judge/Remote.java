@@ -47,7 +47,10 @@ public class Remote {
     private String remotePassword = "789ab73077cb";
 
     @Value("${judge.remote.database-path}")
-    private String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
+    private final String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
+
+    @Value("${judge.remote.file-path}")
+    private final String remoteFilePath = "/data2/DBOJ/JudgeFile/";
 
     private  String SESSION_CONFIG_STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
 
@@ -114,16 +117,16 @@ public class Remote {
     }
 
 
-    public boolean uploadFile(int file_id) throws Exception {
 
+    public boolean uploadFile(int file_id, String targetFullPath) throws Exception {
         UserFile userFile = userFileMapper.getLocalRealPath(file_id);
         String newFileName = userFile.getNew_file_name();
         String localRealPath = ResourceUtils.getURL("classpath:").getPath() +
                 userFile.getRelative_path() + newFileName;
         File uploadFile = new File(localRealPath);
-        String targetPath = remoteDatabasePath + newFileName;
+//        String targetPath = remoteDatabasePath + newFileName;
         try(InputStream input =  new FileInputStream(uploadFile)) {
-            return this.uploadFileSSH(targetPath, input);
+            return this.uploadFileSSH(targetFullPath, input);
         } catch (FileNotFoundException e) {
             System.out.println(e);
 //            log.error("文件上传失败"+e);
@@ -143,7 +146,7 @@ public class Remote {
          * @return
          * @throws Exception
          */
-    public boolean uploadFileSSH(String targetPath, InputStream inputStream) throws Exception {
+    private boolean uploadFileSSH(String targetPath, InputStream inputStream) throws Exception {
 
         ChannelSftp sftp = this.createSftp();
         try {

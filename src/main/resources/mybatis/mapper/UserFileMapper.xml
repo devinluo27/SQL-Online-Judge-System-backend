@@ -21,13 +21,13 @@
     </select>
 
 
-    <insert id="save" parameterType="UserFile">
+    <insert id="save" parameterType="UserFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into user_files (old_file_name, new_file_name, ext, relative_path, file_size, file_type,
-    is_img, down_counts, upload_time, user_id, question_id, assignment_id, sort_num)
+    is_img, down_counts, upload_time, user_id, question_id, assignment_id)
     values (#{old_file_name},
     #{new_file_name}, #{ext}, #{relative_path}, #{file_size},
     #{file_type}, #{is_img}, #{down_counts},
-    #{upload_time}, #{user_id}, #{question_id}, #{assignment_id}, #{sort_num})
+    #{upload_time}, #{user_id}, #{question_id}, #{assignment_id})
     </insert>
 
     <delete id="delete">

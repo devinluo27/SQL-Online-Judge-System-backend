@@ -11,4 +11,10 @@
        where database_id = #{database_id}
    </select>
 
+    <insert id="addDatabase" parameterType="Database">
+    insert into database (user_file_id, database_remote_path, database_remote_name, database_name, database_description)
+        values (#{user_file_id}, #{database_remote_path}, #{database_remote_name}, #{database_name}, #{database_description});
+    </insert>
+
 </mapper>
+
