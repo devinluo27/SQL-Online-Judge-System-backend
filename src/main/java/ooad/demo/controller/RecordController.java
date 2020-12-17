@@ -137,8 +137,7 @@ public class RecordController{
 //        int question_id = record.getRecord_question_id();
 //         code = record.getRecord_code();
 //        String sql_type = record.getRecord_code_type();
-
-//        code = code.replace(';', ' ').trim();
+//        System.out.println(request.isUserInRole("admin"));
 
         response.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){
@@ -159,6 +158,7 @@ public class RecordController{
             submitToDocker(record_id, question, code);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
+            e.printStackTrace();
             System.out.println(e.fillInStackTrace());
             System.out.println(e.getMessage());
             // 塞到HttpServletResponse中返回给前台
@@ -175,9 +175,14 @@ public class RecordController{
         // 什么sql语言与建dockerPool无关
         String dockerPoolMapKey = dockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
         // Trigger Judge will remove a docker
-        // TODO: change
+        // TODO: add a docker if it is a trigger question
         if(question.getOperation_type().equals("trigger")){
             dockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
+        }
+        else {
+            // query 判题删掉分号
+//            int index = code.lastIndexOf(',');
+            code = code.replace(';', ' ').trim();
         }
         judgeService.judgeCodeDocker(record_id, question, code);
     }

@@ -69,9 +69,12 @@ public class DockerPoolService {
                         randomDockerID = random.nextInt(100000000);
                     }
                     Database database = dataBaseMapper.selectDatabaseById(database_id);
+                    if (database == null){
+                        throw new NullPointerException("##Database Doesn't exist!##");
+                    }
                     String database_name = database.getDatabase_remote_name();
                     // TODO: 文件后缀更新
-                    String database_full_address = database.getDatabase_remote_path() + database_name + ".sql";
+                    String database_full_address = database.getDatabase_remote_path() + database_name;
                     map.put(mapKey,
 //                            new DockerPool(dockerNum, randomDockerID, 0,"film",
 //                                    "/data2/DBOJ/DockerTest/film.sql")
