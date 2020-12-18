@@ -29,9 +29,10 @@ public class Question implements Serializable{
     private String question_standard_ans;
     @NotNull
     private Integer database_id;
-    private Integer is_visible;
+    private Boolean is_visible;
     private String operation_type;
     private Boolean is_order;
+    private Boolean is_enabled = true;
 
     // postgresql or sqlite or mysql
     @NotNull
@@ -40,7 +41,7 @@ public class Question implements Serializable{
     public Question(Integer id, Integer question_id, String question_name,
                     Integer question_of_assignment, String question_description,
                     String question_output, Integer question_index, Integer is_finished
-            , String question_standard_ans, Integer database_id, Integer is_visible, String operation_type) {
+            , String question_standard_ans, Integer database_id, Boolean is_visible, String operation_type) {
         this.id = id;
         this.question_id = question_id;
         this.question_name = question_name;

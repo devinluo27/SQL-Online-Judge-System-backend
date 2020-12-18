@@ -4,9 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.jcraft.jsch.JSchException;
 import ooad.demo.Service.DockerPoolService;
 import ooad.demo.Service.JudgeService;
-import ooad.demo.config.JsonResult;
-import ooad.demo.config.ResultCode;
-import ooad.demo.config.ResultTool;
+import ooad.demo.utils.AccessLimit;
+import ooad.demo.utils.JsonResult;
+import ooad.demo.utils.ResultCode;
+import ooad.demo.utils.ResultTool;
 import ooad.demo.judge.ManageDockersPool;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.RecordMapper;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 /***
@@ -56,7 +58,6 @@ public class RecordController{
         this.userController = userController;
     }
 
-    @CrossOrigin
     @GetMapping("/admin/queryAllRecordListInfo")
     List<Record> queryRecordList(@RequestParam("page_num") Integer page_num){
         return recordMapper.queryAllRecordList(page_num);
@@ -125,7 +126,8 @@ public class RecordController{
      * @param response
      * @throws IOException
      */
-    @CrossOrigin
+
+    @AccessLimit(maxCount = 3, seconds = 60)
     @PostMapping("/user/addRecord")
     public void addRecord(
             @RequestBody Record record,
@@ -140,6 +142,7 @@ public class RecordController{
 //        System.out.println(request.isUserInRole("admin"));
 
         response.setContentType("text/json;charset=utf-8");
+
         if (request.getUserPrincipal() == null){
             JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
             response.getWriter().write(JSON.toJSONString(result));
@@ -148,9 +151,13 @@ public class RecordController{
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         // get question details for judge machine
         Question question = questionMapper.getInfoForJudge(question_id);
-
+        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
+            JsonResult result = ResultTool.fail(ResultCode.CANNOT_SUBMIT);
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
         Record r = new Record(sid, question_id, PENDING, code, question.getQuestion_sql_type());
-        // add record first PENDING Status
+        // add record first, set to PENDING Status
         recordMapper.addRecord(r);
         int record_id = r.getRecord_id();
         try {
@@ -168,6 +175,20 @@ public class RecordController{
         JsonResult result = ResultTool.success();
         response.getWriter().write(JSON.toJSONString(result));
 
+    }
+
+    /***
+     *  如果没过DDL return 1; 已过 return 0
+     * @param question_id
+     * @return
+     */
+    private boolean checkDDL(int question_id){
+        Timestamp ddl = questionMapper.getDDL(question_id);
+        return ddl.getTime() - System.currentTimeMillis() >= 0;
+    }
+
+    private boolean checkIsQuestionAvailable(Question question){
+        return question.getIs_visible() && question.getIs_enabled();
     }
 
     private void submitToDocker(int record_id,  Question question, String code) throws IOException, JSchException {
@@ -189,6 +210,7 @@ public class RecordController{
 
     @GetMapping("/admin/getDockerPoolSize")
     public void getDockerPoolSize(int database_id, HttpServletResponse response) throws IOException {
+        response.setContentType("text/json;charset=utf-8");
         JsonResult<String> result = ResultTool.success();
         int sizeQuery = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + query).getRunningList().size();
         int sizeTrigger = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + trigger).getRunningList().size();
@@ -202,8 +224,26 @@ public class RecordController{
      */
     @GetMapping("/admin/rejudgeByQuestionId")
     public void rejudgeByQuestionId(
-            @RequestParam(value = "question_id") Integer question_id){
-
+            @RequestParam(value = "question_id") Integer question_id,
+            HttpServletResponse response) throws IOException, JSchException {
+        response.setContentType("text/json;charset=utf-8");
+        List<Record> rejudgeList = recordMapper.selectLatestRecordByQuestionId(question_id);
+        Question question = questionMapper.getInfoForJudge(question_id);
+        try {
+            // Docker Judge Function
+            for (Record r : rejudgeList){
+                Record newRecord = new Record(r.getRecord_sid(), question_id, PENDING, r.getRecord_code(), question.getQuestion_sql_type());
+                recordMapper.addRecord(newRecord);
+                submitToDocker(newRecord.getRecord_id(), question, r.getRecord_code());
+            }
+        } catch (Exception e){
+            JsonResult result = ResultTool.fail(ResultCode.JUDGE_FAIL);
+            e.printStackTrace();
+            response.getWriter().write(JSON.toJSONString(result));
+            return;
+        }
+        JsonResult result = ResultTool.success();
+        response.getWriter().write(JSON.toJSONString(result));
     }
 
 

@@ -1,4 +1,4 @@
-package ooad.demo.config;
+package ooad.demo.utils;
 
 /**
  * @Author:
@@ -36,7 +36,13 @@ public enum ResultCode {
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
 
     /* 业务错误 */
-    NO_PERMISSION(3001, "没有权限");
+    NO_PERMISSION(3001, "没有权限"),
+    CANNOT_SUBMIT(4001, "禁止提交"),
+    JUDGE_FAIL(4002, "判题失败"),
+    REACHING_ACCESS_LIMIT(5001, "访问过于频繁")
+
+    ;
+
     private Integer code;
     private String message;
 

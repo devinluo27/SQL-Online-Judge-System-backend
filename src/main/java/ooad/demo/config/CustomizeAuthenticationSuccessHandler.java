@@ -2,7 +2,8 @@ package ooad.demo.config;
 
 import com.alibaba.fastjson.JSON;
 import ooad.demo.mapper.UserMapper;
-import ooad.demo.pojo.UserDB;
+import ooad.demo.utils.JsonResult;
+import ooad.demo.utils.ResultTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

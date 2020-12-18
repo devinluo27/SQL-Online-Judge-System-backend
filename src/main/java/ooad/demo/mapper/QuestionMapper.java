@@ -21,5 +21,7 @@ public interface QuestionMapper {
     Question getInfoForJudge(int question_id);
 
     List<Question> selectQuestionsByAssignment(int sid, int assignment_id);
+
+    int disableQuestion(int question_id);
 }
 

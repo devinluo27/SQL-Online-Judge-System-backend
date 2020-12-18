@@ -1,6 +1,8 @@
 package ooad.demo.config;
 
 import com.alibaba.fastjson.JSON;
+import ooad.demo.utils.JsonResult;
+import ooad.demo.utils.ResultTool;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;

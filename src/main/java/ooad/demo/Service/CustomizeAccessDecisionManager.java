@@ -3,6 +3,7 @@ package ooad.demo.Service;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,16 @@ public class CustomizeAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
         Iterator<ConfigAttribute> iterator = collection.iterator();
+        for (ConfigAttribute attribute : collection) {
+            if ("ROLE_LOGIN".equals(attribute.getAttribute())) {
+                //判断是否登录，若是匿名用户则表示没有登录，抛出异常
+                if (authentication instanceof AnonymousAuthenticationToken) {
+                    throw new AccessDeniedException("非法请求！");
+                } else
+                    break;
+            }
+        }
+
         while (iterator.hasNext()) {
             ConfigAttribute ca = iterator.next();
             //当前请求需要的权限

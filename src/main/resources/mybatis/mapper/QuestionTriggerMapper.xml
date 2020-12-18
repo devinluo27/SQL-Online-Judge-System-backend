@@ -12,8 +12,8 @@
     </select>
 
     <insert id="addQuestionTrigger" parameterType="QuestionTrigger">
-        insert into question_trigger (question_id, ans_table_path, test_data_path, test_config, target_table)
-            VALUES (#{question_id}, #{ans_table_path}, #{test_data_path}, #{test_config}, #{target_table})
+        insert into question_trigger (question_id, ans_table_file_id, test_data_file_id, test_config, target_table)
+            VALUES (#{question_id}, #{ans_table_file_id}, #{test_data_file_id}, #{test_config}, #{target_table})
     </insert>
 
 </mapper>

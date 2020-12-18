@@ -22,8 +22,6 @@ public interface RecordMapper {
 
     Record selectARecordById(Integer record_id, Integer sid);
 
-//    @Select("${code}")
-//    List<LinkedHashMap<String, Object>> runSql(@Param(value="code") String code);
 
     List<LinkedHashMap<String, Object>> runSql(String code);
 
@@ -31,6 +29,9 @@ public interface RecordMapper {
     List<LinkedHashMap<String, Object>> judge(String standard, String code);
 
     List<Record> selectRecordBySidAndAssignment(int sid, int assignment_id);
+
+    List<Record> selectLatestRecordByQuestionId(int question_id);
+
 
     int addRecord(Record record);
     int deleteARecord(Integer record_id);

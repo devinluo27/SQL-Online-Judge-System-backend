@@ -4,9 +4,9 @@ package ooad.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import ooad.demo.Service.UserFileService;
-import ooad.demo.config.JsonResult;
-import ooad.demo.config.ResultCode;
-import ooad.demo.config.ResultTool;
+import ooad.demo.utils.JsonResult;
+import ooad.demo.utils.ResultCode;
+import ooad.demo.utils.ResultTool;
 import ooad.demo.judge.Remote;
 import ooad.demo.mapper.DataBaseMapper;
 import ooad.demo.pojo.Database;
@@ -20,12 +20,10 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import javax.validation.Valid;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Controller

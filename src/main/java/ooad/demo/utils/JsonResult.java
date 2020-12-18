@@ -1,4 +1,4 @@
-package ooad.demo.config;
+package ooad.demo.utils;
 
 import java.io.Serializable;
 

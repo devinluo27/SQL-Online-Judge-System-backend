@@ -2,10 +2,9 @@ package ooad.demo.controller;
 
 
 import cn.shuibo.annotation.Decrypt;
-import cn.shuibo.annotation.Encrypt;
 import com.alibaba.fastjson.JSON;
-import ooad.demo.config.JsonResult;
-import ooad.demo.config.ResultTool;
+import ooad.demo.utils.JsonResult;
+import ooad.demo.utils.ResultTool;
 import ooad.demo.mapper.AssignmentMapper;
 import ooad.demo.pojo.Assignment;
 import ooad.demo.pojo.Question;
@@ -26,7 +25,6 @@ public class AssignmentController {
 
     @Autowired
     private AssignmentMapper assignmentMapper;
-
 
     /***
      * The return msg depends on whether the user has permission "view_all_assignment"
@@ -67,6 +65,17 @@ public class AssignmentController {
         Assignment assignment = assignmentMapper.selectAssignmentById(assignment_id);
 
         return  assignment;
+    }
+
+    /***
+     * pass the id return assignment with associate questions
+     * @param assignment_id
+     * @return
+     */
+    @GetMapping("/user/queryQuestionsByAssignmentID")
+    public List<Question> queryQuestionsByAssignment(@RequestParam(value = "assignment_id") Integer assignment_id ){
+        Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
+        return assignment.getQuestions();
     }
 
 
@@ -113,19 +122,9 @@ public class AssignmentController {
         response.getWriter().write(String.valueOf(result));
     }
 
-    /***
-     * pass the id return assignment with associate questions
-     * @param assignment_id
-     * @return
-     */
-    @CrossOrigin
-    @GetMapping("/user/queryQuestionsByAssignmentID")
-    public List<Question> queryQuestionsByAssignment(@RequestParam(value = "assignment_id") Integer assignment_id ){
-        Assignment assignment = assignmentMapper.queryQuestionsByAssignment(assignment_id);
-        return assignment.getQuestions();
-    }
 
-    @GetMapping("admin/deleteAssignment")
+
+    @GetMapping("/admin/deleteAssignment")
     public void deleteAssignment(
             @RequestParam(value = "assignment_id") Integer assignment_id){
 

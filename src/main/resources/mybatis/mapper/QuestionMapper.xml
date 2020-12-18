@@ -11,7 +11,8 @@
     select question_id, question_name, question_of_assignment, question_output,
     question_index, question_standard_ans, database_id, id,
      is_visible, operation_type
-    from question;
+    from question
+    where is_enabled = true;
     </select>
 
     <select id="getDDL" resultType="java.sql.Timestamp">
@@ -21,7 +22,8 @@
     </select>
 
     <select id="getInfoForJudge" resultType="Question">
-    select q.question_id, q.question_standard_ans, q.database_id, q.operation_type, q.is_order, question_sql_type
+    select q.question_id, q.question_standard_ans, q.database_id, q.operation_type,
+    q.is_order, question_sql_type, q.is_visible, q.is_enabled
     from question q
     where q.question_id = #{question_id};
     </select>
@@ -32,7 +34,7 @@
     question_output, question_index from question where question_id = #{question_id}
     </select>
 
-    <insert id="addQuestion" parameterType="Question">
+    <insert id="addQuestion" parameterType="Question" useGeneratedKeys="true" keyProperty="question_id" keyColumn="question_id">
     insert into question (question_id, question_name, question_of_assignment,
     question_output, question_description, question_index, question_standard_ans, database_id)
     values (#{question_id}, #{question_name}, #{question_of_assignment}, #{question_output}, #{question_description},
@@ -43,21 +45,39 @@
     <update id="updateQuestion" parameterType="Question">
         update question
         <trim prefix="set" suffixOverrides=",">
-            <if test="question_id!=null">question_id=#{question_id},</if>
+<!--&#45;&#45;             <if test="id!=null">id=#{id},</if>-->
+
+<!--&#45;&#45;             <if test="question_id!=null">question_id=#{question_id},</if>-->
             <if test="question_name!=null">question_name=#{question_name},</if>
             <if test="question_of_assignment!=null">question_of_assignment=#{question_of_assignment},</if>
             <if test="question_output!=null">question_output=#{question_output},</if>
-            <if test="relType!=null">question_description=#{question_description},</if>
+            <if test="question_description!=null">question_description=#{question_description},</if>
             <if test="question_index!=null">question_index=#{question_index},</if>
             <if test="question_standard_ans!=null">question_standard_ans=#{question_standard_ans},</if>
             <if test="database_id!=null">database_id=#{database_id},</if>
+            <if test="is_visible!=null">is_visible=#{is_visible},</if>
+            <if test="operation_type!=null">operation_type=#{operation_type},</if>
+            <if test="is_order!=null">is_order=#{is_order},</if>
+            <if test="question_sql_type!=null">question_sql_type=#{question_sql_type},</if>
         </trim>
         where id=#{id}
     </update>
 
+<!--    <update id="updateQuestion" parameterType="Question">-->
+<!--        update question-->
+
+<!--        where question_id=#{question_id}-->
+<!--    </update>-->
+
+    <update id="disableQuestion">
+        update question
+        set is_enabled = 0
+        where question_id = #{question_id}
+    </update>
+
     <delete id="deleteQuestion" parameterType="int">
         delete from question
-        where question_id = #{id}
+        where question_id = #{question_id}
     </delete>
 
     <select id="selectQuestionsByAssignment" resultType="Question">

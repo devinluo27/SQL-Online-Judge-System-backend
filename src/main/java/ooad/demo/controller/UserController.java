@@ -2,9 +2,9 @@ package ooad.demo.controller;
 
 import cn.shuibo.annotation.Encrypt;
 import com.alibaba.fastjson.JSON;
-import ooad.demo.config.JsonResult;
-import ooad.demo.config.ResultCode;
-import ooad.demo.config.ResultTool;
+import ooad.demo.utils.JsonResult;
+import ooad.demo.utils.ResultCode;
+import ooad.demo.utils.ResultTool;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.mapper.VerifyCodeMapper;
 import ooad.demo.pojo.UserDB;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

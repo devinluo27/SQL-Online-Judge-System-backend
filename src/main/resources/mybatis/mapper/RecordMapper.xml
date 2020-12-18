@@ -48,50 +48,19 @@
     </insert>
 
 
+    <select id="selectLatestRecordByQuestionId" resultType="Record">
+select record_id, record_sid, record_code from (
+    select record_id, record_sid, record_code,
+        row_number() over (partition by record_sid order by record_time desc) as ranking
+        from record
+     where  record_question_id = #{question_id}) temp
+where temp.ranking = 1;
+    </select>
+
     <delete id="deleteRecord">
         delete from record
         where record_id = #{record_i}
     </delete>
-
-    <select id="judge" parameterType="string" resultType="java.util.Map">
-    -- Check the set operation without sorting
---     set search_path to task;
---     set role tester;
-    select *
-    from (
-    -- STAND_ANS EXCEPT STUDENT_ANS
-             select *
-             from (
-    --STANDARD_SQL:
-                  ${standard}
-    -- EXCEPT INPUT_SQL:
-                  ) STAND_ANS1
-                 except
-             select *
-             from (
-    -- INPUT_SQL:
-                  ${code}
-                  ) INPUT_ANS1
-         ) EXCEPT_ANS1
-    UNION ALL
-    select *
-    from (
-    -- STUDENT_ANS EXCEPT STAND_ANS
-             select *
-             from (
-    -- INPUT_SQL:
-                 ${code}
-                  )INPUT_SQL2
-                 except
-             select *
-             from (
-    -- STANDARD_SQL
-                  ${standard}
-                  ) STANDARD_SQL2
-         ) a;
---         set role dboj;
---         set search_path to public;
-        </select>
 
 
 </mapper>

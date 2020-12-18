@@ -10,10 +10,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionTrigger {
+
     private Integer id;
     private Integer question_id;
-    private String ans_table_path;
-    private String test_data_path;
+    private Integer ans_table_file_id;
+    private Integer test_data_file_id;
     private String test_config;
     private String target_table;
+
+    public QuestionTrigger(Integer question_id, Integer ans_table_file_id,
+                           Integer test_data_file_id,
+                           String test_config,
+                           String target_table) {
+        this.question_id = question_id;
+        this.ans_table_file_id = ans_table_file_id;
+        this.test_data_file_id = test_data_file_id;
+        this.test_config = test_config;
+        this.target_table = target_table;
+    }
 }
