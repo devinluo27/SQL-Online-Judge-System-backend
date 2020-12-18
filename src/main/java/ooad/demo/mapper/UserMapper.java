@@ -12,6 +12,9 @@ public interface UserMapper{
 
     UserDB selectUserDBBySidAllInfo(int sid);
 
+    UserDB selectUserDBBySidBasicInfo(int sid);
+
+
     UserDB selectUserDBByName(String user_name);
 
     int setLastLoginTime(Integer sid);
@@ -25,4 +28,6 @@ public interface UserMapper{
     int deleteUserDB(int sid);
 
     String getPwd(int sid);
+
+
 }

@@ -71,7 +71,7 @@ public class FileController  {
 
 
     //    展示所有文件信息
-    @GetMapping("/files/findByUserId")
+    @GetMapping("/admin/files/findByUserId")
     @ResponseBody
     public List<UserFile> findByUserId(HttpServletRequest request){
         //在登录的session中获取用户的id
@@ -87,7 +87,7 @@ public class FileController  {
     /*
     * 删除文件信息
     * */
-    @GetMapping("/files/deleteFile")
+    @GetMapping("/admin/files/deleteFile")
     public void delete(@RequestParam("file_id") Integer id, HttpServletResponse response) throws IOException {
         response.setContentType("text/json;charset=utf-8");
         //根据id查询信息
@@ -118,7 +118,7 @@ public class FileController  {
      * @param response
      * @throws IOException
      */
-    @GetMapping("/files/download")
+    @GetMapping("/admin/files/download")
     public void download(String openStyle, @RequestParam("file_id") Integer id, HttpServletResponse response) throws IOException {
         //获取打开方式
         openStyle = openStyle==null ? "attachment" : openStyle;
@@ -160,7 +160,7 @@ public class FileController  {
     * 上传文件处理 并保存文件信息到数据库中
     * 新建一个
     * */
-    @PostMapping("/files/uploadOld")
+//    @PostMapping("/admin/files/uploadOld")
     public void uploadOld(@RequestParam("file") @NotNull MultipartFile  aaa,
                        @RequestParam("assignment_id") @Validated @NotBlank(message = "作业号不允许为空")  @Max(100) String assignment_id,
 //                        BindingResult bindingResult,
@@ -242,7 +242,7 @@ public class FileController  {
      * 新建一个
      * */
     // TODO:  异常处理!!!!!
-    @PostMapping(value = "/files/upload", consumes = "multipart/form-data")
+    @PostMapping(value = "/admin/files/upload", consumes = "multipart/form-data")
     public void upload(@RequestParam("file") @NotNull MultipartFile  aaa,
                        HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -313,14 +313,14 @@ public class FileController  {
 
 
     //    展示所有文件信息
-    @GetMapping("/files/showAllFiles")
+    @GetMapping("/admin/files/showAllFiles")
     @ResponseBody
     public List<UserFile> findAll(HttpServletResponse response) throws IOException {
         List<UserFile> userFiles = userFileService.getAllFileInfo();
         return userFiles;
     }
 
-    @PostMapping("/files/uploadToRemoteDatabase")
+    @PostMapping("/admin/files/uploadToRemoteDatabase")
     public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
                              @RequestParam(value = "database_name") String database_name,
                              @RequestParam(value = "database_description") String database_description,
@@ -350,7 +350,7 @@ public class FileController  {
     }
 
 
-    @PostMapping("/files/uploadToRemote")
+    @PostMapping("/admin/files/uploadToRemote")
     public void uploadToRemote(@RequestParam(value = "file") MultipartFile  file,
                              HttpServletRequest request,
                              HttpServletResponse response) throws Exception {
@@ -440,7 +440,6 @@ public class FileController  {
     @GetMapping("/admin/queryDatabaseList")
     public void queryDatabaseList(){
         // database_id name database_description  time
-        //
     }
 
     @GetMapping("/admin/deleteDatabaseById")

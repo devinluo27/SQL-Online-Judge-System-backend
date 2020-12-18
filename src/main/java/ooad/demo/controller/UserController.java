@@ -48,14 +48,15 @@ public class UserController {
     }
 
     @CrossOrigin
-//    @GetMapping(value = "/admin/findUserBySid")
+    @GetMapping(value = "/admin/findUserBySid")
     public UserDB findUserDBBySid(int sid){
-        UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
-        return user_by_sid; //user_sid already exists
+        return userMapper.selectUserDBBySidBasicInfo(sid); //user_sid already exists
     }
 
 
-    @CrossOrigin
+
+
+    // TODO: 不在表中
 //    @GetMapping(value = "/user/addUser")
     // password not null len >=6, sid must be int
     public int addUser(int sid, String user_name, String password, String authority) {

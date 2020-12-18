@@ -16,6 +16,12 @@
     select sid, user_name, last_login_time, created_time from user_db
     </select>
 
+    <select id="selectUserDBBySidBasicInfo" resultType="UserDB">
+    select sid, user_name, last_login_time, created_time, enabled from user_db
+    where sid = #{sid}
+    </select>
+
+
     <select id="getPwd" resultType="String">
     select sid from user_db where sid = #{sid}
     </select>
