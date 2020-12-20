@@ -6,26 +6,26 @@
 
     <cache/>
 
-    <select id="getAllAssignmentList" resultType="Assignment">
+    <select id="getAllAssignmentList" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time, is_visible from assignment
     </select>
 
-    <select id="getVisibleAssignmentList" resultType="Assignment">
+    <select id="getVisibleAssignmentList" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time from assignment
     where is_visible = 1;
     </select>
 
 <!--    for user-->
-    <select id="selectAssignmentById" resultType="Assignment">
+    <select id="selectAssignmentById" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time, assignment_description
      from assignment where assignment_id = #{id} and is_visible = 1;
     </select>
 
 <!--    for admin-->
-    <select id="selectAssignmentAllInfoById" resultType="Assignment">
+    <select id="selectAssignmentAllInfoById" resultType="ooad.demo.pojo.Assignment">
     select * from assignment where assignment_id = #{id}
     </select>
 
@@ -67,8 +67,7 @@
         join question q on a.assignment_id = q.question_of_assignment
         where a.assignment_id = #{id};
     </select>
-
-
+    <select id="queryAssignmentSid" resultType="ooad.demo.pojo.Assignment"></select>
 
 
 </mapper>

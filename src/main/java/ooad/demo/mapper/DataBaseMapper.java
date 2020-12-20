@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DataBaseMapper {
     Database selectDatabaseById(Integer database_id);
-    int addDatabase(Database database);
+    Integer addDatabase(Database database);
 }
