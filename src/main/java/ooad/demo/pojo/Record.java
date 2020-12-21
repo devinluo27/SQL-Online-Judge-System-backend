@@ -13,13 +13,17 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Record implements Serializable {
     private Integer record_id;
-    @NotNull
+
     private Integer record_sid;
 
+    @NotNull
     private Integer record_question_id;
     private Integer record_status;
     private Timestamp record_time;
+
+    @NotNull
     private String record_code;
+
     private String record_code_type;
     private Double running_time = -1.0;
 

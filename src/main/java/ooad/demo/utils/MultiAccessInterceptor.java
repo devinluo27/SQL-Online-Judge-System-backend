@@ -21,6 +21,8 @@ public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+//        System.out.println(request.getHeader("Content-Type"));
+
         //判断请求是否属于方法的请求
         if(handler instanceof HandlerMethod){
 
@@ -43,9 +45,7 @@ public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
                 //获取登录的session进行判断
                 //.....
                 if (request.getUserPrincipal() == null){
-
                     System.out.println("Inside preHandle!");
-
                     return false;
                 }
                 String username = request.getUserPrincipal().getName();

@@ -2,6 +2,7 @@ package ooad.demo.controller;
 
 import cn.shuibo.annotation.Encrypt;
 import com.alibaba.fastjson.JSON;
+import ooad.demo.utils.AccessLimit;
 import ooad.demo.utils.JsonResult;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,42 +41,7 @@ public class UserController {
     @Autowired
     JavaMailSenderImpl mailSender;
 
-
-    @CrossOrigin
-    @GetMapping("/admin/queryUserList")
-    public List<UserDB> queryUserDBList(){
-        List<UserDB> userDBList = userMapper.queryUserDBList();
-        return  userDBList;
-    }
-
-    @CrossOrigin
-    @GetMapping(value = "/admin/findUserBySid")
-    public UserDB findUserDBBySid(int sid){
-        return userMapper.selectUserDBBySidBasicInfo(sid); //user_sid already exists
-    }
-
-
-
-
-    // TODO: 不在表中
-//    @GetMapping(value = "/user/addUser")
-    // password not null len >=6, sid must be int
-    public int addUser(int sid, String user_name, String password, String authority) {
-        UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
-        UserDB user_by_name = userMapper.selectUserDBByName(user_name);
-
-        if(user_by_sid != null){
-            return -1; //user_sid already exists
-        }
-        else if( user_by_name != null){
-            return -2; //user_name already exists
-        }
-        UserDB new_user = new UserDB(sid, user_name, new BCryptPasswordEncoder().encode(password), authority);
-        userMapper.addUserDB(new_user);
-        return 1;
-    }
-
-    @Encrypt
+    // TESTING
     @GetMapping(value = "/username")
     @ResponseBody
     public String currentUserNameSimple(HttpServletRequest request) {
@@ -82,6 +49,46 @@ public class UserController {
         if (principal == null)
             return "Please login!";
         return principal.getName();
+    }
+
+    @GetMapping("/admin/queryUserList")
+    public List<UserDB> queryUserDBList(){
+        List<UserDB> userDBList = userMapper.queryUserDBList();
+        return  userDBList;
+    }
+
+    // TODO: NEW API
+    @GetMapping("/admin/queryALLUserList")
+    public List<UserDB> queryAllUserDBList(){
+        List<UserDB> userDBList = userMapper.queryUserDBList();
+        return  userDBList;
+    }
+
+    @GetMapping(value = "/admin/findUserBySid")
+    public UserDB findUserDBBySid(int sid){
+        return userMapper.selectUserDBBySidBasicInfo(sid); //user_sid already exists
+    }
+
+    @AccessLimit(maxCount = 3,seconds = 30, needLogin = false)
+    @PostMapping(value = "/user/addUser")
+    public void addUser(
+            @RequestParam(value = "sid") int sid,
+            @RequestParam(value = "sid") String user_name,
+            @RequestParam(value = "sid") String password,
+            HttpServletResponse response) {
+        UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
+        // password not null len >=6, sid must be int
+        if (password == null || password.length() < 6){
+            ResultTool.writeResponseFail(response, ResultCode.COMMON_FAIL);
+            return;
+        }
+        if(user_by_sid != null){
+            ResultTool.writeResponseFail(response, ResultCode.USER_ALREADY_EXISTS);
+            return; //user_sid already exists
+        }
+        UserDB new_user = new UserDB(sid, user_name, new BCryptPasswordEncoder().encode(password));
+        userMapper.addUserDB(new_user);
+        ResultTool.writeResponseSuccess(response);
     }
 
     /***
@@ -93,9 +100,7 @@ public class UserController {
      * -1: user doesn't exist
      * -2: v_code error
      * -3: v_code expired
-     *
      */
-    @CrossOrigin
     @GetMapping(value = "/user/resetPwd")
     public int resetPassword(
             @RequestParam(value = "sid") Integer sid,
@@ -114,7 +119,6 @@ public class UserController {
         userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
         return 1;
     }
-
 
     /***
      *

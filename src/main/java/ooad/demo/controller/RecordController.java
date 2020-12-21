@@ -2,6 +2,7 @@ package ooad.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.jcraft.jsch.JSchException;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.Service.DockerPoolService;
 import ooad.demo.Service.JudgeService;
 import ooad.demo.utils.AccessLimit;
@@ -15,6 +16,7 @@ import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ import java.util.List;
  *
  *  PostMapping("/user/addRecord")
  */
+
+@Slf4j
 @RestController
 public class RecordController{
 
@@ -82,15 +86,13 @@ public class RecordController{
                             HttpServletResponse response) throws IOException {
         response.setContentType("text/json;charset=utf-8");
         if (request.getUserPrincipal() == null){
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
             return null;
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         return recordMapper.selectARecordById(record_id, sid);
     }
 
-    @CrossOrigin
+
     @GetMapping("/user/selectRecordBySidAndAssignment")
     List<Record> selectRecordBySidAndAssignment(
             @RequestParam(value = "assignment_id") int assignment_id,
@@ -107,7 +109,6 @@ public class RecordController{
     }
 
     // TODO
-    @CrossOrigin
     @GetMapping("/admin/deleteRecordByRid")
     int deleteARecordByRid(@RequestParam(value = "record_id") Integer record_id){
         return recordMapper.deleteARecord(record_id);
@@ -121,41 +122,43 @@ public class RecordController{
      *  status = -2 -> exception
      * @param question_id
      * @param code
-     * @param sql_type
+     * @param
      * @param request
      * @param response
      * @throws IOException
      */
 
-    @AccessLimit(maxCount = 3, seconds = 60)
+    @CrossOrigin
+    @AccessLimit(maxCount = 3, seconds = 3)
     @PostMapping("/user/addRecord")
     public void addRecord(
-            @RequestBody Record record,
-            @RequestParam(value = "question_id") int question_id,
+//            @Validated  @RequestBody Record record,
+            @RequestParam(value = "question_id") Integer question_id,
                    @RequestParam(value = "code") String code,
-                   @RequestParam(value = "type") String sql_type,
+//                   @RequestParam(value = "type") String sql_type,
                    HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+//        System.out.println(request.getHeader("Content-Type"));
 //        int question_id = record.getRecord_question_id();
-//         code = record.getRecord_code();
+//        String code = record.getRecord_code();
 //        String sql_type = record.getRecord_code_type();
+
 //        System.out.println(request.isUserInRole("admin"));
 
-        response.setContentType("text/json;charset=utf-8");
-
         if (request.getUserPrincipal() == null){
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
             return;
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         // get question details for judge machine
         Question question = questionMapper.getInfoForJudge(question_id);
-        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
-            JsonResult result = ResultTool.fail(ResultCode.CANNOT_SUBMIT);
-            response.getWriter().write(JSON.toJSONString(result));
-            return;
-        }
+
+        // TODO: Check DDL
+//        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
+//            JsonResult result = ResultTool.fail(ResultCode.CANNOT_SUBMIT);
+//            response.getWriter().write(JSON.toJSONString(result));
+//            return;
+//        }
+
         Record r = new Record(sid, question_id, PENDING, code, question.getQuestion_sql_type());
         // add record first, set to PENDING Status
         recordMapper.addRecord(r);
@@ -164,16 +167,13 @@ public class RecordController{
             // Docker Judge Function
             submitToDocker(record_id, question, code);
         } catch (Exception e){
-            JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
             e.printStackTrace();
-            System.out.println(e.fillInStackTrace());
-            System.out.println(e.getMessage());
+            log.error("Add Record ", e);
             // 塞到HttpServletResponse中返回给前台
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFail(response, ResultCode.PARAM_TYPE_ERROR);
             return;
         }
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccess(response);
 
     }
 
@@ -210,13 +210,12 @@ public class RecordController{
 
     @GetMapping("/admin/getDockerPoolSize")
     public void getDockerPoolSize(int database_id, HttpServletResponse response) throws IOException {
-        response.setContentType("text/json;charset=utf-8");
-        JsonResult<String> result = ResultTool.success();
         int sizeQuery = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + query).getRunningList().size();
         int sizeTrigger = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + trigger).getRunningList().size();
-        result.setData("sizeQuery: " + sizeQuery + "sizeTrigger: " + sizeTrigger);
-        response.getWriter().write(JSON.toJSONString(result));
+        String ret_data = ("sizeQuery: " + sizeQuery + "sizeTrigger: " + sizeTrigger);
+        ResultTool.writeResponseSuccessWithData(response, ret_data);
     }
+
 
     /***
      * rejudge  the last submitted record of the given question_id

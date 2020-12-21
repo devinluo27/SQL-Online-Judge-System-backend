@@ -177,4 +177,8 @@ public class UserFileServiceImpl implements UserFileService {
         return true;
     }
 
+    @Override
+    public Integer setFileIsRemoteStatus(Integer file_id, Boolean status) {
+        return userFileMapper.setIsInRemoteStatus(file_id, status);
+    }
 }

@@ -5,8 +5,10 @@ import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.Judge;
 import ooad.demo.judge.ManageDockersPool;
 import ooad.demo.mapper.QuestionMapper;
+import ooad.demo.mapper.QuestionTriggerMapper;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.pojo.Question;
+import ooad.demo.pojo.QuestionTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,9 @@ public class JudgeServiceImpl implements JudgeService {
 
     @Autowired
     QuestionMapper questionMapper;
+
+    @Autowired
+    QuestionTriggerMapper questionTriggerMapper;
 
     @Autowired
     DockerPoolService dockerPoolService;
@@ -93,6 +98,13 @@ public class JudgeServiceImpl implements JudgeService {
             // trigger
             System.out.println("Trigger: ");
             String dockID;
+            QuestionTrigger questionTrigger = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
+
+            // TODO:
+            Integer ans_table_file_id = questionTrigger.getAns_table_file_id();
+            Integer test_data_file_id = questionTrigger.getTest_data_file_id();
+
+
             synchronized (usedDockerPool.getRunningList()){
                 if(usedDockerPool.getRunningList().size() == 0){
                     // 等待某个docker 建好后唤醒它

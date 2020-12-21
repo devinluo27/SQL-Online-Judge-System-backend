@@ -14,6 +14,11 @@
 
     <select id="queryUserDBList" resultType="UserDB">
     select sid, user_name, last_login_time, created_time from user_db
+    where enabled = #{1}
+    </select>
+
+    <select id="queryAllUserDBList" resultType="UserDB">
+    select sid, user_name, last_login_time, created_time from user_db
     </select>
 
     <select id="selectUserDBBySidBasicInfo" resultType="UserDB">

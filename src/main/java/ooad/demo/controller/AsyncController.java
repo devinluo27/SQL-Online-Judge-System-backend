@@ -15,4 +15,9 @@ public class AsyncController {
         asyncService.hello();
         return "ok";
     }
+
+    @RequestMapping("/hi")
+    public String hi(){
+        return "hi";
+    }
 }

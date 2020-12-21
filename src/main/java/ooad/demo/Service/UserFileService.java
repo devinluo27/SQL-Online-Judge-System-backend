@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface UserFileService {
     List<UserFile> findByUserId(Integer id);
+
     List<UserFile> getAllFileInfo();
 
 
@@ -19,5 +20,7 @@ public interface UserFileService {
     void delete(Integer id);
 
     boolean copyToRemoteHost(Integer file_id) throws IOException;
+
+    Integer setFileIsRemoteStatus(Integer file_id, Boolean status);
 
 }

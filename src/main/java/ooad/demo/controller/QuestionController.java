@@ -10,6 +10,7 @@ import ooad.demo.mapper.QuestionTriggerMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.QuestionTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,6 @@ public class QuestionController implements Serializable {
     @Autowired
     private QuestionTriggerMapper questionTriggerMapper;
 
-
     @AccessLimit(maxCount = 3, seconds = 10)
     @GetMapping("/admin/queryQuestionList")
     public List<Question> queryQuestionList(){
@@ -39,7 +39,7 @@ public class QuestionController implements Serializable {
         return questionMapper.selectQuestionById(question_id);
     }
 
-    @AccessLimit(maxCount = 3, seconds = 100)
+    @AccessLimit(maxCount = 10, seconds = 3)
     @GetMapping("/user/selectQuestionsByAssignment")
     public List<Question>  selectQuestionsByAssignment(
             @RequestParam(value = "assignment_id") int assignment_id,
@@ -55,7 +55,7 @@ public class QuestionController implements Serializable {
 
     /***
      *     private Integer id;
-     *     @NotNull
+     *
      *     private Integer question_id;
      *
      *     @NotNull
@@ -82,7 +82,7 @@ public class QuestionController implements Serializable {
      *     private Integer database_id;
      *
      *     @NotNull
-     *     private Integer is_visible; 0 invisible or 1 visible
+     *     private Boolean is_visible; false invisible or true visible
      *
      *     private Integer operation_type; "query": 1 or "trigger": 2
      *
@@ -92,18 +92,21 @@ public class QuestionController implements Serializable {
      */
     @PostMapping("/admin/addQuestion")
     public void addQuestion(@RequestBody Question question, HttpServletResponse response) throws IOException {
-        try {
-            questionMapper.addQuestion(question);
-            int question_id = question.getQuestion_id();
-        }catch (Exception e){
-            JsonResult result = ResultTool.fail();
-            result.setData("Failed to create this query question!");
-            response.getWriter().write(JSON.toJSONString(result));
+        System.out.println(question.getQuestion_output());
+        System.out.println(question.getOperation_type());
+
+        if (!question.getOperation_type().equals("query")){
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this query question!");
             return;
         }
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
-
+        try {
+            questionMapper.addQuestion(question);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this query question!");
+            return;
+        }
+        ResultTool.writeResponseFail(response);
     }
 
     @PostMapping("/admin/addQuestionTrigger")
@@ -113,6 +116,10 @@ public class QuestionController implements Serializable {
                                    @RequestParam(value = "target_table") String target_table,
                                    @RequestParam(value = "test_config") String test_config,
                                    HttpServletResponse response) throws IOException {
+        if (!question.getOperation_type().equals("trigger")){
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
+            return;
+        }
         try {
             questionMapper.addQuestion(question);
             int question_id = question.getQuestion_id();
@@ -120,35 +127,36 @@ public class QuestionController implements Serializable {
                     test_data_file_id, test_config, target_table);
             questionTriggerMapper.addQuestionTrigger(questionTrigger);
         }catch (Exception e){
-            JsonResult result = ResultTool.fail();
-            result.setData("Failed to create this trigger question!");
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
             return;
         }
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccess(response);
     }
 
     // 将会直接覆盖原有题目!!!
     @PostMapping("/admin/updateQuestion")
     public void updateQuestion(@RequestBody Question question, HttpServletResponse response) throws IOException {
+        if (!question.getOperation_type().equals("trigger") && !question.getOperation_type().equals("query")){
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
+            return;
+        }
         try{
             questionMapper.updateQuestion(question);
         } catch (Exception e){
-            JsonResult result = ResultTool.fail();
-            result.setData("Failed to create this trigger question!");
-            response.getWriter().write(JSON.toJSONString(result));
-            return;
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to update this query question!");
         }
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccess(response);
     }
+
 
     @GetMapping("/admin/deleteQuestion")
-    public void deleteQuestion(@RequestParam(value = "question_id") Integer question_id){
-        questionMapper.disableQuestion(question_id);
+    public void deleteQuestion(@RequestParam(value = "question_id") Integer question_id,
+                               HttpServletResponse response){
+        if (questionMapper.disableQuestion(question_id) == 1){
+            ResultTool.writeResponseSuccess(response);
+            return;
+        }
+        ResultTool.writeResponseFail(response);
     }
-
-
 
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface QuestionTriggerMapper {
-    QuestionTrigger getQuestionTriggerByQid();
+    QuestionTrigger getTriggerQuestionJudgeInfoByQid(Integer question_id);
     int addQuestionTrigger(QuestionTrigger questionTrigger);
 }

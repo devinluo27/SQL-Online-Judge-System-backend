@@ -34,14 +34,17 @@ public enum ResultCode {
     USER_ACCOUNT_NOT_EXIST(2007, "账号不存在"),
     USER_ACCOUNT_ALREADY_EXIST(2008, "账号已存在"),
     USER_ACCOUNT_USE_BY_OTHERS(2009, "账号下线"),
+    USER_ALREADY_EXISTS(2010, "账号已存在"),
+
 
     /* 业务错误 */
     NO_PERMISSION(3001, "没有权限"),
     CANNOT_SUBMIT(4001, "禁止提交"),
     JUDGE_FAIL(4002, "判题失败"),
-    REACHING_ACCESS_LIMIT(5001, "访问过于频繁")
+    REACHING_ACCESS_LIMIT(5001, "访问过于频繁"),
 
-    ;
+    FILE_TYPE_ERROR(5002, "文件格式错误")
+            ;
 
     private Integer code;
     private String message;

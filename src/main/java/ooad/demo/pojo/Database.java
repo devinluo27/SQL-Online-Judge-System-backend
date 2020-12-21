@@ -19,6 +19,7 @@ public class Database implements Serializable {
     private String database_description;
     private String database_remote_path;
     private String database_remote_name;
+    private Boolean is_enabled;
 
     public Database(int database_id, String database_remote_path, String database_remote_name) {
         this.database_id = database_id;

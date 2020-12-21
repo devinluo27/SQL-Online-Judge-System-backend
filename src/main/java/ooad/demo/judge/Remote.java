@@ -1,8 +1,10 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.*;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.mapper.UserFileMapper;
 import ooad.demo.pojo.UserFile;
+import ooad.demo.utils.SftpProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Slf4j
 @Service
 public class Remote {
 
@@ -31,6 +34,11 @@ public class Remote {
             return OUT;
         }
     }
+
+    @Autowired
+    private SftpProperties sftpConfig;
+
+
     @Autowired
     UserFileMapper userFileMapper;
 
@@ -58,7 +66,7 @@ public class Remote {
 
     private String protocol = "sftp";
 
-
+    private String sftpRoot = "/";
 
     private int channelConnectedTimeout = 15000;
 
@@ -87,12 +95,10 @@ public class Remote {
             String IN = IOUtils.toString(in, "UTF-8");
             String ERROR = IOUtils.toString(error, "UTF-8");
             result.add(new Log(System.currentTimeMillis() - start_time - 300, IN, ERROR));
-//            System.out.println("=============OUT MSG================");
-//            System.out.println(IN);
-//            System.out.println("=============ERROR MSG==============");
+
+            // TODO:
             System.out.println(ERROR);
-//            System.out.println("=====================================\n" +
-//                               "=====================================\n");
+
             in.close();
         }
         session.disconnect();
@@ -100,23 +106,18 @@ public class Remote {
     }
 
     private Session createSession(JSch jsch, String host, String username, Integer port) throws Exception {
-        Session session = null;
-
+        Session session;
         if (port <= 0) {
             session = jsch.getSession(username, host);
         } else {
             session = jsch.getSession(username, host, port);
         }
-
         if (session == null) {
             throw new Exception(host + " session is null");
         }
-
         session.setConfig(SESSION_CONFIG_STRICT_HOST_KEY_CHECKING, SessionStrictHostKeyChecking);
         return session;
     }
-
-
 
     public boolean uploadFile(int file_id, String targetFullPath) throws Exception {
         UserFile userFile = userFileMapper.getLocalRealPath(file_id);
@@ -126,15 +127,13 @@ public class Remote {
         File uploadFile = new File(localRealPath);
 //        String targetPath = remoteDatabasePath + newFileName;
         try(InputStream input =  new FileInputStream(uploadFile)) {
-            return this.uploadFileSSH(targetFullPath, input);
+            return this.uploadFileSftp(targetFullPath, input);
         } catch (FileNotFoundException e) {
-            System.out.println(e);
-//            log.error("文件上传失败"+e);
+            log.error("文件上传失败，找不到文件"+ e);
             System.out.println("uploadFile Here!");
             return false;
         } catch (IOException e) {
-            System.out.println(e);
-//            log.error("文件上传失败" + e);
+            log.error("文件上传失败" + e);
             return false;
         }
     }
@@ -146,26 +145,26 @@ public class Remote {
          * @return
          * @throws Exception
          */
-    private boolean uploadFileSSH(String targetPath, InputStream inputStream) throws Exception {
+    private boolean uploadFileSftp(String targetPath, InputStream inputStream) throws Exception {
 
         ChannelSftp sftp = this.createSftp();
         try {
             String rootDir = "/";
             sftp.cd(rootDir);
-//            log.info("Change path to {}", config.getRoot());
+            log.info("Change path to {}", rootDir);
             int index = targetPath.lastIndexOf("/");
             String fileDir = targetPath.substring(0, index);
             String fileName = targetPath.substring(index + 1);
             boolean dirs = this.createDirs(fileDir, sftp);
             if (!dirs) {
-//                log.error("Remote path error. path:{}", targetPath);
+                log.error("Remote path error. path:{}", targetPath);
                 throw new Exception("Upload File failure");
             }
             System.out.println("reach sftp.put");
             sftp.put(inputStream, fileName);
             return true;
         } catch (IOException e) {
-//            log.error("Upload file failure. TargetPath: {}", targetPath, e);
+            log.error("Upload file failure. TargetPath: {}", targetPath, e);
             throw new Exception("Upload File failure" + "Upload file failure. TargetPath: {}" + targetPath);
         } finally {
             this.disconnect(sftp);
@@ -174,7 +173,6 @@ public class Remote {
 
 
     private ChannelSftp createSftp() throws Exception {
-
         String host =  "10.20.83.122";
         int port = 22;
         String userName = "dboj_manager";
@@ -182,26 +180,29 @@ public class Remote {
         int time_out = 10000;
 
         JSch jsch = new JSch();
-//        log.info("Try to connect sftp[" + userName + "@" + config.getHost() + "], use password[" + config.getPassword() + "]");
+        log.info("Try to connect sftp[" + userName + "@" + remoteHost + "], use password[" + password + "]");
 
         Session session = createSession(jsch, host, userName, port);
         session.setPassword(password);
         session.connect(time_out);
 
-//        log.info("Session connected to {}.", host);
+        log.info("Session connected to {}.", host);
 
 //        Channel channel = session.openChannel(config.getProtocol());
 //        channel.connect(config.getChannelConnectedTimeout());
         Channel channel = session.openChannel(protocol);
         channel.connect();
-
-//        log.info("Channel created to {}.", host);
-
+        log.info("Channel created to {}.", host);
         return (ChannelSftp) channel;
     }
 
 
-
+    /***
+     * 检查并在远程服务器新建文件夹
+     * @param dirPath
+     * @param sftp
+     * @return
+     */
     private boolean createDirs(String dirPath, ChannelSftp sftp) {
         if (dirPath != null && !dirPath.isEmpty()
                 && sftp != null) {
@@ -212,20 +213,20 @@ public class Remote {
             for (String dir : dirs) {
                 try {
                     sftp.cd(dir);
-//                    log.info("Change directory {}", dir);
+                    log.info("Change directory {}", dir);
                 } catch (Exception e) {
                     try {
                         sftp.mkdir(dir);
-//                        log.info("Create directory {}", dir);
+                        log.info("Create directory {}", dir);
                     } catch (SftpException e1) {
-//                        log.error("Create directory failure, directory:{}", dir, e1);
+                        log.error("Create directory failure, directory:{}", dir, e1);
                         e1.printStackTrace();
                     }
                     try {
                         sftp.cd(dir);
-//                        log.info("Change directory {}", dir);
+                        log.info("Change directory {}", dir);
                     } catch (SftpException e1) {
-//                        log.error("Change directory failure, directory:{}", dir, e1);
+                        log.error("Change directory failure, directory:{}", dir, e1);
                         e1.printStackTrace();
                     }
                 }
@@ -236,13 +237,56 @@ public class Remote {
     }
 
 
+    public boolean deleteFileSftp(String targetFullPath) throws Exception {
+        ChannelSftp sftp = null;
+        try {
+            sftp = this.createSftp();
+            sftp.cd(sftpRoot);
+            sftp.rm(targetFullPath);
+            return true;
+        } catch (Exception e) {
+            log.error("Delete file failure. TargetPath: {}", targetFullPath, e);
+            throw new Exception("Delete File failure");
+        } finally {
+            this.disconnect(sftp);
+        }
+    }
+
+    public File downloadFileSftp(String targetPath) throws Exception {
+        ChannelSftp sftp = this.createSftp();
+        OutputStream outputStream = null;
+        try {
+            sftp.cd(sftpConfig.getRoot());
+            log.info("Change path to {}", sftpConfig.getRoot());
+
+            File file = new File(targetPath.substring(targetPath.lastIndexOf("/") + 1));
+
+            outputStream = new FileOutputStream(file);
+            sftp.get(targetPath, outputStream);
+            log.info("Download file success. TargetPath: {}", targetPath);
+            return file;
+        } catch (Exception e) {
+            log.error("Download file failure. TargetPath: {}", targetPath, e);
+            throw new Exception("Download File failure");
+        } finally {
+            if (outputStream != null) {
+                outputStream.close();
+            }
+            this.disconnect(sftp);
+        }
+    }
+
+    /***
+     * 断开连接
+     * @param sftp
+     */
     private void disconnect(ChannelSftp sftp) {
         try {
             if (sftp != null) {
                 if (sftp.isConnected()) {
                     sftp.disconnect();
                 } else if (sftp.isClosed()) {
-//                    log.info("sftp is closed already");
+                    log.info("sftp is closed already");
                 }
                 if (null != sftp.getSession()) {
                     sftp.getSession().disconnect();

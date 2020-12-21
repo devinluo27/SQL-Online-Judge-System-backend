@@ -12,26 +12,38 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Question implements Serializable{
     private Integer id;
-    @NotNull
+//    @NotNull
+
     private Integer question_id;
     @NotNull
     private String question_name;
 
+
     private Integer question_of_assignment;
+
     @NotNull
     private String question_description;
 
     private String question_output;
+
     @NotNull
     private Integer question_index;
 
     private Integer is_finished;
+
     private String question_standard_ans;
+
     @NotNull
     private Integer database_id;
+
     private Boolean is_visible;
+
+    @NotNull
     private String operation_type;
+
+    @NotNull
     private Boolean is_order;
+
     private Boolean is_enabled = true;
 
     // postgresql or sqlite or mysql

@@ -16,7 +16,7 @@
 
     <select id="selectRecordListBySid" resultType="Record">
     select record_id, record_sid, record_question_id, record_status, record_time,
-    record_code_type, record_code from record where record_sid = #{sid};
+    record_code_type from record where record_sid = #{sid};
     </select>
 
 
@@ -37,7 +37,7 @@
             where record_id = #{record_id};
     </update>
 
-    <select id="selectARecordById">
+    <select id="selectARecordById" resultType="Record">
         select * from record
         where record_id = #{record_id} and record_sid = #{sid} ;
     </select>

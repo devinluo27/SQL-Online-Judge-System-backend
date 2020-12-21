@@ -6,7 +6,7 @@
 
     <cache/>
 
-    <select id="getQuestionTriggerByQid" resultType="QuestionTrigger">
+    <select id="getTriggerQuestionJudgeInfoByQid" resultType="QuestionTrigger">
         select * from question_trigger
         where question_id = #{question_id}
     </select>

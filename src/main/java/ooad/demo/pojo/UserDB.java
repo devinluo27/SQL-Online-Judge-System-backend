@@ -15,14 +15,14 @@ import java.sql.Timestamp;
 public class UserDB implements Serializable {
 
     @NotNull
-    private int sid;
+    private Integer sid;
 
     private String user_name;
     @JsonIgnore
     private String user_password;
 
-    private String authority;
-    private int enabled = 1;
+    private String authority = null;
+    private Integer enabled = 1;
     private Timestamp last_login_time;
     private Timestamp created_time;
 
@@ -35,6 +35,12 @@ public class UserDB implements Serializable {
         this.user_name = user_name;
         this.user_password = password;
         this.authority = authority;
+    }
+
+    public UserDB(int sid, String user_name, String password) {
+        this.sid = sid;
+        this.user_name = user_name;
+        this.user_password = password;
     }
 
     public int getSid() {

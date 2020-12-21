@@ -1,6 +1,7 @@
 package ooad.demo.utils;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.IOException;
  * @Description:
  * @Date Create in 2019/7/22 19:52
  */
+@Slf4j
 public class ResultTool {
 
     public static JsonResult success() {
@@ -37,4 +39,44 @@ public class ResultTool {
             e.printStackTrace();
         }
     }
+
+    public static void writeResponseFail(HttpServletResponse response) {
+        response.setContentType("application/json;charset=UTF-8");
+        JsonResult result = ResultTool.fail();
+        try {
+            response.getWriter().write(JSON.toJSONString(result));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeResponseFailWithData(HttpServletResponse response, ResultCode code, Object data) {
+        response.setContentType("application/json;charset=UTF-8");
+        JsonResult result = ResultTool.fail(code);
+        result.setData(data);
+        try {
+            response.getWriter().write(JSON.toJSONString(result));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeResponseSuccess(HttpServletResponse response){
+        JsonResult result = ResultTool.success();
+        try {
+            response.getWriter().write(JSON.toJSONString(result));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void writeResponseSuccessWithData(HttpServletResponse response, Object data){
+        JsonResult result = ResultTool.success();
+        result.setData(data);
+        try {
+            response.getWriter().write(JSON.toJSONString(result));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

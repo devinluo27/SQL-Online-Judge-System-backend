@@ -3,6 +3,7 @@ package ooad.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.Service.UserFileService;
 import ooad.demo.utils.JsonResult;
 import ooad.demo.utils.ResultCode;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-//@RequestMapping("/files")
+@Slf4j
 public class FileController  {
 
     @Autowired
@@ -320,33 +321,36 @@ public class FileController  {
         return userFiles;
     }
 
+    /***
+     * The file must end with
+     * @param file
+     * @param database_name
+     * @param database_description
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @PostMapping("/admin/files/uploadToRemoteDatabase")
     public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
                              @RequestParam(value = "database_name") String database_name,
                              @RequestParam(value = "database_description") String database_description,
                              HttpServletRequest request, HttpServletResponse response) throws Exception {
-        response.setContentType("text/json;charset=utf-8");
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (userPrincipal == null || file.isEmpty() || extension == null || !extension.toLowerCase().equals("sql")){
-            //根据用户id查询有的文件信息
             System.out.println(extension);
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFail(response, ResultCode.FILE_TYPE_ERROR);
             return;
         }
-        FileInfo fileInfo = uploadToRemoteInternal(file, Integer.parseInt(userPrincipal.getName()), true);
+        FileInfo fileInfo = uploadToRemoteProcessing(file, Integer.parseInt(userPrincipal.getName()), true);
         if (fileInfo.file_id == -1){
-            JsonResult<String> result = ResultTool.fail();
-            result.setData("upload to remote failed!");
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL,"upload to remote failed!");
             return;
         }
         Database database = new Database(fileInfo.file_id, database_name, database_description, remoteDatabasePath, fileInfo.newFileName);
         dataBaseMapper.addDatabase(database);
-        JsonResult<String> result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccess(response);
     }
 
 
@@ -364,7 +368,7 @@ public class FileController  {
             response.getWriter().write(JSON.toJSONString(result));
             return;
         }
-        FileInfo fileInfo = uploadToRemoteInternal(file, Integer.parseInt(userPrincipal.getName()), false);
+        FileInfo fileInfo = uploadToRemoteProcessing(file, Integer.parseInt(userPrincipal.getName()), false);
         if (fileInfo.file_id == -1){
             JsonResult<String> result = ResultTool.fail();
             result.setData("upload to remote failed!");
@@ -376,7 +380,7 @@ public class FileController  {
         response.getWriter().write(JSON.toJSONString(result));
     }
 
-    private FileInfo uploadToRemoteInternal(MultipartFile  file, int user_id, boolean is_database) throws Exception {
+    private FileInfo uploadToRemoteProcessing(MultipartFile file, int user_id, boolean is_database) throws Exception {
         //获取文件原始名称
         String originalFilename = file.getOriginalFilename();
         //获取文件后缀
@@ -387,7 +391,6 @@ public class FileController  {
         long size = file.getSize();
         //文件类型
         String type = file.getContentType();
-        // TODO: 本地文件夹名: 学生不可访问
         String relative_path;
         String remoteFullPath;
         if (is_database){
@@ -401,9 +404,10 @@ public class FileController  {
         String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
         File post_file = new File(realPath);
         if (!post_file.exists()) post_file.mkdirs();
-        //处理文件上传
+
+        //处理文件上传 将文件保存到本地来
         file.transferTo(new File(post_file, newFileName));
-        Thread.sleep(1000);
+
         //将文件信息放入数据库中
         // TODO: 异常处理
         UserFile userFile = new UserFile();
@@ -415,9 +419,10 @@ public class FileController  {
                 .setUser_id(user_id)
                 .setAssignment_id(-1)
                 .setQuestion_id(-1)
-                .setIs_database(is_database);
+                .setIs_database(is_database)
+                .setIs_in_remote(false);
         userFile.setRelative_path(relative_path);
-        userFile.setRemote_path(remoteFullPath);
+        userFile.setRemote_full_path(remoteFullPath);
         // 保存文件相关信息到数据库
         userFileService.save(userFile);
         int file_id = userFile.getId();
@@ -428,25 +433,26 @@ public class FileController  {
             fileInfo.file_id = -1;
             return fileInfo;
         }
+        // TODO: UPDATE
+        userFileService.setFileIsRemoteStatus(file_id, true);
         return fileInfo;
     }
 
 
-    @GetMapping("/admin/initDatabaseDocker")
-    public void initDatabaseDocker(
-            @RequestParam(value = "database_id") Integer database_id,
-            @RequestParam(value = "type") String type){}
-
-    @GetMapping("/admin/queryDatabaseList")
-    public void queryDatabaseList(){
-        // database_id name database_description  time
-    }
-
-    @GetMapping("/admin/deleteDatabaseById")
-    public void deleteDatabaseById(
-            @RequestParam(value = "database_id") Integer database_id
+    @GetMapping("/admin/deleteRemoteFileById")
+    public void deleteRemoteFileById(
+            @RequestParam(value = "file_id") Integer file_id,
+            HttpServletResponse response
     ){
-
+        UserFile userFile =  userFileService.findById(file_id);
+        if(userFile.getIs_in_remote()){
+            try {
+                remote.deleteFileSftp(userFile.getRemote_full_path());
+            } catch (Exception e) {
+                ResultTool.writeResponseFail(response, ResultCode.COMMON_FAIL);
+                log.error("File Delete Fails", e);
+            }
+        }
     }
 
     @GetMapping("/admin/copyToRemote")

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisService {
+
     public final static Logger logger = LoggerFactory.getLogger(RedisService.class);
 
     @Autowired

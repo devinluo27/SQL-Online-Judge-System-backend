@@ -26,4 +26,6 @@ public interface UserFileMapper {
 
     UserFile getLocalRealPath(Integer file_id);
 
+    Integer setIsInRemoteStatus(Integer file_id, Boolean status);
+
 }

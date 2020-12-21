@@ -41,6 +41,12 @@
         where id = #{id}
     </update>
 
+    <update id="setIsInRemoteStatus">
+    update user_files
+        set is_in_remote = #{status}
+    where id = #{file_id};
+    </update>
+
     <select id="getLocalRealPath" resultType="UserFile">
         select relative_path, new_file_name
         from user_files

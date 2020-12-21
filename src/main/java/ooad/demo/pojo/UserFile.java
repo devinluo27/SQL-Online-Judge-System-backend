@@ -30,7 +30,8 @@ public class UserFile implements Serializable {
     private Integer question_id;
     private Integer assignment_id;
     private Boolean is_database;
+    private Boolean is_in_remote;
     private String file_description;
     private String file_show_place;
-    private String remote_path;
+    private String remote_full_path;
 }

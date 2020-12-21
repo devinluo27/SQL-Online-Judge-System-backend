@@ -10,6 +10,9 @@ import java.util.List;
 public interface UserMapper{
     List<UserDB> queryUserDBList();
 
+    List<UserDB> queryAllUserDBList();
+
+
     UserDB selectUserDBBySidAllInfo(int sid);
 
     UserDB selectUserDBBySidBasicInfo(int sid);
@@ -28,6 +31,7 @@ public interface UserMapper{
     int deleteUserDB(int sid);
 
     String getPwd(int sid);
+
 
 
 }
