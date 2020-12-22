@@ -1,10 +1,9 @@
 package ooad.demo.controller;
 
-
-
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import ooad.demo.Service.UserFileService;
+import ooad.demo.utils.AccessLimit;
 import ooad.demo.utils.JsonResult;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
@@ -17,6 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +34,14 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
 @Slf4j
+@Transactional
 public class FileController  {
 
     @Autowired
@@ -70,7 +72,6 @@ public class FileController  {
         }
     }
 
-
     //    展示所有文件信息
     @GetMapping("/admin/files/findByUserId")
     @ResponseBody
@@ -89,27 +90,28 @@ public class FileController  {
     * 删除文件信息
     * */
     @GetMapping("/admin/files/deleteFile")
-    public void delete(@RequestParam("file_id") Integer id, HttpServletResponse response) throws IOException {
-        response.setContentType("text/json;charset=utf-8");
+    public void delete(@RequestParam("file_id") Integer id, HttpServletResponse response){
         //根据id查询信息
         UserFile userFile = userFileService.findById(id);
         if (userFile == null){
-            JsonResult result = ResultTool.fail();
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "此文件不存在");
             return;
         }
-        //删除文件
-        String realPath = ResourceUtils.getURL("classpath:").getPath() + userFile.getRelative_path();
-        File file = new File(realPath, userFile.getNew_file_name());
-
-        // 删除该文件
-        if(file.exists())
-            file.delete();//立即删除
-
-        //删除数据库中的记录
-        userFileService.delete(id);
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+        try {
+            //删除文件
+            String realPath = ResourceUtils.getURL("classpath:").getPath() + userFile.getRelative_path();
+            File file = new File(realPath, userFile.getNew_file_name());
+            // 删除该文件
+            if(file.exists())
+                file.delete();//立即删除
+            //删除数据库中的记录
+            userFileService.delete(id);
+        } catch (Exception e){
+            e.printStackTrace();
+            ResultTool.writeResponseFail(response);
+            return;
+        }
+        ResultTool.writeResponseSuccess(response);
     }
 
     /***
@@ -243,25 +245,21 @@ public class FileController  {
      * 新建一个
      * */
     // TODO:  异常处理!!!!!
+    @AccessLimit(maxCount = 10, seconds = 60)
     @PostMapping(value = "/admin/files/upload", consumes = "multipart/form-data")
     public void upload(@RequestParam("file") @NotNull MultipartFile  aaa,
                        HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        response.setContentType("text/json;charset=utf-8");
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
-
         if (userPrincipal == null || aaa == null || aaa.isEmpty()){
             //根据用户id查询有的文件信息
-            JsonResult result = ResultTool.fail();
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "文件上传失败！");
             return;
         }
-
         //获取文件原始名称
         String originalFilename = aaa.getOriginalFilename();
         //获取文件后缀
-        String extension = "."+FilenameUtils.getExtension(aaa.getOriginalFilename());
+        String extension = "." + FilenameUtils.getExtension(aaa.getOriginalFilename());
         //生成新的文件名称
         String newFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + UUID.randomUUID().toString().replace("-", "") + extension;
 
@@ -281,7 +279,7 @@ public class FileController  {
 
         File post_file = new File(realPath);
 
-        if (!post_file.exists()) post_file.mkdirs();
+        if (!post_file.exists()){ post_file.mkdirs();}
 
         System.out.println(post_file);
         //处理文件上传
@@ -301,15 +299,11 @@ public class FileController  {
 
         userFile.setRelative_path(relative_path);
         System.out.println(userFile);
-
         // 保存文件相关信息到数据库
         userFileService.save(userFile);
         String retrieve_url = realPath + newFileName;
-        JsonResult<String> result = ResultTool.success();
-        result.setData(retrieve_url);
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccessWithData(response, retrieve_url);
     }
-
 
 
 
@@ -317,7 +311,7 @@ public class FileController  {
     @GetMapping("/admin/files/showAllFiles")
     @ResponseBody
     public List<UserFile> findAll(HttpServletResponse response) throws IOException {
-        List<UserFile> userFiles = userFileService.getAllFileInfo();
+        List<UserFile> userFiles = userFileService.getAllFileInfoList();
         return userFiles;
     }
 
@@ -330,6 +324,7 @@ public class FileController  {
      * @param response
      * @throws Exception
      */
+    @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/uploadToRemoteDatabase")
     public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
                              @RequestParam(value = "database_name") String database_name,
@@ -339,7 +334,6 @@ public class FileController  {
         Principal userPrincipal = request.getUserPrincipal();
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (userPrincipal == null || file.isEmpty() || extension == null || !extension.toLowerCase().equals("sql")){
-            System.out.println(extension);
             ResultTool.writeResponseFail(response, ResultCode.FILE_TYPE_ERROR);
             return;
         }
@@ -353,31 +347,29 @@ public class FileController  {
         ResultTool.writeResponseSuccess(response);
     }
 
-
+    @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/uploadToRemote")
     public void uploadToRemote(@RequestParam(value = "file") MultipartFile  file,
                              HttpServletRequest request,
                              HttpServletResponse response) throws Exception {
-        response.setContentType("text/json;charset=utf-8");
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (userPrincipal == null || file.isEmpty()){
-            //根据用户id查询有的文件信息
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
+        if (!checkLoginAndFile(userPrincipal, file)){
+            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "Parameters Error!");
             return;
         }
         FileInfo fileInfo = uploadToRemoteProcessing(file, Integer.parseInt(userPrincipal.getName()), false);
         if (fileInfo.file_id == -1){
-            JsonResult<String> result = ResultTool.fail();
-            result.setData("upload to remote failed!");
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "upload to remote failed!");
             return;
         }
-        JsonResult<String> result = ResultTool.success();
-        result.setData(String.valueOf(fileInfo.file_id));
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccessWithData(response, (String.valueOf(fileInfo.file_id)));
+    }
+
+
+    private boolean checkLoginAndFile(Principal userPrincipal,  MultipartFile  file){
+        return userPrincipal != null && !file.isEmpty();
     }
 
     private FileInfo uploadToRemoteProcessing(MultipartFile file, int user_id, boolean is_database) throws Exception {
@@ -427,18 +419,20 @@ public class FileController  {
         userFileService.save(userFile);
         int file_id = userFile.getId();
         FileInfo fileInfo = new FileInfo(file_id, newFileName);
-        // 复制文件到远程服务器
+
+        // ===== 复制文件到远程服务器 =====
         boolean is_success = remote.uploadFile(file_id, remoteFullPath);
         if (!is_success){
             fileInfo.file_id = -1;
             return fileInfo;
         }
         // TODO: UPDATE
-        userFileService.setFileIsRemoteStatus(file_id, true);
+        userFileService.setFileIsRemoteStatusAndPath(file_id, true, remoteFullPath);
         return fileInfo;
     }
 
 
+    // TODO: New API
     @GetMapping("/admin/deleteRemoteFileById")
     public void deleteRemoteFileById(
             @RequestParam(value = "file_id") Integer file_id,
@@ -448,6 +442,8 @@ public class FileController  {
         if(userFile.getIs_in_remote()){
             try {
                 remote.deleteFileSftp(userFile.getRemote_full_path());
+                userFileService.setFileIsRemoteStatusAndPath(file_id, false, null);
+                ResultTool.writeResponseSuccess(response);
             } catch (Exception e) {
                 ResultTool.writeResponseFail(response, ResultCode.COMMON_FAIL);
                 log.error("File Delete Fails", e);
@@ -455,10 +451,22 @@ public class FileController  {
         }
     }
 
+    // TODO: New API
+    @GetMapping("/admin/queryRemoteFileList")
+    public  void queryRemoteFileList(HttpServletResponse response){
+        try{
+            List<UserFile> list = userFileService.getRemoteFileInfoList();
+            ResultTool.writeResponseSuccessWithData(response, list);
+        } catch (Exception e){
+            ResultTool.writeResponseFail(response);
+        }
+    }
+
+
+    // TODO:
     @GetMapping("/admin/copyToRemote")
     @ResponseBody
     public String copyToRemote(Integer file_id) throws Exception {
-//        remote.uploadFile(file_id, );
         return "1";
     }
 

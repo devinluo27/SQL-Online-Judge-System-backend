@@ -25,7 +25,6 @@ public interface RecordMapper {
 
     List<LinkedHashMap<String, Object>> runSql(String code);
 
-    @Transactional(readOnly = true)
     List<LinkedHashMap<String, Object>> judge(String standard, String code);
 
     List<Record> selectRecordBySidAndAssignment(int sid, int assignment_id);

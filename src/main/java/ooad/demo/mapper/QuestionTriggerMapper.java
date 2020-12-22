@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface QuestionTriggerMapper {
     QuestionTrigger getTriggerQuestionJudgeInfoByQid(Integer question_id);
     int addQuestionTrigger(QuestionTrigger questionTrigger);
+
+    int updateQuestionTrigger(QuestionTrigger questionTrigger);
+
 }

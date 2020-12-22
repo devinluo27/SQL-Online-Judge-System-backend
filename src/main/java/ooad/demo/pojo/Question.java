@@ -12,7 +12,6 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Question implements Serializable{
     private Integer id;
-//    @NotNull
 
     private Integer question_id;
     @NotNull
@@ -31,6 +30,7 @@ public class Question implements Serializable{
 
     private Integer is_finished;
 
+    @NotNull
     private String question_standard_ans;
 
     @NotNull

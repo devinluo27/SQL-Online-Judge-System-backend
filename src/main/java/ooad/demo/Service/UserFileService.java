@@ -8,8 +8,9 @@ import java.util.List;
 public interface UserFileService {
     List<UserFile> findByUserId(Integer id);
 
-    List<UserFile> getAllFileInfo();
+    List<UserFile> getAllFileInfoList();
 
+    List<UserFile> getRemoteFileInfoList();
 
     void save(UserFile userFile);
 
@@ -21,6 +22,8 @@ public interface UserFileService {
 
     boolean copyToRemoteHost(Integer file_id) throws IOException;
 
-    Integer setFileIsRemoteStatus(Integer file_id, Boolean status);
+    Integer setFileIsRemoteStatusAndPath(Integer file_id, Boolean status, String remote_full_path);
+
+
 
 }

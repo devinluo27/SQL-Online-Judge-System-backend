@@ -36,6 +36,7 @@ public class ResultTool {
         try {
             response.getWriter().write(JSON.toJSONString(result));
         } catch (IOException e) {
+            log.error("Write Response Fails!", e);
             e.printStackTrace();
         }
     }
@@ -46,6 +47,7 @@ public class ResultTool {
         try {
             response.getWriter().write(JSON.toJSONString(result));
         } catch (IOException e) {
+            log.error("Write Response Fails!", e);
             e.printStackTrace();
         }
     }
@@ -57,24 +59,29 @@ public class ResultTool {
         try {
             response.getWriter().write(JSON.toJSONString(result));
         } catch (IOException e) {
+            log.error("Write Response Fails!", e);
             e.printStackTrace();
         }
     }
 
     public static void writeResponseSuccess(HttpServletResponse response){
+        response.setContentType("application/json;charset=UTF-8");
         JsonResult result = ResultTool.success();
         try {
             response.getWriter().write(JSON.toJSONString(result));
         } catch (IOException e) {
+            log.error("Write Response Fails!", e);
             e.printStackTrace();
         }
     }
     public static void writeResponseSuccessWithData(HttpServletResponse response, Object data){
+        response.setContentType("application/json;charset=UTF-8");
         JsonResult result = ResultTool.success();
         result.setData(data);
         try {
             response.getWriter().write(JSON.toJSONString(result));
         } catch (IOException e) {
+            log.error("Write Response Fails!", e);
             e.printStackTrace();
         }
     }

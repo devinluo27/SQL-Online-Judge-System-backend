@@ -62,8 +62,10 @@
             <if test="operation_type!=null">operation_type=#{operation_type},</if>
             <if test="is_order!=null">is_order=#{is_order},</if>
             <if test="question_sql_type!=null">question_sql_type=#{question_sql_type},</if>
+<!--            <if test="is_enabled!=null">is_enabled=#{is_enabled},</if>-->
         </trim>
-        where id=#{id}
+        where question_id=#{question_id}
+
     </update>
 
 <!--    <update id="updateQuestion" parameterType="Question">-->

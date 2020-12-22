@@ -1,5 +1,6 @@
 package ooad.demo.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @ToString
 @Accessors(chain=true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserFile implements Serializable {
     private Integer id;
     private String old_file_name;
@@ -34,4 +36,5 @@ public class UserFile implements Serializable {
     private String file_description;
     private String file_show_place;
     private String remote_full_path;
+    private Boolean is_exist = true;
 }

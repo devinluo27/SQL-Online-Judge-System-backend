@@ -8,16 +8,17 @@
 
     <select id="getAllFileInfo" resultType="UserFile">
      select * from user_files
+        where is_exist = true
     </select>
 
     <select id="findByUserId" resultType="UserFile">
         select * from  user_files
-        where user_id = ${id}
+        where user_id = ${id} and is_exist = true
     </select>
 
     <select id="findByFileId" resultType="UserFile" >
         select * from  user_files
-        where id = ${id}
+        where id = ${id} and is_exist = true
     </select>
 
 
@@ -30,20 +31,22 @@
     #{upload_time}, #{user_id}, #{question_id}, #{assignment_id})
     </insert>
 
-    <delete id="delete">
-        delete from user_files
-        where id = #{id}
-    </delete>
+    <update id="delete" parameterType="Integer">
+        update user_files
+            set is_exist = false
+            where id = #{id};
+    </update>
 
-    <update id="update" parameterType="UserFile">
+    <update id="updateDownCount" parameterType="UserFile">
         update user_files
         set down_counts = #{down_counts}
         where id = #{id}
     </update>
 
-    <update id="setIsInRemoteStatus">
+    <update id="setIsInRemoteStatusAndPath">
     update user_files
-        set is_in_remote = #{status}
+        set is_in_remote = #{status},
+        remote_full_path = #{remote_full_path}
     where id = #{file_id};
     </update>
 
@@ -51,6 +54,11 @@
         select relative_path, new_file_name
         from user_files
         where id = #{file_id}
+    </select>
+
+    <select id="getRemoteFileInfo" resultType="ooad.demo.pojo.UserFile">
+        select old_file_name, file_size, upload_time, user_id from user_files
+        where is_in_remote = true and is_exist = true;
     </select>
 
 </mapper>

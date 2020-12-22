@@ -15,7 +15,6 @@ import org.springframework.util.ResourceUtils;
 import java.io.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 
 @Service
@@ -66,7 +65,7 @@ public class UserFileServiceImpl implements UserFileService {
 
     @Override
     public void update(UserFile userFile) {
-        userFileMapper.update(userFile);
+        userFileMapper.updateDownCount(userFile);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class UserFileServiceImpl implements UserFileService {
     }
 
     @Override
-    public List<UserFile> getAllFileInfo(){
+    public List<UserFile> getAllFileInfoList(){
         return userFileMapper.getAllFileInfo();
     }
 
@@ -178,7 +177,13 @@ public class UserFileServiceImpl implements UserFileService {
     }
 
     @Override
-    public Integer setFileIsRemoteStatus(Integer file_id, Boolean status) {
-        return userFileMapper.setIsInRemoteStatus(file_id, status);
+    public Integer setFileIsRemoteStatusAndPath(Integer file_id, Boolean status, String remote_full_path) {
+        return userFileMapper.setIsInRemoteStatusAndPath(file_id, status, remote_full_path);
     }
+
+    @Override
+    public List<UserFile> getRemoteFileInfoList(){
+        return userFileMapper.getRemoteFileInfo();
+    }
+
 }

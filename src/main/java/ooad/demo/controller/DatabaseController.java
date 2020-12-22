@@ -4,6 +4,7 @@ import com.jcraft.jsch.JSchException;
 import lombok.extern.slf4j.Slf4j;
 import ooad.demo.Service.DockerPoolService;
 import ooad.demo.mapper.DataBaseMapper;
+import ooad.demo.pojo.Database;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @Slf4j
@@ -38,8 +40,8 @@ public class DatabaseController {
     }
 
     @GetMapping("/admin/queryDatabaseList")
-    public void queryDatabaseList(){
-        dataBaseMapper.queryDatabaseList();
+    public ArrayList<Database> queryDatabaseList(){
+        return dataBaseMapper.queryDatabaseList();
         // database_id name database_description  time
     }
 

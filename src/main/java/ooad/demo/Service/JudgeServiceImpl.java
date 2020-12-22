@@ -94,15 +94,16 @@ public class JudgeServiceImpl implements JudgeService {
             System.out.println("query_docker_id" + dockID);
             System.out.println();
         }
+
         else if(operation_type.equals("trigger")){
             // trigger
             System.out.println("Trigger: ");
             String dockID;
-            QuestionTrigger questionTrigger = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
+//            QuestionTrigger questionTrigger = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
 
-            // TODO:
-            Integer ans_table_file_id = questionTrigger.getAns_table_file_id();
-            Integer test_data_file_id = questionTrigger.getTest_data_file_id();
+            // TODO: !!!!!!! 动态判题
+//            Integer ans_table_file_id = questionTrigger.getAns_table_file_id();
+//            Integer test_data_file_id = questionTrigger.getTest_data_file_id();
 
 
             synchronized (usedDockerPool.getRunningList()){
@@ -135,6 +136,7 @@ public class JudgeServiceImpl implements JudgeService {
             System.out.println("remove_docker_id" + dockID);
             usedDockerPool.RemoveDockerOnly(dockID);
             System.out.println();
+
         }
         else {
             // error TODO: not trigger or query case
@@ -144,10 +146,10 @@ public class JudgeServiceImpl implements JudgeService {
         int score = response.getScore();
         int status = 0;
         switch (score){
-            case 100: status = 1; break; // accept
+            case 100: status = 1;  break; // accept
             case 0:   status = -1; break; // wrong
-            case -1:  status = -2;break; // exception
-            case -2: status = -3; break; // 后端判题出现异常 请稍后再试
+            case -1:  status = -2; break; // exception
+            case -2: status = -3;  break; // 后端判题出现异常 请稍后再试
         }
         double running_time = response.getExec_time();
         recordMapper.setRecordStatus(record_id, status, running_time);

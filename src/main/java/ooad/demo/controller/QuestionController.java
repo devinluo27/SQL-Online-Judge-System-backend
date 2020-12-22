@@ -1,8 +1,6 @@
 package ooad.demo.controller;
 
-import com.alibaba.fastjson.JSON;
 import ooad.demo.utils.AccessLimit;
-import ooad.demo.utils.JsonResult;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
 import ooad.demo.mapper.QuestionMapper;
@@ -10,6 +8,7 @@ import ooad.demo.mapper.QuestionTriggerMapper;
 import ooad.demo.pojo.Question;
 import ooad.demo.pojo.QuestionTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +18,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+@Transactional(timeout = 100)
 @RestController
 public class QuestionController implements Serializable {
 
@@ -106,7 +106,7 @@ public class QuestionController implements Serializable {
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this query question!");
             return;
         }
-        ResultTool.writeResponseFail(response);
+        ResultTool.writeResponseSuccess(response);
     }
 
     @PostMapping("/admin/addQuestionTrigger")
@@ -127,6 +127,7 @@ public class QuestionController implements Serializable {
                     test_data_file_id, test_config, target_table);
             questionTriggerMapper.addQuestionTrigger(questionTrigger);
         }catch (Exception e){
+            e.printStackTrace();
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
             return;
         }
@@ -136,14 +137,42 @@ public class QuestionController implements Serializable {
     // 将会直接覆盖原有题目!!!
     @PostMapping("/admin/updateQuestion")
     public void updateQuestion(@RequestBody Question question, HttpServletResponse response) throws IOException {
-        if (!question.getOperation_type().equals("trigger") && !question.getOperation_type().equals("query")){
+        if (!question.getOperation_type().equals("query")
+                && questionMapper.selectQuestionById(question.getQuestion_id()) == null){
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
             return;
         }
         try{
             questionMapper.updateQuestion(question);
         } catch (Exception e){
+            e.printStackTrace();
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to update this query question!");
+        }
+        ResultTool.writeResponseSuccess(response);
+    }
+
+    @PostMapping("/admin/updateQuestionTrigger")
+    public void updateQuestionTrigger(@RequestBody Question question,
+                                      @RequestParam(value = "ans_table_file_id") Integer ans_table_file_id,
+                                      @RequestParam(value = "test_data_file_id") Integer test_data_file_id,
+                                      @RequestParam(value = "target_table") String target_table,
+                                      @RequestParam(value = "test_config") String test_config,
+                                      HttpServletResponse response) throws IOException {
+        if (!question.getOperation_type().equals("trigger")
+                && questionMapper.selectQuestionById(question.getQuestion_id()) == null){
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
+            return;
+        }
+        try {
+            questionMapper.updateQuestion(question);
+            int question_id = question.getQuestion_id();
+            QuestionTrigger tempNewQuestionTrigger = new QuestionTrigger(question_id, ans_table_file_id,
+                    test_data_file_id, test_config, target_table);
+            questionTriggerMapper.updateQuestionTrigger(tempNewQuestionTrigger);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
+            return;
         }
         ResultTool.writeResponseSuccess(response);
     }
@@ -154,9 +183,16 @@ public class QuestionController implements Serializable {
                                HttpServletResponse response){
         if (questionMapper.disableQuestion(question_id) == 1){
             ResultTool.writeResponseSuccess(response);
+//            try{
+//                int i = 1/0;
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
             return;
         }
         ResultTool.writeResponseFail(response);
     }
+
+
 
 }

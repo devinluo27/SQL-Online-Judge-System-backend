@@ -20,7 +20,7 @@
     <select id="queryDatabaseList" resultType="ooad.demo.pojo.Database">
         select *
         from database
-        where is_enabled = #{true}
+        where is_enabled = true
     </select>
 
 
