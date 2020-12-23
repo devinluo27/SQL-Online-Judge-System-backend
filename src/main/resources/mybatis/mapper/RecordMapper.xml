@@ -16,7 +16,7 @@
 
     <select id="selectRecordListBySid" resultType="Record">
     select record_id, record_sid, record_question_id, record_status, record_time,
-    record_code_type from record where record_sid = #{sid};
+    record_code_type, running_time  from record where record_sid = #{sid};
     </select>
 
 
@@ -48,13 +48,13 @@
     </insert>
 
 
-    <select id="selectLatestRecordByQuestionId" resultType="Record">
-select record_id, record_sid, record_code from (
-    select record_id, record_sid, record_code,
-        row_number() over (partition by record_sid order by record_time desc) as ranking
-        from record
-     where  record_question_id = #{question_id}) temp
-where temp.ranking = 1;
+    <select id="selectLatestRecordByQid" resultType="Record">
+    select record_id, record_sid, record_code from (
+        select record_id, record_sid, record_code,
+            row_number() over (partition by record_sid order by record_time desc) as ranking
+            from record
+         where  record_question_id = #{question_id}) temp
+    where temp.ranking = 1;
     </select>
 
     <select id="getRecordCountForNDays" resultType="java.util.Map">

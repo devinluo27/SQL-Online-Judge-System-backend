@@ -324,12 +324,33 @@ public class FileController  {
      * @param response
      * @throws Exception
      */
+//    @AccessLimit(seconds = 100, maxCount = 10)
+//    @PostMapping("/admin/files/uploadToRemoteDatabase")
+//    public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
+//                             @RequestParam(value = "database_name") String database_name,
+//                             @RequestParam(value = "database_description") String database_description,
+//                             HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        //获取用户的id
+//        Principal userPrincipal = request.getUserPrincipal();
+//        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+//        if (userPrincipal == null || file.isEmpty() || extension == null || !extension.toLowerCase().equals("sql")){
+//            ResultTool.writeResponseFail(response, ResultCode.FILE_TYPE_ERROR);
+//            return;
+//        }
+//        FileInfo fileInfo = uploadToRemoteProcessing(file, Integer.parseInt(userPrincipal.getName()), true);
+//        if (fileInfo.file_id == -1){
+//            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL,"upload to remote failed!");
+//            return;
+//        }
+//        Database database = new Database(fileInfo.file_id, database_name, database_description, remoteDatabasePath, fileInfo.newFileName);
+//        dataBaseMapper.addDatabase(database);
+//        ResultTool.writeResponseSuccess(response);
+//    }
+
     @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/uploadToRemoteDatabase")
     public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
-                             @RequestParam(value = "database_name") String database_name,
-                             @RequestParam(value = "database_description") String database_description,
-                             HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -342,10 +363,29 @@ public class FileController  {
             ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL,"upload to remote failed!");
             return;
         }
-        Database database = new Database(fileInfo.file_id, database_name, database_description, remoteDatabasePath, fileInfo.newFileName);
-        dataBaseMapper.addDatabase(database);
         ResultTool.writeResponseSuccess(response);
     }
+
+    // TODO: NEW URL
+    @AccessLimit(seconds = 100, maxCount = 10)
+    @PostMapping("/admin/files/createDatabase")
+    public void createDatabase(@RequestParam(value = "file_id") Integer file_id,
+                                       @RequestParam(value = "database_name") String database_name,
+                                       @RequestParam(value = "database_description") String database_description,
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
+         try {
+             UserFile userFile = userFileService.findById(file_id);
+             Database database = new Database(file_id, database_name, database_description, remoteDatabasePath, userFile.getNew_file_name());
+             dataBaseMapper.addDatabase(database);
+             ResultTool.writeResponseSuccess(response);
+         }catch (Exception e){
+             e.printStackTrace();
+             ResultTool.writeResponseFail(response);
+         }
+    }
+
+
+
 
     @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/uploadToRemote")
@@ -354,7 +394,6 @@ public class FileController  {
                              HttpServletResponse response) throws Exception {
         //获取用户的id
         Principal userPrincipal = request.getUserPrincipal();
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (!checkLoginAndFile(userPrincipal, file)){
             ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "Parameters Error!");
             return;

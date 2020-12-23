@@ -32,6 +32,8 @@ public interface UserMapper{
 
     String getPwd(int sid);
 
+    Integer getTodayUserLoginCount();
+
 
 
 }

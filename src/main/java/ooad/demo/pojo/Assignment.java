@@ -19,16 +19,20 @@ import javax.validation.constraints.NotNull;
 public class Assignment implements Serializable {
 
     private Integer id;
-    @NotNull
+
     private Integer assignment_id;
+
     @NotNull
     private String assignment_name;
 
     private Timestamp assignment_create_time;
+
     @NotNull
     private Timestamp assignment_start_time;
+
     @NotNull
     private Timestamp assignment_end_time;
+
 
     private String assignment_description;
 

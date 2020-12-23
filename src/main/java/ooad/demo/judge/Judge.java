@@ -1,7 +1,6 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
-import com.sun.tools.classfile.ConstantPool;
 
 import java.io.*;
 
@@ -47,6 +46,7 @@ public class Judge {
 
     static String[] QUERY_CONFIG = {
             ", row_number() over ()",
+            ", row_number() over ()",
             ", row_number() over ()"
     };
 
@@ -63,7 +63,7 @@ public class Judge {
                     "    as EXCEPT_ANS2) as JUDGE;" +
                     "\" ",
 
-            "docker exec #DockerNAME# sqlite3 data.sqlite \" " +
+            "docker exec #DockerNAME# sqlite3 data.sqlite -readonly \" " +
                     "select count(*) from (\n" +
                     "select *\n" +
                     "from (select * #CONFIG# from ( #ANS_SQL# ) STAND_ANS1  except\n" +
@@ -73,7 +73,18 @@ public class Judge {
                     "from (select * #CONFIG# from ( #TEST_SQL# ) INPUT_SQL2 except\n" +
                     "      select * #CONFIG# from ( #ANS_SQL# ) STANDARD_SQL2)\n" +
                     "    as EXCEPT_ANS2) as JUDGE;" +
-                    "\" "
+                    "\" ",
+
+            "docker exec test-mysql  mysql  -h localhost -u tester  -D TASK -e \"" +
+                    "select UNION_CNT - ANS_CNT from (\n" +
+                    "select count(*) as UNION_CNT, count(*) as ANS_CNT\n" +
+                    "from (\n" +
+                    "         select * #CONFIG# \n" +
+                    "         from ( #TEST_SQL# ) as TEST_SQL\n" +
+                    "         union\n" +
+                    "         select * #CONFIG#\n" +
+                    "         from ( #ANS_SQL# ) as ANS_SQL\n" +
+                    "     ) as UNION_SET ,( #ANS_SQL# )as ANS_SET) as RST;\" "
     };
 
     static String[][] TRIGGER_SQL = {{
@@ -122,9 +133,19 @@ public class Judge {
 //        System.out.println("OUT: " + logs.OUT);
 //        System.out.println("ERROR: " + logs.ERROR);
         String[] result = logs.OUT.split("\n");
-        if (result.length != 4) return new QUERY_RESULT(-1, -1, logs.OUT, logs.ERROR);
-        int SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;
-        double EXEC_TIME = Double.parseDouble(result[3].replaceAll("Time: ", "").replaceAll(" ms", ""));
+        int SCORE = 0;
+        double EXEC_TIME = 0;
+        if (DBMS == 0) {
+            if (result.length != 4) return new QUERY_RESULT(-1, -1, logs.OUT, logs.ERROR);
+            SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;
+            EXEC_TIME = Double.parseDouble(result[3].replaceAll("Time: ", "").replaceAll(" ms", ""));
+        }else if(DBMS == 1){
+            SCORE = Integer.parseInt(result[0].replaceAll(" ", "")) == 0 ? 100 : 0;
+            EXEC_TIME = (double) logs.exec_time - 300;
+        }else if (DBMS == 2){
+            SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;
+            EXEC_TIME = (double) logs.exec_time - 300;
+        }
         System.out.println(SCORE + "  " + EXEC_TIME);
         return new QUERY_RESULT(SCORE, EXEC_TIME, logs.OUT, logs.ERROR);
     }

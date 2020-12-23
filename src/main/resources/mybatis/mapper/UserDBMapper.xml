@@ -39,6 +39,10 @@
     select sid, user_name, enabled, user_password from user_db where sid = #{sid}
     </select>
 
+    <select id="getTodayUserLoginCount" resultType="java.lang.Integer">
+        select * from get_today_user_login_count();
+    </select>
+
     <insert id="addUserDB" parameterType="UserDB">
     begin;
     insert into user_db(sid, user_name, user_password)

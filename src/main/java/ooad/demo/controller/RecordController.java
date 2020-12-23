@@ -16,17 +16,13 @@ import ooad.demo.pojo.Question;
 import ooad.demo.pojo.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Array;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /***
  *  GetMapping("/admin/queryAllRecordListInfo")
@@ -230,7 +226,7 @@ public class RecordController{
             @RequestParam(value = "question_id") Integer question_id,
             HttpServletResponse response) throws IOException, JSchException {
         response.setContentType("text/json;charset=utf-8");
-        List<Record> rejudgeList = recordMapper.selectLatestRecordByQuestionId(question_id);
+        List<Record> rejudgeList = recordMapper.selectLatestRecordByQid(question_id);
         Question question = questionMapper.getInfoForJudge(question_id);
         try {
             // Docker Judge Function
@@ -249,17 +245,6 @@ public class RecordController{
         response.getWriter().write(JSON.toJSONString(result));
     }
 
-
-    // TODO: NEW URL
-    @GetMapping("/user/getRecordCountForAWeek")
-    public ArrayList<Map<String, Object>> getRecordCountForAWeek(){
-        try{
-            return recordMapper.getRecordCountForNDays(7);
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
 
 
 

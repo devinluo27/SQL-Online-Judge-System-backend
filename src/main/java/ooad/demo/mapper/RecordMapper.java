@@ -27,13 +27,17 @@ public interface RecordMapper {
 
     List<Record> selectRecordBySidAndAssignment(int sid, int assignment_id);
 
-    List<Record> selectLatestRecordByQuestionId(int question_id);
+    List<Record> selectLatestRecordByQid(int question_id);
 
 
     int addRecord(Record record);
+
     int deleteARecord(Integer record_id);
+
     int setRecordStatus(Integer record_id, Integer record_status, Double running_time);
 
     ArrayList<Map<String, Object>> getRecordCountForNDays(int day_num);
+
+//    ArrayList<Record> getLatestRecordByQid(Integer question_id);
 
 }

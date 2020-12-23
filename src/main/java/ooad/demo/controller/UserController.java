@@ -148,18 +148,11 @@ public class UserController {
             mailMessage.setTo( sid + "@mail.sustech.edu.cn");
             mailMessage.setFrom("945517787@qq.com");
             mailSender.send(mailMessage);
-            JsonResult result = ResultTool.success();
-            response.getWriter().write(JSON.toJSONString(result));
+            ResultTool.writeResponseSuccess(response);
             return;
         }
-        JsonResult result = ResultTool.fail();
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseFail(response);
     }
 
-    // TODO: NEW URL
-    @GetMapping("/user/loginCountToday")
-    public void loginCountToday(){
-
-    }
 
 }

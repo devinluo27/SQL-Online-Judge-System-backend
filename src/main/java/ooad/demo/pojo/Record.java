@@ -1,5 +1,6 @@
 package ooad.demo.pojo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Record implements Serializable {
     private Integer record_id;
 
@@ -25,6 +27,7 @@ public class Record implements Serializable {
     private String record_code;
 
     private String record_code_type;
+
     private Double running_time = -1.0;
 
     public Record(@NotNull Integer record_sid, Integer record_question_id, Integer record_status, String record_code,

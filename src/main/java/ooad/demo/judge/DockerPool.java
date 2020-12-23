@@ -11,7 +11,6 @@ public class DockerPool {
     int DockerSeq;
     int ID;
     int DATABASE;
-    int status = 1;
 
     String FileName;
     String FilePATH;
@@ -29,14 +28,19 @@ public class DockerPool {
     static String KillDockerCMD = "docker kill #DockerNAME#";
     static String RemoveDockerCMD = "docker rm -f #DockerNAME#";
     static String AwakeDockerCMD = "docker start #DockerNAME#";
-    static String[] DockerDB = {
-            "postgres"
-    };
 
+    static String HealthyCheckCMD = "docker ps --filter name=#DockerNAME# --filter status=#STATUS# --format \"{{.Names}}\"";
+
+    static String[] DockerDB = {
+            "postgres",
+            "sqlite",
+            "mysql"
+    };
+    // --device-write-bps /dev/sda:66MB
     static String[][] DockerCMD = { {
-                "docker run --name #DockerNAME# -e POSTGRES_PASSWORD=SQL_tester -d postgres",
+                "docker run -m 500M --cpus 2 --name #DockerNAME# -e POSTGRES_PASSWORD=SQL_tester -d postgres",
                     "docker cp #DockerFilePATH# #DockerNAME#:/data.sql",
-                    "sleep 2",
+                    "sleep 3",
                     "docker exec #DockerNAME# psql -U postgres -c \" create database task; \" ",
                     "docker exec #DockerNAME# psql -U postgres -d task -f data.sql -q",
                     "docker exec #DockerNAME# psql -U postgres -d task -c \" " +
@@ -48,8 +52,15 @@ public class DockerPool {
                             "GRANT SELECT ON ALL TABLES IN SCHEMA public TO tester;\" "
             }, {
                 "docker run --name #DockerNAME# -dit keinos/sqlite3",
-                    "docker cp #FilePATH# #DockerNAME#:/data.sqlite"
+                    "docker cp #DockerFilePATH# #DockerNAME#:/data.sqlite"
             }, {
+                "docker run --name #DockerNAME# -e MYSQL_ROOT_PASSWORD=123123 -d mysql",
+            "sleep 20",
+            "docker cp #DockerFilePATH# #DockerNAME#:/data.sql",
+            "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -e \"create database TASK\"",
+            "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -D TASK -e\"source data.sql\"",
+            "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -e \"create user tester; \"",
+            "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -e \"grant select on TASK.* to 'tester'@'%'\""
     }};
 
 
@@ -74,7 +85,8 @@ public class DockerPool {
         this.InitDockerPool(DockerSeq);
     }
 
-    public Remote.Log KillDocker(String DockerName) throws IOException, JSchException {
+
+    Remote.Log killDocker(String DockerName) throws IOException, JSchException {
         runningList.remove(DockerName);
         if (!sleepingList.contains(DockerName)) sleepingList.add(DockerName);
         return Remote.EXEC_CMD(new String[]{KillDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
@@ -157,17 +169,17 @@ public class DockerPool {
         return runningList;
     }
 
-    static String HealthyCheckCMD = "docker ps --filter name=#DockerNAME# --filter status=#STATUS# --format \"{{.Names}}\"";
     static String checkIfRunningCMD = "docker ps --filter name=#DockerNAME# --filter status=running --format \"{{.Names}}\"";
-
-    public boolean HealthyCheck(String DockerNAME, String STATUS) throws IOException, JSchException {
-        String CMD = HealthyCheckCMD.replaceAll("#DockerNAME#",DockerNAME).replaceAll("#STATUS#", STATUS);
+    // TODO: THE SAME
+    public static boolean checkIfRunning(String DockerNAME) throws IOException, JSchException {
+        String CMD = checkIfRunningCMD.replaceAll("#DockerNAME#",DockerNAME);
         Remote.Log log = Remote.EXEC_CMD(new String[]{CMD}).get(0);
         return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
     }
 
-    public static boolean checkIfRunning(String DockerNAME) throws IOException, JSchException {
-        String CMD = checkIfRunningCMD.replaceAll("#DockerNAME#",DockerNAME);
+    // TODO:
+    private boolean HealthyCheck(String DockerNAME, String STATUS) throws IOException, JSchException {
+        String CMD = HealthyCheckCMD.replaceAll("#DockerNAME#",DockerNAME).replaceAll("#STATUS#", STATUS);
         Remote.Log log = Remote.EXEC_CMD(new String[]{CMD}).get(0);
         return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
     }

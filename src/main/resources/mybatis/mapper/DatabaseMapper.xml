@@ -8,7 +8,7 @@
 
     <update id="deleteDatabase">
         update database
-        set is_enabled = #{false}
+        set is_enabled = false
         where database_id = #{database_id}
     </update>
 

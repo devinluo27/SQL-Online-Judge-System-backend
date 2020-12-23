@@ -89,19 +89,20 @@ class DemoApplicationTests {
 
     }
 
-    @Test
-    void judgeTest_docker_1() throws IOException, JSchException, InterruptedException {
-        for (int i = 0; i < 100; i++){
-            recordController.addRecord(1, "select * from movies", "postgresql");
-            System.out.println("submit one");
-        }
-        System.out.println("==================Finished submission ===================");
-        System.out.println("==================Finished submission ===================");
-        long now = System.currentTimeMillis();
-        System.out.println(now);
-        while(System.currentTimeMillis() - now < 1000000000){}
+//    @Test
+//    void judgeTest_docker_1() throws IOException, JSchException, InterruptedException {
+//        for (int i = 0; i < 100; i++){
+//            recordController.addRecord(1, "select * from movies", "postgresql");
+//            System.out.println("submit one");
+//        }
+//        System.out.println("==================Finished submission ===================");
+//        System.out.println("==================Finished submission ===================");
+//        long now = System.currentTimeMillis();
+//        System.out.println(now);
+//        while(System.currentTimeMillis() - now < 100000){}
+//    }
 
-    }
+
     @Test
     void judgeTest_docker_2() throws IOException, JSchException, InterruptedException {
 //        ManageDockersPool.getInstance().getDockersPoolHashMap().get("1-")
@@ -165,25 +166,6 @@ class DemoApplicationTests {
         Connection connection = dataSource.getConnection();
         System.out.println(connection);
         connection.close();
-    }
-
-    @Test
-    public void judge() {
-        String standard = "select * from record";
-        String code = "elect * from record";
-        List<LinkedHashMap<String, Object>>  a;
-        try {
-            a = recordMapper.judge(standard, code);
-        }
-        catch (DataAccessException e){
-
-        }
-    }
-
-    @Test
-    public void getPublicData(){
-        String sql = "";
-        List<LinkedHashMap<String, Object>> list = recordMapper.runSql(sql);
     }
 
     @Test
