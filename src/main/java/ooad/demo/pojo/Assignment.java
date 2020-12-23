@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.List;
 
-import ooad.demo.pojo.Question;
-
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -37,11 +35,13 @@ public class Assignment implements Serializable {
     private List<Question> questions;
 
     @NotNull
-    private Integer is_visible;
+    private Boolean is_visible;
+
+    private Boolean is_enabled;
 
     public Assignment(int assignment_id, String assignment_name, Timestamp assignment_create_time,
                       Timestamp assignment_start_time, Timestamp assignment_end_time,
-                      String assignment_description, int is_visible) {
+                      String assignment_description, Boolean is_visible) {
         this.assignment_id = assignment_id;
         this.assignment_name = assignment_name;
         this.assignment_create_time = assignment_create_time;

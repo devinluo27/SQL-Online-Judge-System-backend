@@ -27,6 +27,7 @@ public class UserDB implements Serializable {
     private Integer enabled = 1;
     private Timestamp last_login_time;
     private Timestamp created_time;
+    private Integer lab_num;
 
     public String getUser_name() {
         return user_name;

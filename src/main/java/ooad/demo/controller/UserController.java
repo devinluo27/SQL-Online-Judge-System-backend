@@ -156,4 +156,10 @@ public class UserController {
         response.getWriter().write(JSON.toJSONString(result));
     }
 
+    // TODO: NEW URL
+    @GetMapping("/user/loginCountToday")
+    public void loginCountToday(){
+
+    }
+
 }

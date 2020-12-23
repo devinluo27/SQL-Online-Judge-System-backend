@@ -8,25 +8,30 @@
 
     <select id="getAllAssignmentList" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
-    assignment_start_time, assignment_end_time, is_visible from assignment
+    assignment_start_time, assignment_end_time, is_visible
+    from assignment
+    where is_enabled = true;
     </select>
 
     <select id="getVisibleAssignmentList" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time from assignment
-    where is_visible = 1;
+    where is_visible = 1 and  is_enabled = true;
     </select>
 
 <!--    for user-->
     <select id="selectAssignmentById" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time, assignment_description
-     from assignment where assignment_id = #{id} and is_visible = 1;
+     from assignment
+     where assignment_id = #{assignment_id} and is_visible = 1
+     and is_enabled = true;
     </select>
 
 <!--    for admin-->
     <select id="selectAssignmentAllInfoById" resultType="ooad.demo.pojo.Assignment">
-    select * from assignment where assignment_id = #{id}
+    select * from assignment
+    where assignment_id = #{assignment_id} and  is_enabled = true;
     </select>
 
     <insert id="addAssignment" parameterType="Assignment">
@@ -41,13 +46,14 @@
     assignment_start_time=#{assignment_start_time},
     assignment_end_time=#{assignment_end_time},
     assignment_description=#{assignment_description})
-    where assignment_id = #{assignment_id}
+    where assignment_id = #{assignment_id} and is_enabled = true;
     </update>
 
-    <delete id="deleteAssignment" parameterType="int">
-        delete from assignment
-        where assignment_id = #{id}
-    </delete>
+    <update id="deleteAssignment" parameterType="int">
+        update assignment set
+            is_enabled = false
+        where assignment_id = #{assignment_id}
+    </update>
 
     <resultMap type="Assignment" id="aToqResultMap">
         <id property="assignment_id" column="assignment_id" />
@@ -65,8 +71,9 @@
     <select id="queryQuestionsByAssignment" resultMap="aToqResultMap">
     select  * from assignment a
         join question q on a.assignment_id = q.question_of_assignment
-        where a.assignment_id = #{id};
+        where a.assignment_id = #{assignment_id};
     </select>
+
     <select id="queryAssignmentSid" resultType="ooad.demo.pojo.Assignment"></select>
 
 

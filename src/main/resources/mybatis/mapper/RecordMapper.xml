@@ -57,6 +57,14 @@ select record_id, record_sid, record_code from (
 where temp.ranking = 1;
     </select>
 
+    <select id="getRecordCountForNDays" resultType="java.util.Map">
+        select record_time::date as record_date, count(*) as record_count
+        from record
+            group by record_date
+            order by record_date desc
+            limit #{day_num}
+    </select>
+
     <delete id="deleteRecord">
         delete from record
         where record_id = #{record_i}

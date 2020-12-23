@@ -5,6 +5,13 @@
 <mapper namespace="ooad.demo.mapper.SysPermissionMapper">
 
     <cache/>
+    <update id="addPermission2Role">
+        select * from add_permission_to_role(#{input_role_code}, #{input_permission_code});
+    </update>
+
+    <delete id="deletePermission4Role">
+        select  * from delete_permission_of_role(#{input_role_code}, #{input_permission_code});
+    </delete>
 
     <select id="selectPermissionListByUser" resultType="SysPermission">
     SELECT

@@ -2,14 +2,12 @@ package ooad.demo.mapper;
 
 import ooad.demo.pojo.Record;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -35,4 +33,7 @@ public interface RecordMapper {
     int addRecord(Record record);
     int deleteARecord(Integer record_id);
     int setRecordStatus(Integer record_id, Integer record_status, Double running_time);
+
+    ArrayList<Map<String, Object>> getRecordCountForNDays(int day_num);
+
 }

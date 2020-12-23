@@ -9,7 +9,14 @@ import java.util.List;
 @Mapper
 @Repository
 public interface SysPermissionMapper {
+
     List<SysPermission> selectPermissionListByUser(int sid);
+
     List<SysPermission> selectListByPath(String requestUrl);
+
+    int addPermission2Role(String input_role_code, String input_permission_code);
+
+    int deletePermission4Role(String input_role_code, String input_permission_code);
+
 
 }

@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /***
  *  GetMapping("/admin/queryAllRecordListInfo")
@@ -246,6 +249,21 @@ public class RecordController{
         response.getWriter().write(JSON.toJSONString(result));
     }
 
+
+    // TODO: NEW URL
+    @GetMapping("/user/getRecordCountForAWeek")
+    public ArrayList<Map<String, Object>> getRecordCountForAWeek(){
+        try{
+            return recordMapper.getRecordCountForNDays(7);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
+//    ==================  ==================  ==================   ==================  ==================
 
     // for testing only
     @Async
