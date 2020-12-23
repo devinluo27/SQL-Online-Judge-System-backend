@@ -16,6 +16,7 @@ select add_url('/admin/queryQuestionList', 9);
 select add_url('/admin/addQuestion', 9);
 select add_url('/admin/addQuestionTrigger', 9);
 select add_url('/admin/updateQuestion', 9);
+select add_url('/admin/updateQuestionTrigger', 9);
 select add_url('/admin/deleteQuestion', 9);
 
 
@@ -35,9 +36,11 @@ select add_url('/admin/files/showAllFiles', 15);
 select add_url('/admin/files/uploadToRemoteDatabase', 15);
 select add_url('/admin/files/uploadToRemote', 15);
 select add_url('/admin/initDatabaseDocker', 15);
+
 select add_url('/admin/deleteDatabaseById', 15);
 select add_url('/admin/copyToRemote', 15);
 select add_url('/admin/queryDatabaseList', 15);
+
 
 insert into sys_role_permission_relation(role_id, permission_id)
 values (1, 15);

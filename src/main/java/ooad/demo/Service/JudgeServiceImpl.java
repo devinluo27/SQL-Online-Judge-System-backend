@@ -1,6 +1,7 @@
 package ooad.demo.Service;
 
 import com.jcraft.jsch.JSchException;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.Judge;
 import ooad.demo.judge.ManageDockersPool;
@@ -16,12 +17,13 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 //@PropertySource(value = "classpath:application.yml")
 @Service
 //@ConfigurationProperties(prefix = "judge")
-@Async
+@Slf4j
 public class JudgeServiceImpl implements JudgeService {
     @Autowired
     RecordMapper recordMapper;
@@ -71,8 +73,9 @@ public class JudgeServiceImpl implements JudgeService {
 
         System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
-        Judge.QUERY_RESULT response;
-        // only query
+        Judge.QUERY_RESULT response = null;
+
+        // TODO: QUERY
         if(operation_type.equals("query")){
             int rand = random.nextInt(dockers.size());
             String dockID;
@@ -95,66 +98,94 @@ public class JudgeServiceImpl implements JudgeService {
             System.out.println();
         }
 
+        // TODO: TRIGGER
         else if(operation_type.equals("trigger")){
-            // trigger
+
             System.out.println("Trigger: ");
-            String dockID;
-//            QuestionTrigger questionTrigger = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
+            String dockID = null;
 
             // TODO: !!!!!!! 动态判题
-//            Integer ans_table_file_id = questionTrigger.getAns_table_file_id();
-//            Integer test_data_file_id = questionTrigger.getTest_data_file_id();
+            try{
+                Map<String, String> triggerJudgeInfo = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
+                String ans_table_file_full_path = triggerJudgeInfo.get("ans_table_file_full_path");
+                String test_data_file_full_path = triggerJudgeInfo.get("test_data_file_full_path");
+                String target_table = triggerJudgeInfo.get("target_table");
+                String test_config = triggerJudgeInfo.get("test_config");
 
-
-            synchronized (usedDockerPool.getRunningList()){
-                if(usedDockerPool.getRunningList().size() == 0){
-                    // 等待某个docker 建好后唤醒它
-                    // 放入等待队列
-                    try {
-                        System.out.println("Waiting! Rid: " + record_id);
-                        usedDockerPool.getRunningList().wait();
-                    } catch(InterruptedException e) {
-                        e.printStackTrace();
+                synchronized (usedDockerPool.getRunningList()){
+                    if(usedDockerPool.getRunningList().size() == 0){
+                        // 等待某个docker 建好后唤醒它
+                        // 放入等待队列
+                        try {
+                            System.out.println("Waiting! Rid: " + record_id);
+                            usedDockerPool.getRunningList().wait();
+                        } catch(InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
+                    dockID = dockers.get(0);
+                    usedDockerPool.getRunningList().remove(dockID);
+                    usedDockerPool.getSleepingList().remove(dockID);
                 }
-                dockID = dockers.get(0);
-                usedDockerPool.getRunningList().remove(dockID);
-                usedDockerPool.getSleepingList().remove(dockID);
+                //  TODO: 更换各种硬编码 postgres： 0
+                System.out.println("DockerId: " + dockID);
+
+//            response =  Judge.EXEC_TRIGGER("/data2/DBOJ/week14Sigiin/week14_sign_in_ans.sql",
+//                    code,
+//                    "/data2/DBOJ/week14Sigiin/week14_sign_in_test.sql",
+//                    10,
+//                    dockID,
+//                    sql_type,
+//                    "cars"
+//                    );
+
+                response = Judge.EXEC_TRIGGER(ans_table_file_full_path,
+                        code,
+                        test_data_file_full_path,
+                        Integer.parseInt(test_config),
+                        dockID,
+                        sql_type,
+                        target_table
+                );
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            //  TODO: 更换各种硬编码 postgres： 0
-            System.out.println("DockerId: " + dockID);
-
-            response =  Judge.EXEC_TRIGGER("/data2/DBOJ/week14Sigiin/week14_sign_in_ans.sql",
-                    code,
-                    "/data2/DBOJ/week14Sigiin/week14_sign_in_test.sql",
-                    10,
-                    dockID,
-                    sql_type,
-                    "cars"
-                    );
-
-            System.out.println("remove_docker_id" + dockID);
-            usedDockerPool.RemoveDockerOnly(dockID);
-            System.out.println();
+            finally {
+                System.out.println("remove_docker_id" + dockID);
+                usedDockerPool.RemoveDockerOnly(dockID);
+            }
 
         }
-        else {
-            // error TODO: not trigger or query case
+
+        // TODO: not trigger or query case ERROR
+        if (response == null){
             response = new Judge.QUERY_RESULT(-2, -1, "", "");
         }
 
         int score = response.getScore();
         int status = 0;
+        log.info("score: " + score);
+        if (score > 0 && score < 100){
+            score = -3;
+        }
+
         switch (score){
             case 100: status = 1;  break; // accept
             case 0:   status = -1; break; // wrong
-            case -1:  status = -2; break; // exception
-            case -2: status = -3;  break; // 后端判题出现异常 请稍后再试
+            case -1:  status = -2; break; // 提交的sql 跑出 exception
+            case -3: status = -3; break; // 对一部分
+            case -2:
+            case -4:
+                status = -4;  break; // 后端判题出现异常 请稍后再试
+            default: status = -5; break; // 无效提交
         }
+
         double running_time = response.getExec_time();
         recordMapper.setRecordStatus(record_id, status, running_time);
         System.out.println("current_size_after_judge: " + usedDockerPool.getRunningList().size());
-        System.out.println(System.currentTimeMillis());
+        System.out.println("判题结束" + System.currentTimeMillis());
     }
 
     private int getSqlTypeIndex(String string_sql_type){

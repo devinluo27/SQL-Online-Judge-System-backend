@@ -372,6 +372,14 @@ public class FileController  {
         return userPrincipal != null && !file.isEmpty();
     }
 
+    /***
+     * This function first store the file in backend and then copy it to the judge machine!
+     * @param file
+     * @param user_id
+     * @param is_database
+     * @return
+     * @throws Exception
+     */
     private FileInfo uploadToRemoteProcessing(MultipartFile file, int user_id, boolean is_database) throws Exception {
         //获取文件原始名称
         String originalFilename = file.getOriginalFilename();

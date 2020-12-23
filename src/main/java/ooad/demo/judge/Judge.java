@@ -12,10 +12,14 @@ public class Judge {
 
 
     public static class QUERY_RESULT {
-        int score;
-        double exec_time;
-        String OUT;
-        String ERROR;
+        int score = 0;
+        double exec_time = -1;
+        String OUT = "";
+        String ERROR = "";
+
+        public QUERY_RESULT(int score) {
+            this.score = score;
+        }
 
         public QUERY_RESULT(int score, double exec_time, String OUT, String ERROR) {
             this.score = score;
@@ -144,16 +148,19 @@ public class Judge {
 //            System.out.println("Command " + i + ": " + CMD[i]);
         }
 
-        ArrayList<Remote.Log> logs = Remote.EXEC_CMD(CMD);
         int score = 0;
+        ArrayList<Remote.Log> logs = new ArrayList<>();
         try {
+            logs = Remote.EXEC_CMD(CMD);
             score = logs.get(logs.size() - 1).OUT != null
                     && logs.get(logs.size() - 1).OUT.length() > 0 ?
                     Math.max(Integer.parseInt(logs.get(logs.size() - 1).OUT
                             .replaceAll(" ", "")
                             .replaceAll("\n", "")), 0) : 0;
-        } catch (NumberFormatException e){
+        } catch (Exception e){
+            score = -4; // 判题机发生异常！！！
             e.printStackTrace();
+            return new QUERY_RESULT(score);
         }
         return new QUERY_RESULT(score, (double) logs.get(logs.size() - 3).exec_time, logs.get(logs.size() - 4).OUT + "\n" + logs.get(logs.size() - 3).OUT + "\n" + logs.get(logs.size() - 3).ERROR, logs.get(logs.size() - 4).ERROR);
     }

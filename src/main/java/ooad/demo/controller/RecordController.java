@@ -128,7 +128,6 @@ public class RecordController{
      * @throws IOException
      */
 
-    @CrossOrigin
     @AccessLimit(maxCount = 3, seconds = 3)
     @PostMapping("/user/addRecord")
     public void addRecord(
@@ -151,7 +150,10 @@ public class RecordController{
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         // get question details for judge machine
         Question question = questionMapper.getInfoForJudge(question_id);
-
+        if (question == null){
+            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "Rejected! No such question!");
+            log.info(request.getUserPrincipal().getName(), "Submit to a wrong question!");
+        }
         // TODO: Check DDL
 //        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
 //            JsonResult result = ResultTool.fail(ResultCode.CANNOT_SUBMIT);
@@ -174,7 +176,6 @@ public class RecordController{
             return;
         }
         ResultTool.writeResponseSuccess(response);
-
     }
 
     /***
@@ -278,8 +279,7 @@ public class RecordController{
             submitToDocker(record_id, q, code);
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.PARAM_TYPE_ERROR);
-            System.out.println(e.fillInStackTrace());
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             // 塞到HttpServletResponse中返回给前台
         }
     }

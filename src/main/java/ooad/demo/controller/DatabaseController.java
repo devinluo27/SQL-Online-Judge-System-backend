@@ -30,6 +30,10 @@ public class DatabaseController {
             @RequestParam(value = "database_id") Integer database_id,
             @RequestParam(value = "operation_type") String operation_type,
             HttpServletResponse response){
+        if (!operation_type.equals("trigger") && !operation_type.equals("query")){
+            ResultTool.writeResponseFail(response, ResultCode.PARAM_NOT_VALID);
+            return;
+        }
         try {
             dockerPoolService.InitDockerPool(database_id, operation_type);
             ResultTool.writeResponseSuccess(response);
@@ -50,7 +54,6 @@ public class DatabaseController {
             @RequestParam(value = "database_id") Integer database_id
     ){
         int ret_del = dataBaseMapper.deleteDatabase(database_id);
-
     }
 
 

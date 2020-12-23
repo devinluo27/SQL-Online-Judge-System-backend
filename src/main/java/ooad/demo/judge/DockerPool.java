@@ -87,7 +87,9 @@ public class DockerPool {
     }
 
     public Remote.Log RemoveDockerOnly(String DockerName) throws IOException, JSchException {
-        return Remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
+        if (DockerName != null)
+            return Remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
+        return null;
     }
 
 

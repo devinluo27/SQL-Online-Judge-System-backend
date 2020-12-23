@@ -105,15 +105,7 @@
     </select>
 
 
-    <select id="getTriggerQuestionJudgeInfoByQid" resultType="java.util.Map">
-        select uf1.remote_full_path as ans_table_file_id, uf2.remote_full_path as test_data_file_id,
-            qt.target_table
-        from question q
-        join question_trigger  qt on q.question_id = qt.question_id
-            join user_files uf1 on qt.ans_table_file_id = uf1.id
-            join user_files uf2 on qt.test_data_file_id = uf2.id
-        where q.question_id = #{question_id} and is_enabled = true;
-    </select>
+
 
 
 </mapper>

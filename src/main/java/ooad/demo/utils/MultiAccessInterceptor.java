@@ -48,8 +48,9 @@ public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
                     System.out.println("Inside preHandle!");
                     return false;
                 }
+                String ipAddress = IpUtil.getIpAddr(request);
                 String username = request.getUserPrincipal().getName();
-                key = key + "-" +  username;  //这里假设用户是1,项目中是动态获取的userId
+                key = key + "-" +  username + "-" +ipAddress ;  //这里假设用户是1,项目中是动态获取的userId
             }
 
             System.out.println(key);

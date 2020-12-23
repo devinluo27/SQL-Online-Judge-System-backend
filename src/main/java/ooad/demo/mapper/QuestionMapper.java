@@ -12,8 +12,11 @@ import java.util.Map;
 @Repository
 public interface QuestionMapper {
     List<Question> queryQuestionList();
+
     Question selectQuestionById(int question_id);
+
     List<Question> queryQuestionByAssignment(int assignment_id);
+
     int addQuestion(Question question);
     int updateQuestion(Question question);
 
@@ -26,8 +29,6 @@ public interface QuestionMapper {
     List<Question> selectQuestionsByAssignment(int sid, int assignment_id);
 
     int disableQuestion(int question_id);
-
-    Map<String, String> getTriggerQuestionJudgeInfoByQid(int question_id);
 
 }
 
