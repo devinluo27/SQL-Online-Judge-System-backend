@@ -45,8 +45,12 @@ public class DatabaseController {
 
     @GetMapping("/admin/queryDatabaseList")
     public ArrayList<Database> queryDatabaseList(){
-        return dataBaseMapper.queryDatabaseList();
-        // database_id name database_description  time
+        try {
+            return dataBaseMapper.queryDatabaseList();
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping("/admin/deleteDatabaseById")

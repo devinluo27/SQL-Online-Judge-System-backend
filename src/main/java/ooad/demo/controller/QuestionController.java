@@ -9,7 +9,6 @@ import ooad.demo.pojo.Question;
 import ooad.demo.pojo.QuestionTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -114,7 +113,7 @@ public class QuestionController implements Serializable {
                                    @RequestParam(value = "ans_table_file_id") Integer ans_table_file_id,
                                    @RequestParam(value = "test_data_file_id") Integer test_data_file_id,
                                    @RequestParam(value = "target_table") String target_table,
-                                   @RequestParam(value = "test_config") String test_config,
+                                   @RequestParam(value = "test_config") Integer test_config,
                                    HttpServletResponse response) throws IOException {
         if (!question.getOperation_type().equals("trigger")){
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
@@ -126,7 +125,7 @@ public class QuestionController implements Serializable {
             QuestionTrigger questionTrigger = new QuestionTrigger(question_id, ans_table_file_id,
                     test_data_file_id, test_config, target_table);
             questionTriggerMapper.addQuestionTrigger(questionTrigger);
-        }catch (Exception e){
+        } catch (Exception e){
             e.printStackTrace();
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
             return;
@@ -156,7 +155,7 @@ public class QuestionController implements Serializable {
                                       @RequestParam(value = "ans_table_file_id") Integer ans_table_file_id,
                                       @RequestParam(value = "test_data_file_id") Integer test_data_file_id,
                                       @RequestParam(value = "target_table") String target_table,
-                                      @RequestParam(value = "test_config") String test_config,
+                                      @RequestParam(value = "test_config") Integer test_config,
                                       HttpServletResponse response) throws IOException {
         if (!question.getOperation_type().equals("trigger")
                 && questionMapper.selectQuestionById(question.getQuestion_id()) == null){

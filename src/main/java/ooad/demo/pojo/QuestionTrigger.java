@@ -15,12 +15,12 @@ public class QuestionTrigger {
     private Integer question_id;
     private Integer ans_table_file_id;
     private Integer test_data_file_id;
-    private String test_config;
+    private Integer test_config;
     private String target_table;
 
     public QuestionTrigger(Integer question_id, Integer ans_table_file_id,
                            Integer test_data_file_id,
-                           String test_config,
+                           Integer test_config,
                            String target_table) {
         this.question_id = question_id;
         this.ans_table_file_id = ans_table_file_id;

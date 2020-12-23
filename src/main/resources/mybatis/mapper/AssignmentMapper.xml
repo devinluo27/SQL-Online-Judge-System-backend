@@ -51,7 +51,8 @@
 
     <update id="deleteAssignment" parameterType="int">
         update assignment set
-            is_enabled = false
+            is_enabled = false,
+            is_visible = false
         where assignment_id = #{assignment_id}
     </update>
 
@@ -71,10 +72,12 @@
     <select id="queryQuestionsByAssignment" resultMap="aToqResultMap">
     select  * from assignment a
         join question q on a.assignment_id = q.question_of_assignment
-        where a.assignment_id = #{assignment_id};
+        where a.assignment_id = #{assignment_id} and a.is_visible = true and a.is_enabled = true;
     </select>
 
-    <select id="queryAssignmentSid" resultType="ooad.demo.pojo.Assignment"></select>
+    <select id="queryAssignmentSid" resultType="ooad.demo.pojo.Assignment">
+
+    </select>
 
 
 </mapper>

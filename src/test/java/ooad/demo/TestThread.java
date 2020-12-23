@@ -1,5 +1,8 @@
 package ooad.demo;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 public class TestThread implements Runnable{
     private String name;
     private static  String s = "111";

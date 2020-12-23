@@ -18,7 +18,9 @@
     <select id="getDDL" resultType="java.sql.Timestamp">
         select  a.assignment_end_time from question q
             join assignment a on a.assignment_id = q.question_of_assignment
-            where q.question_id = #{question_id} and is_enabled = true;
+            where q.question_id = #{question_id}
+            and a.is_enabled = true and q.is_enabled = true
+            and a.is_visible = true and q.is_visible = true;
     </select>
 
     <select id="getInfoForJudge" resultType="Question">
@@ -82,7 +84,8 @@
 
     <delete id="deleteQuestion" parameterType="int">
         update question
-            set is_enabled = false
+            set is_enabled = false,
+            set is_visible = false
         where id = #{question_id};
 --         delete from question
 --         where question_id = #{question_id}
@@ -91,8 +94,8 @@
 
     <select id="selectQuestionsByAssignment" resultType="Question">
     select  distinct q.question_id, q.question_name,
-            q.question_of_assignment, q.question_description,
-            q.question_output, q.question_index, question_sql_type,
+            q.question_of_assignment,
+            q.question_index, question_sql_type,
             operation_type,
         case
             when r.record_status is null then 0

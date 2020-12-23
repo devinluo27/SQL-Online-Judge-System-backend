@@ -48,8 +48,9 @@ public class AssignmentController {
 
     @CrossOrigin
     @GetMapping("/user/selectAssignmentById")
-    public Assignment selectAssignment(HttpServletRequest request, String id){
-        int assignment_id = Integer.parseInt(id);
+    public Assignment selectAssignment(HttpServletRequest request,
+                                       @RequestParam(value = "id") Integer id){
+        int assignment_id = id;
         // check something
 //        System.out.println("Authority:" + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 //        System.out.println("Credentials:" +  SecurityContextHolder.getContext().getAuthentication().getCredentials());

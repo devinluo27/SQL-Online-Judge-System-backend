@@ -20,22 +20,29 @@ public class SysPermissionController {
 
     // TODO: NEW URL
     @GetMapping("/admin/addPermissionToRole")
-    public void addPermissionToRole(@RequestParam(value = "role") String role_code,
+    public void addPermissionToRole(@RequestParam(value = "role_code") String role_code,
                                     @RequestParam(value = "permission_code") String permission_code,
                                     HttpServletResponse response){
-        if (sysPermissionMapper.addPermission2Role(role_code,permission_code) != 1){
+        try{
+            sysPermissionMapper.addPermission2Role(role_code,permission_code);
+            ResultTool.writeResponseSuccess(response);
+        } catch (Exception e){
+            e.printStackTrace();
             ResultTool.writeResponseFail(response);
-            return;
         }
-        ResultTool.writeResponseSuccess(response);
     }
 
     // TODO: NEW URL
     @GetMapping("/admin/deletePermissionOfRole")
-    public void deletePermissionOfRole(@RequestParam(value = "role") String role_code,
+    public void deletePermissionOfRole(@RequestParam(value = "role_code") String role_code,
                                        @RequestParam(value = "permission_code") String permission_code,
                                        HttpServletResponse response){
-        if (sysPermissionMapper.deletePermission4Role(role_code,permission_code) != 1){
+
+        try{
+            sysPermissionMapper.deletePermission4Role(role_code,permission_code);
+        }
+        catch (Exception e){
+            e.printStackTrace();
             ResultTool.writeResponseFail(response);
             return;
         }

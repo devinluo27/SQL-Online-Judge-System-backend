@@ -154,11 +154,10 @@ public class RecordController{
             log.info(request.getUserPrincipal().getName(), "Submit to a wrong question!");
         }
         // TODO: Check DDL
-//        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
-//            JsonResult result = ResultTool.fail(ResultCode.CANNOT_SUBMIT);
-//            response.getWriter().write(JSON.toJSONString(result));
-//            return;
-//        }
+        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
+            ResultTool.writeResponseFail(response, ResultCode.CANNOT_SUBMIT);
+            return;
+        }
 
         Record r = new Record(sid, question_id, PENDING, code, question.getQuestion_sql_type());
         // add record first, set to PENDING Status
@@ -178,12 +177,13 @@ public class RecordController{
     }
 
     /***
-     *  如果没过DDL return 1; 已过 return 0
+     *  如果没过DDL return true; 已过 return false
      * @param question_id
      * @return
      */
     private boolean checkDDL(int question_id){
         Timestamp ddl = questionMapper.getDDL(question_id);
+        if (ddl == null) return false;
         return ddl.getTime() - System.currentTimeMillis() >= 0;
     }
 
