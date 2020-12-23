@@ -16,7 +16,7 @@
     <select id="getVisibleAssignmentList" resultType="ooad.demo.pojo.Assignment">
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time from assignment
-    where is_visible = 1 and  is_enabled = true;
+    where is_visible = true and  is_enabled = true;
     </select>
 
 <!--    for user-->
@@ -24,7 +24,7 @@
     select assignment_id, assignment_name,
     assignment_start_time, assignment_end_time, assignment_description
      from assignment
-     where assignment_id = #{assignment_id} and is_visible = 1
+     where assignment_id = #{assignment_id} and is_visible = true
      and is_enabled = true;
     </select>
 
@@ -35,8 +35,8 @@
     </select>
 
     <insert id="addAssignment" parameterType="Assignment">
-    insert into assignment(assignment_id, assignment_name, assignment_create_time, assignment_start_time, assignment_end_time, assignment_description)
-    values (#{assignment_id}, #{assignment_name}, #{assignment_create_time},#{assignment_start_time}, #{assignment_end_time}, #{assignment_description})
+    insert into assignment(assignment_name, assignment_create_time, assignment_start_time, assignment_end_time, assignment_description)
+    values (#{assignment_name}, #{assignment_create_time},#{assignment_start_time}, #{assignment_end_time}, #{assignment_description})
     </insert>
 
 

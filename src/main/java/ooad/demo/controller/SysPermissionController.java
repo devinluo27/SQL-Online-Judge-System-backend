@@ -42,4 +42,33 @@ public class SysPermissionController {
         ResultTool.writeResponseSuccess(response);
     }
 
+    // TODO: NEW URL  有锅！！！！
+    @GetMapping("/admin/addUserToNewRole")
+    public void addUserToNewRole(@RequestParam(value = "sid") Integer sid,
+                                @RequestParam(value = "role_code") String role_code,
+                                 HttpServletResponse response){
+        try{
+            sysPermissionMapper.addNewRoleToUser(sid, role_code);
+            ResultTool.writeResponseSuccess(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResultTool.writeResponseFail(response);
+        }
+    }
+
+    // TODO: NEW URL
+    @GetMapping("/admin/deleteUserRole")
+    public void deleteUserRole(@RequestParam(value = "sid") Integer sid,
+                                 @RequestParam(value = "role_code") String role_code,
+                                 HttpServletResponse response){
+        try{
+            sysPermissionMapper.deleteUserRole(sid, role_code);
+            ResultTool.writeResponseSuccess(response);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResultTool.writeResponseFail(response);
+        }
+    }
+
+
 }

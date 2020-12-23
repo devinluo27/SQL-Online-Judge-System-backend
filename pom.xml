@@ -119,14 +119,14 @@
 <!--            <scope>test</scope>-->
 <!--        </dependency>-->
 
-<!--        自己导的依赖 -->
-<!--        <dependency>-->
-<!--            <groupId>com.check_dep</groupId>-->
-<!--            <artifactId>sdk</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--            <scope>system</scope>-->
-<!--            <systemPath>${basedir}/src/main/resources/lib/similarity-1.1.3-jar-with-dependencies.jar</systemPath>-->
-<!--        </dependency>-->
+<!--        自己导的依赖-->
+        <dependency>
+            <groupId>com.check_dep</groupId>
+            <artifactId>sdk</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/similarity-1.1.3-jar-with-dependencies.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>com.check</groupId>

@@ -18,5 +18,7 @@ public interface SysPermissionMapper {
 
     int deletePermission4Role(String input_role_code, String input_permission_code);
 
+    int addNewRoleToUser(Integer sid, String role_code);
 
+    int deleteUserRole(Integer sid, String role_code);
 }

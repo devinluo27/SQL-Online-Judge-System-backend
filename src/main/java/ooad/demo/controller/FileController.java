@@ -363,7 +363,7 @@ public class FileController  {
             ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL,"upload to remote failed!");
             return;
         }
-        ResultTool.writeResponseSuccess(response);
+        ResultTool.writeResponseSuccessWithData(response,fileInfo.file_id);
     }
 
     // TODO: NEW URL

@@ -1,9 +1,11 @@
 package ooad.demo.controller;
 
+import ooad.demo.judge.RecordPair;
 import ooad.demo.judge.SimilarityCheck;
 import ooad.demo.mapper.RecordMapper;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.pojo.Record;
+import ooad.demo.utils.ResultTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 @RestController
@@ -47,48 +48,45 @@ public class StatisticsController {
 
     // TODO: NEW URL
     @GetMapping("/admin/checkSimilarityByQid")
-    public void checkSimilarityByQid(@RequestParam(value = "question_id") Integer question_id){
+    public Object[] checkSimilarityByQid(@RequestParam(value = "question_id") Integer question_id){
         List<Record> recordList = recordMapper.selectLatestRecordByQid(question_id);
         PriorityBlockingQueue<RecordPair> queue = new PriorityBlockingQueue<>();
         int k = 100;
         for (int i = 0; i < recordList.size() - 1; i++){
             for(int j = i + 1; j < recordList.size(); j++){
-                double temp_result = similarityCheck.checkTwoCodes(recordList.get(i).getRecord_code(),recordList.get(j).getRecord_code());
+                Record s1 = recordList.get(i);
+                Record s2 = recordList.get(j);
+                double temp_result = similarityCheck.checkTwoCodes(s1.getRecord_code(), s2.getRecord_code());
+                RecordPair recordPair = new RecordPair(s1.getRecord_sid(), s2.getRecord_sid(), temp_result);
                 if (queue.size() < k){
-                    queue.add(temp_result);
+                    queue.add(recordPair);
                 }
                 else {
-                    double min = queue.peek();
+                    double min = queue.peek().getCheckResult();
                     if (min < temp_result){
                         queue.poll();
-                        queue.add(temp_result);
+                        queue.add(recordPair);
                     }
                 }
             }
         }
-
-
-    }
-    private static class RecordPair{
-        Integer sid_1 = 0;
-        Integer sid_2 = 0;
-        Double checkResult = 0.0;
-
-        public RecordPair(Integer sid_1, Integer sid_2, Double checkResult) {
-            this.sid_1 = sid_1;
-            this.sid_2 = sid_2;
-            this.checkResult = checkResult;
-        }
-
-        public RecordPair() {
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return this.checkResult - (obj).checkResult;
-        }
+        return queue.toArray();
     }
 
+    // TODO: NEW URL
+    @GetMapping("/user/getLeaderBoardByQid")
+    public void getLeaderBoardByQid(@RequestParam(value = "question_id") Integer question_id,
 
+                                    HttpServletResponse response){
+        List<Map<String, String>> return_map;
+        try {
+            return_map = recordMapper.getLeaderBoardByQidAndN(question_id, 20);
+        } catch (Exception e){
+            e.printStackTrace();
+            ResultTool.writeResponseFail(response);
+            return;
+        }
+        ResultTool.writeResponseSuccessWithData(response, return_map);
+    }
 
 }

@@ -38,6 +38,8 @@ public interface RecordMapper {
 
     ArrayList<Map<String, Object>> getRecordCountForNDays(int day_num);
 
+    List<Map<String,String>> getLeaderBoardByQidAndN(Integer question_id, Integer num);
+
 //    ArrayList<Record> getLatestRecordByQid(Integer question_id);
 
 }

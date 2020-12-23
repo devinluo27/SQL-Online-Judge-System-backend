@@ -65,6 +65,10 @@
             limit #{day_num}
     </select>
 
+    <select id="getLeaderBoardByQidAndN" resultType="java.util.Map">
+        select * from get_leaderboard_by_qid_and_num(#{question_id}, #{num})
+    </select>
+
     <delete id="deleteRecord">
         delete from record
         where record_id = #{record_i}

@@ -1,10 +1,10 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 
 public class DockerPool {
     int poolSize;
@@ -170,6 +170,7 @@ public class DockerPool {
     }
 
     static String checkIfRunningCMD = "docker ps --filter name=#DockerNAME# --filter status=running --format \"{{.Names}}\"";
+
     // TODO: THE SAME
     public static boolean checkIfRunning(String DockerNAME) throws IOException, JSchException {
         String CMD = checkIfRunningCMD.replaceAll("#DockerNAME#",DockerNAME);

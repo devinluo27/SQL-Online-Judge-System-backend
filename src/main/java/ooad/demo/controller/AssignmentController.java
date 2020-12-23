@@ -91,16 +91,17 @@ public class AssignmentController {
      * @param response
      * @throws IOException
      */
-
-    @CrossOrigin
-    @Decrypt
     @PostMapping("/admin/addAssignment")
     public void addAssignment(@RequestBody @Validated Assignment assignment, HttpServletResponse response) throws IOException {
-        response.setContentType("text/json;charset=utf-8");
-        assignment.setAssignment_create_time(new Timestamp(System.currentTimeMillis()));
-        assignmentMapper.addAssignment(assignment);
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+
+        try {
+            assignment.setAssignment_create_time(new Timestamp(System.currentTimeMillis()));
+            assignmentMapper.addAssignment(assignment);
+            ResultTool.writeResponseSuccess(response);
+        } catch (Exception e){
+            ResultTool.writeResponseFail(response);
+            return;
+        }
         System.out.println(assignment.getAssignment_name());
     }
 
@@ -127,7 +128,11 @@ public class AssignmentController {
     @GetMapping("/admin/deleteAssignment")
     public void deleteAssignment(
             @RequestParam(value = "assignment_id") Integer assignment_id){
-
+        try{
+            assignmentMapper.deleteAssignment(assignment_id);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

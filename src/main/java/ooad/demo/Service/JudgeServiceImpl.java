@@ -92,8 +92,16 @@ public class JudgeServiceImpl implements JudgeService {
                 }
                 dockID = dockers.get(rand);
             }
-            //  TODO: 硬编码 postgres： 0
-            response =  Judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
+            //  TODO: 硬编码 postgres： 0 Health 才判题
+            if (DockerPool.checkIfRunning(dockID)){
+                response =  Judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
+            }
+            else {
+                usedDockerPool.getRunningList().remove(dockID);
+                usedDockerPool.getSleepingList().remove(dockID);
+                usedDockerPool.RemoveDockerOnly(dockID);
+                usedDockerPool.rebuildDocker(1);
+            }
             System.out.println("query_docker_id" + dockID);
             System.out.println();
         }
@@ -147,7 +155,6 @@ public class JudgeServiceImpl implements JudgeService {
                         sql_type,
                         target_table
                 );
-
 
             } catch (Exception e) {
                 e.printStackTrace();
