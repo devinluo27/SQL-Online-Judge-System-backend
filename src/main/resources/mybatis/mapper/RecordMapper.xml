@@ -16,7 +16,9 @@
 
     <select id="selectRecordListBySid" resultType="Record">
     select record_id, record_sid, record_question_id, record_status, record_time,
-    record_code_type, running_time  from record where record_sid = #{sid};
+    record_code_type, running_time  from record
+    where record_sid = #{sid}
+    order by record_time desc;
     </select>
 
 

@@ -69,14 +69,19 @@ public class RecordController{
     @CrossOrigin
     @GetMapping("/user/selectRecordListBySid")
     List<Record> selectRecordListBySid(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/json;charset=utf-8");
-        if (request.getUserPrincipal() == null){
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
+        try {
+            response.setContentType("text/json;charset=utf-8");
+            if (request.getUserPrincipal() == null){
+                JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
+                response.getWriter().write(JSON.toJSONString(result));
+                return null;
+            }
+            int sid = Integer.parseInt(request.getUserPrincipal().getName());
+            return recordMapper.selectRecordListBySid(sid);
+        } catch (Exception e){
+            e.printStackTrace();
             return null;
         }
-        int sid = Integer.parseInt(request.getUserPrincipal().getName());
-        return recordMapper.selectRecordListBySid(sid);
     }
 
     @GetMapping("/user/selectRecordById")

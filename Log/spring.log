@@ -3554,3 +3554,182 @@ org.postgresql.util.PSQLException: ERROR: column reference "is_enabled" is ambig
 2020-12-24 07:23:30.473  INFO 3487 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
 2020-12-24 07:23:30.474  INFO 3487 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
 2020-12-24 07:23:30.487  INFO 3487 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 6.345 seconds (JVM running for 7.641)
+2020-12-24 07:25:44.703  INFO 3487 --- [https-jsse-nio-2733-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-24 07:25:44.704  INFO 3487 --- [https-jsse-nio-2733-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-12-24 07:25:44.710  INFO 3487 --- [https-jsse-nio-2733-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-12-24 07:28:25.413  INFO 3487 --- [LocustTask-1] ooad.demo.Service.JudgeServiceImpl       : score: -1
+2020-12-24 07:32:00.447  INFO 3487 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2020-12-24 07:32:00.574  WARN 3487 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2020-12-24 07:32:00.575  INFO 3487 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 07:32:00.582  INFO 3487 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-12-24 07:32:00.586  INFO 3487 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-12-24 07:32:07.658  INFO 3601 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on MacBook-Pro-43.local with PID 3601 (/Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup/target/classes started by nongnong in /Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup)
+2020-12-24 07:32:07.662  INFO 3601 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
+2020-12-24 07:32:07.769  INFO 3601 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-24 07:32:07.770  INFO 3601 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-24 07:32:08.895  INFO 3601 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 07:32:08.896  INFO 3601 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-12-24 07:32:08.928  INFO 3601 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 0 JPA repository interfaces.
+2020-12-24 07:32:08.949  INFO 3601 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 07:32:08.950  INFO 3601 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-24 07:32:08.964  INFO 3601 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6ms. Found 0 Redis repository interfaces.
+2020-12-24 07:32:09.830  INFO 3601 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2734 (http)
+2020-12-24 07:32:09.862  INFO 3601 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-12-24 07:32:09.863  INFO 3601 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-12-24 07:32:09.947  INFO 3601 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-12-24 07:32:09.948  INFO 3601 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2178 ms
+2020-12-24 07:32:10.516  WARN 3601 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2020-12-24 07:32:10.674  INFO 3601 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-24 07:32:10.721  INFO 3601 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-12-24 07:32:10.846  INFO 3601 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-12-24 07:32:10.948  INFO 3601 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-12-24 07:32:11.310  INFO 3601 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2020-12-24 07:32:11.652  INFO 3601 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-24 07:32:11.659  INFO 3601 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 07:32:11.713  INFO 3601 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-12-24 07:32:11.716  INFO 3601 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2020-12-24 07:32:12.121  WARN 3601 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-24 07:32:12.229  INFO 3601 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2020-12-24 07:32:12.231  INFO 3601 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2020-12-24 07:32:12.569  INFO 3601 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@190f8d48, org.springframework.security.web.context.SecurityContextPersistenceFilter@6ab02004, org.springframework.security.web.header.HeaderWriterFilter@5d10963f, org.springframework.web.filter.CorsFilter@66949da9, org.springframework.security.web.authentication.logout.LogoutFilter@1aed3def, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@394d616e, org.springframework.security.web.session.ConcurrentSessionFilter@58ec724f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@549920cf, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@49f5dea8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@258d90f6, org.springframework.security.web.session.SessionManagementFilter@796af28e, org.springframework.security.web.access.ExceptionTranslationFilter@2008266, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@4eb7e568, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5b9ac84b]
+2020-12-24 07:32:13.116  INFO 3601 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2734 (http) with context path ''
+2020-12-24 07:32:13.118  INFO 3601 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-12-24 07:32:13.119  INFO 3601 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-12-24 07:32:13.131  INFO 3601 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 6.111 seconds (JVM running for 7.362)
+2020-12-24 07:32:20.063  INFO 3601 --- [https-jsse-nio-2733-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-24 07:32:20.063  INFO 3601 --- [https-jsse-nio-2733-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-12-24 07:32:20.071  INFO 3601 --- [https-jsse-nio-2733-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2020-12-24 07:33:45.905  INFO 3601 --- [LocustTask-1] ooad.demo.Service.JudgeServiceImpl       : score: 100
+2020-12-24 07:38:35.608  WARN 3601 --- [https-jsse-nio-2733-exec-2] org.apache.catalina.connector.Request    : Creating the temporary upload location [/private/var/folders/g8/4d_nnmys5jv0h39hbh35bx9w0000gn/T/tomcat.4536809547394106190.2733/work/Tomcat/localhost/ROOT/files] as it is required by the servlet [dispatcherServlet]
+2020-12-24 07:38:35.629  WARN 3601 --- [https-jsse-nio-2733-exec-2] o.s.web.servlet.PageNotFound             : No mapping for GET /login
+2020-12-24 07:39:47.664  INFO 3601 --- [LocustTask-3] ooad.demo.Service.JudgeServiceImpl       : score: 0
+2020-12-24 07:40:14.207  INFO 3601 --- [LocustTask-1] ooad.demo.Service.JudgeServiceImpl       : score: 100
+2020-12-24 07:44:20.667  WARN 3601 --- [https-jsse-nio-2733-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2020-12-24 07:45:19.154  INFO 3601 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2020-12-24 07:45:19.280  WARN 3601 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2020-12-24 07:45:19.280  INFO 3601 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 07:45:19.286  INFO 3601 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-12-24 07:45:19.291  INFO 3601 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-12-24 07:52:21.629  INFO 3821 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on MacBook-Pro-43.local with PID 3821 (/Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup/target/classes started by nongnong in /Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup)
+2020-12-24 07:52:21.633  INFO 3821 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
+2020-12-24 07:52:21.720  INFO 3821 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-24 07:52:21.720  INFO 3821 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-24 07:52:22.705  INFO 3821 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 07:52:22.706  INFO 3821 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-12-24 07:52:22.734  INFO 3821 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 JPA repository interfaces.
+2020-12-24 07:52:22.754  INFO 3821 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 07:52:22.757  INFO 3821 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-24 07:52:22.773  INFO 3821 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6ms. Found 0 Redis repository interfaces.
+2020-12-24 07:52:23.579  INFO 3821 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
+2020-12-24 07:52:23.616  INFO 3821 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-12-24 07:52:23.616  INFO 3821 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-12-24 07:52:23.706  INFO 3821 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-12-24 07:52:23.706  INFO 3821 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1985 ms
+2020-12-24 07:52:24.255  WARN 3821 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2020-12-24 07:52:24.405  INFO 3821 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-24 07:52:24.448  INFO 3821 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-12-24 07:52:24.565  INFO 3821 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-12-24 07:52:24.688  INFO 3821 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-12-24 07:52:25.084  INFO 3821 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2020-12-24 07:52:25.438  INFO 3821 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-24 07:52:25.448  INFO 3821 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 07:52:25.494  INFO 3821 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-12-24 07:52:25.497  INFO 3821 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2020-12-24 07:52:25.946  WARN 3821 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-24 07:52:26.061  INFO 3821 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2020-12-24 07:52:26.063  INFO 3821 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2020-12-24 07:52:26.412  INFO 3821 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@407afe5, org.springframework.security.web.context.SecurityContextPersistenceFilter@468b4ac7, org.springframework.security.web.header.HeaderWriterFilter@1bd00f59, org.springframework.web.filter.CorsFilter@6cb57e30, org.springframework.security.web.authentication.logout.LogoutFilter@154a2e69, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@56a373e, org.springframework.security.web.session.ConcurrentSessionFilter@12bc4dc6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@16a38d0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@58243cfc, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@56d95a9e, org.springframework.security.web.session.SessionManagementFilter@6b0916ca, org.springframework.security.web.access.ExceptionTranslationFilter@44f08452, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@177869ac, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@242c9d95]
+2020-12-24 07:52:26.988  INFO 3821 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
+2020-12-24 07:52:26.990  INFO 3821 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-12-24 07:52:26.991  INFO 3821 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-12-24 07:52:27.003  INFO 3821 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 6.054 seconds (JVM running for 7.095)
+2020-12-24 07:59:33.901  INFO 3821 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-24 07:59:33.901  INFO 3821 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-12-24 07:59:33.910  INFO 3821 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-12-24 07:59:33.937  WARN 3821 --- [https-jsse-nio-2733-exec-6] org.apache.catalina.connector.Request    : Creating the temporary upload location [/private/var/folders/g8/4d_nnmys5jv0h39hbh35bx9w0000gn/T/tomcat.1166991886075104348.2733/work/Tomcat/localhost/ROOT/files] as it is required by the servlet [dispatcherServlet]
+2020-12-24 10:20:36.690  INFO 3821 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2020-12-24 10:20:36.715  WARN 3821 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2020-12-24 10:20:36.716  INFO 3821 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 10:20:36.721  INFO 3821 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-12-24 10:20:36.724  INFO 3821 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-12-24 10:20:42.760  INFO 4622 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on MacBook-Pro-43.local with PID 4622 (/Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup/target/classes started by nongnong in /Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup)
+2020-12-24 10:20:42.763  INFO 4622 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
+2020-12-24 10:20:42.847  INFO 4622 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-24 10:20:42.848  INFO 4622 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-24 10:20:43.749  INFO 4622 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 10:20:43.750  INFO 4622 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-12-24 10:20:43.776  INFO 4622 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19ms. Found 0 JPA repository interfaces.
+2020-12-24 10:20:43.790  INFO 4622 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 10:20:43.791  INFO 4622 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-24 10:20:43.805  INFO 4622 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7ms. Found 0 Redis repository interfaces.
+2020-12-24 10:20:44.528  INFO 4622 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
+2020-12-24 10:20:44.557  INFO 4622 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-12-24 10:20:44.558  INFO 4622 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-12-24 10:20:44.632  INFO 4622 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-12-24 10:20:44.632  INFO 4622 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1783 ms
+2020-12-24 10:20:45.121  WARN 4622 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2020-12-24 10:20:45.249  INFO 4622 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-24 10:20:45.287  INFO 4622 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-12-24 10:20:45.388  INFO 4622 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-12-24 10:20:45.487  INFO 4622 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-12-24 10:20:46.015  INFO 4622 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2020-12-24 10:20:46.347  INFO 4622 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-24 10:20:46.355  INFO 4622 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 10:20:46.402  INFO 4622 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-12-24 10:20:46.405  INFO 4622 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2020-12-24 10:20:46.788  WARN 4622 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-24 10:20:46.887  INFO 4622 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2020-12-24 10:20:46.889  INFO 4622 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2020-12-24 10:20:47.233  INFO 4622 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4c7687bd, org.springframework.security.web.context.SecurityContextPersistenceFilter@29cf4efe, org.springframework.security.web.header.HeaderWriterFilter@704893d3, org.springframework.web.filter.CorsFilter@4402975c, org.springframework.security.web.authentication.logout.LogoutFilter@69064e88, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@416bda8c, org.springframework.security.web.session.ConcurrentSessionFilter@25522068, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29f9fc77, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@68bfce80, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3e00e34f, org.springframework.security.web.session.SessionManagementFilter@5f090b2d, org.springframework.security.web.access.ExceptionTranslationFilter@3933276b, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@3d74d568, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@42cfd2a6]
+2020-12-24 10:20:47.789  INFO 4622 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
+2020-12-24 10:20:47.791  INFO 4622 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-12-24 10:20:47.791  INFO 4622 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-12-24 10:20:47.802  INFO 4622 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 5.677 seconds (JVM running for 6.807)
+2020-12-24 10:20:50.440  INFO 4622 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-24 10:20:50.440  INFO 4622 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-12-24 10:20:50.448  INFO 4622 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2020-12-24 10:20:50.512  WARN 4622 --- [https-jsse-nio-2733-exec-6] org.apache.catalina.connector.Request    : Creating the temporary upload location [/private/var/folders/g8/4d_nnmys5jv0h39hbh35bx9w0000gn/T/tomcat.2085103194634297894.2733/work/Tomcat/localhost/ROOT/files] as it is required by the servlet [dispatcherServlet]
+2020-12-24 10:24:18.815  INFO 4622 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2020-12-24 10:24:18.841  WARN 4622 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2020-12-24 10:24:18.841  INFO 4622 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 10:24:18.847  INFO 4622 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2020-12-24 10:24:18.851  INFO 4622 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-12-24 10:24:22.391  INFO 4658 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on MacBook-Pro-43.local with PID 4658 (/Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup/target/classes started by nongnong in /Users/nongnong/Desktop/大三上/面向对象/Project/projecy_back_up/OOAD_12_23_backup)
+2020-12-24 10:24:22.395  INFO 4658 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
+2020-12-24 10:24:22.467  INFO 4658 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-12-24 10:24:22.467  INFO 4658 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-12-24 10:24:23.455  INFO 4658 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 10:24:23.456  INFO 4658 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2020-12-24 10:24:23.483  INFO 4658 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19ms. Found 0 JPA repository interfaces.
+2020-12-24 10:24:23.500  INFO 4658 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-12-24 10:24:23.501  INFO 4658 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2020-12-24 10:24:23.518  INFO 4658 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7ms. Found 0 Redis repository interfaces.
+2020-12-24 10:24:24.267  INFO 4658 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
+2020-12-24 10:24:24.297  INFO 4658 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-12-24 10:24:24.298  INFO 4658 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2020-12-24 10:24:24.380  INFO 4658 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-12-24 10:24:24.381  INFO 4658 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1914 ms
+2020-12-24 10:24:24.878  WARN 4658 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2020-12-24 10:24:25.012  INFO 4658 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-12-24 10:24:25.058  INFO 4658 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2020-12-24 10:24:25.160  INFO 4658 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-12-24 10:24:25.268  INFO 4658 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-12-24 10:24:25.649  INFO 4658 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2020-12-24 10:24:26.040  INFO 4658 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-12-24 10:24:26.049  INFO 4658 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-12-24 10:24:26.097  INFO 4658 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-12-24 10:24:26.100  INFO 4658 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2020-12-24 10:24:26.586  WARN 4658 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-12-24 10:24:26.857  INFO 4658 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2020-12-24 10:24:26.869  INFO 4658 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2020-12-24 10:24:27.275  INFO 4658 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@108ea222, org.springframework.security.web.context.SecurityContextPersistenceFilter@2a847f1e, org.springframework.security.web.header.HeaderWriterFilter@2bceb9f6, org.springframework.web.filter.CorsFilter@75dfb897, org.springframework.security.web.authentication.logout.LogoutFilter@74d9d217, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7de3f15b, org.springframework.security.web.session.ConcurrentSessionFilter@59214cce, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@20291e4b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@14bae35b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@78289d95, org.springframework.security.web.session.SessionManagementFilter@59b20106, org.springframework.security.web.access.ExceptionTranslationFilter@1b132be9, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@9300d7f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7a32d07a]
+2020-12-24 10:24:27.834  INFO 4658 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
+2020-12-24 10:24:27.836  INFO 4658 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2020-12-24 10:24:27.836  INFO 4658 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2020-12-24 10:24:27.848  INFO 4658 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 5.97 seconds (JVM running for 7.209)
+2020-12-24 10:24:30.537  INFO 4658 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-12-24 10:24:30.538  INFO 4658 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-12-24 10:24:30.545  INFO 4658 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2020-12-24 10:24:30.604  WARN 4658 --- [https-jsse-nio-2733-exec-6] org.apache.catalina.connector.Request    : Creating the temporary upload location [/private/var/folders/g8/4d_nnmys5jv0h39hbh35bx9w0000gn/T/tomcat.1451984600233502574.2733/work/Tomcat/localhost/ROOT/files] as it is required by the servlet [dispatcherServlet]
+2020-12-24 10:34:57.810  INFO 4658 --- [LocustTask-2] ooad.demo.Service.JudgeServiceImpl       : score: 100
+2020-12-24 10:34:57.867  INFO 4658 --- [LocustTask-4] ooad.demo.Service.JudgeServiceImpl       : score: 60
