@@ -1,6 +1,7 @@
 package ooad.demo.Service;
 
 import com.jcraft.jsch.JSchException;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.ManageDockersPool;
 import ooad.demo.mapper.DataBaseMapper;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 @Service
+@Slf4j
 public class DockerPoolService {
     private static final Random random = new Random();
 
@@ -62,7 +64,7 @@ public class DockerPoolService {
             synchronized (ManageDockersPool.getInstance().getCreateDockerPoolLock()){
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
                 if (manageDockersPool.getDockersPoolHashMap().get(mapKey) == null){
-                    System.out.println("Init dockersPool " + mapKey);
+                    log.info("Init dockersPool " + mapKey);
                     HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
                     int randomDockerID = random.nextInt(100000000);
                     while (manageDockersPool.getDockerPoolIDList().contains(randomDockerID)){
@@ -78,6 +80,9 @@ public class DockerPoolService {
                     map.put(mapKey,
 //                            new DockerPool(dockerNum, randomDockerID, 0,"film",
 //                                    "/data2/DBOJ/DockerTest/film.sql")
+
+                            // TODO： 大锅
+
                             new DockerPool(dockerNum, randomDockerID, 0, database_name,
                                     database_full_address)
                     );

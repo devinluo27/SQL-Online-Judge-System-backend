@@ -21,14 +21,14 @@
         where id = ${id} and is_exist = true
     </select>
 
-
+<!--TODO: double check here! -->
     <insert id="save" parameterType="UserFile" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into user_files (old_file_name, new_file_name, ext, relative_path, file_size, file_type,
-    is_img, down_counts, upload_time, user_id, question_id, assignment_id)
+    is_img, down_counts, upload_time, user_id, question_id, assignment_id, is_database)
     values (#{old_file_name},
     #{new_file_name}, #{ext}, #{relative_path}, #{file_size},
     #{file_type}, #{is_img}, #{down_counts},
-    #{upload_time}, #{user_id}, #{question_id}, #{assignment_id})
+    #{upload_time}, #{user_id}, #{question_id}, #{assignment_id}, #{is_database})
     </insert>
 
     <update id="delete" parameterType="Integer">

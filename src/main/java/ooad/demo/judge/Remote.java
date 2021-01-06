@@ -94,10 +94,16 @@ public class Remote {
             exec.connect();
             String IN = IOUtils.toString(in, "UTF-8");
             String ERROR = IOUtils.toString(error, "UTF-8");
-            result.add(new Log(System.currentTimeMillis() - start_time - 300, IN, ERROR));
+            result.add(new Log(System.currentTimeMillis() - start_time, IN, ERROR));
 
-            // TODO:
-            System.out.println(ERROR);
+            // TODO: ERROR PRINT
+//            ERROR = ERROR.replace("\n","").trim();
+//            if (ERROR.length() >= 30)
+//                log.warn(ERROR.substring(0,30));
+//            else {
+//                log.warn(ERROR);
+//            }
+//            System.out.println(ERROR);
 
             in.close();
         }

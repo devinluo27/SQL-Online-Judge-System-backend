@@ -1,6 +1,7 @@
 package ooad.demo.utils;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.Service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
 
     @Autowired
@@ -53,15 +55,21 @@ public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
                 key = key + "-" +  username + "-" +ipAddress ;  //这里假设用户是1,项目中是动态获取的userId
             }
 
-            System.out.println(key);
 
             //从redis中获取用户访问的次数
 //            AccessKey ak = AccessKey.withExpire(seconds);
             // set key to retrieve the value in a given hashmap
             String keyInHashMap = "multi-access-map";
-            Integer count = (Integer) redisService.getHashValue(key, keyInHashMap);
+            Integer count;
 
-            System.out.println("count: " + count);
+            try{
+                count = (Integer) redisService.getHashValue(key, keyInHashMap);
+            } catch (Exception e){
+                log.error("redis is not open!", e);
+                ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "redis is not open!");
+                return false;
+            }
+
             if(count == null){
                 //第一次访问
                 redisService.setHashValue(key, keyInHashMap, 1);
@@ -81,9 +89,7 @@ public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
     }
 
     private void render(HttpServletResponse response, ResultCode code) throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        JsonResult result = ResultTool.fail(code);
-        response.getWriter().write(JSON.toJSONString(result));
+       ResultTool.writeResponseFail(response, code);
     }
 
 }

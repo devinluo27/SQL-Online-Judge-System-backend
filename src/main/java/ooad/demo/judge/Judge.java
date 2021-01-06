@@ -151,6 +151,7 @@ public class Judge {
     }
 
     public static QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE) throws IOException, JSchException {
+
         TEST_SQL = TEST_SQL.replaceAll("\\$\\$", "####");
         TEST_SQL = java.util.regex.Matcher.quoteReplacement(TEST_SQL);
         // TODO: Deepcopy is required.
@@ -165,8 +166,6 @@ public class Judge {
                     .replaceAll("#TEST_CONFIG#", String.valueOf(Math.max(TEST_CONFIG, 1)))
                     .replaceAll("#TEST_SQL#", TEST_SQL)
                     .replaceAll("####", " \\\\\\$\\$ ");
-            // print commands
-//            System.out.println("Command " + i + ": " + CMD[i]);
         }
 
         int score = 0;

@@ -91,8 +91,9 @@
 --         where question_id = #{question_id}
     </delete>
 
+    <cache-ref namespace="ooad.demo.mapper.RecordMapper"/>
 
-    <select id="selectQuestionsByAssignment" resultType="Question">
+    <select id="selectQuestionsByAssignment" resultType="Question" useCache="false">
     select  distinct q.question_id, q.question_name,
             q.question_of_assignment,
             q.question_index, question_sql_type,
@@ -107,8 +108,6 @@
     where  q.question_of_assignment = #{assignment_id} and q.is_enabled = true;
     </select>
 
-
-
-
+    <cache/>
 
 </mapper>

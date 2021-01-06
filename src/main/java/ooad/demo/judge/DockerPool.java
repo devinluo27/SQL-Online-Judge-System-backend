@@ -1,11 +1,13 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Slf4j
 public class DockerPool {
     int poolSize;
     int DockerSeq;
@@ -21,23 +23,24 @@ public class DockerPool {
     volatile ArrayList<String> sleepingList = new ArrayList<>();
 
 
-    ArrayList<String> availableList = new ArrayList<>();
-    final Object fillDockerPoolLock = new Object();
-    final Object fillDockerPoolLockReach0 = new Object();
+//    ArrayList<String> availableList = new ArrayList<>();
+//    final Object fillDockerPoolLock = new Object();
+//    final Object fillDockerPoolLockReach0 = new Object();
 
-    static String KillDockerCMD = "docker kill #DockerNAME#";
-    static String RemoveDockerCMD = "docker rm -f #DockerNAME#";
-    static String AwakeDockerCMD = "docker start #DockerNAME#";
+    private String KillDockerCMD = "docker kill #DockerNAME#";
+    private String RemoveDockerCMD = "docker rm -f #DockerNAME#";
+    private String AwakeDockerCMD = "docker start #DockerNAME#";
 
-    static String HealthyCheckCMD = "docker ps --filter name=#DockerNAME# --filter status=#STATUS# --format \"{{.Names}}\"";
+    private String HealthyCheckCMD = "docker ps --filter name=#DockerNAME# --filter status=#STATUS# --format \"{{.Names}}\"";
 
-    static String[] DockerDB = {
+    private static String[] DockerDB = {
             "postgres",
             "sqlite",
             "mysql"
     };
+
     // --device-write-bps /dev/sda:66MB
-    static String[][] DockerCMD = { {
+    private String[][] DockerCMD = { {
                 "docker run -m 500M --cpus 2 --name #DockerNAME# -e POSTGRES_PASSWORD=SQL_tester -d postgres",
                     "docker cp #DockerFilePATH# #DockerNAME#:/data.sql",
                     "sleep 3",
@@ -75,6 +78,7 @@ public class DockerPool {
      * @throws JSchException
      */
     public DockerPool(int DockerSeq, int ID, int DBMS, String FileName, String FilePATH) throws IOException, JSchException {
+        System.out.println(DockerSeq);
         this.DockerSeq = 0;
         this.poolSize = DockerSeq;
         this.ID = ID;
@@ -127,6 +131,7 @@ public class DockerPool {
 
         for (int i = 0; i < CMD.length; i++)
             CMD[i] = CMD[i].replaceAll("#DockerFilePATH#", FilePATH).replaceAll("#DockerFileNAME#", FileName);
+
         for (int i = 0; i < num; i++) {
             String DockerName = "DBOJ" + "_" + DockerDB[DATABASE] + "_" + FileName + "_" + ID + "_" + ++DockerSeq;
             Logs.add(BuildDocker(CMD.clone(), DockerName));

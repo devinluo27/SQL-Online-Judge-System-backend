@@ -460,8 +460,10 @@ public class FileController  {
                 .setQuestion_id(-1)
                 .setIs_database(is_database)
                 .setIs_in_remote(false);
+
         userFile.setRelative_path(relative_path);
         userFile.setRemote_full_path(remoteFullPath);
+
         // 保存文件相关信息到数据库
         userFileService.save(userFile);
         int file_id = userFile.getId();

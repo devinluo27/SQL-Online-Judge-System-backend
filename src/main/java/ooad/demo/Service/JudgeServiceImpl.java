@@ -71,7 +71,7 @@ public class JudgeServiceImpl implements JudgeService {
         DockerPool usedDockerPool = map.get(mapKey);
         ArrayList<String> dockers = usedDockerPool.getRunningList();
 
-        System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
+//        System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
         Judge.QUERY_RESULT response = null;
 
@@ -109,7 +109,6 @@ public class JudgeServiceImpl implements JudgeService {
         // TODO: TRIGGER
         else if(operation_type.equals("trigger")){
 
-            System.out.println("Trigger: ");
             String dockID = null;
 
             // TODO: !!!!!!! 动态判题
@@ -125,7 +124,7 @@ public class JudgeServiceImpl implements JudgeService {
                         // 等待某个docker 建好后唤醒它
                         // 放入等待队列
                         try {
-                            System.out.println("Waiting! Rid: " + record_id);
+                            log.warn("Trigger Waiting! Rid: " + record_id);
                             usedDockerPool.getRunningList().wait();
                         } catch(InterruptedException e) {
                             e.printStackTrace();
@@ -136,16 +135,6 @@ public class JudgeServiceImpl implements JudgeService {
                     usedDockerPool.getSleepingList().remove(dockID);
                 }
                 //  TODO: 更换各种硬编码 postgres： 0
-                System.out.println("DockerId: " + dockID);
-
-//            response =  Judge.EXEC_TRIGGER("/data2/DBOJ/week14Sigiin/week14_sign_in_ans.sql",
-//                    code,
-//                    "/data2/DBOJ/week14Sigiin/week14_sign_in_test.sql",
-//                    10,
-//                    dockID,
-//                    sql_type,
-//                    "cars"
-//                    );
 
                 response = Judge.EXEC_TRIGGER(ans_table_file_full_path,
                         code,
@@ -160,12 +149,10 @@ public class JudgeServiceImpl implements JudgeService {
                 e.printStackTrace();
             }
             finally {
-                System.out.println("remove_docker_id" + dockID);
+                log.info("remove_docker_id" + dockID);
                 usedDockerPool.RemoveDockerOnly(dockID);
             }
-
         }
-
         // TODO: not trigger or query case ERROR
         if (response == null){
             response = new Judge.QUERY_RESULT(-2, -1, "", "");
@@ -177,7 +164,6 @@ public class JudgeServiceImpl implements JudgeService {
         if (score > 0 && score < 100){
             score = -3;
         }
-
         switch (score){
             case 100: status = 1;  break; // accept
             case 0:   status = -1; break; // wrong
@@ -188,11 +174,12 @@ public class JudgeServiceImpl implements JudgeService {
                 status = -4;  break; // 后端判题出现异常 请稍后再试
             default: status = -5; break; // 无效提交
         }
-
         double running_time = response.getExec_time();
+        if (status != 1){
+            running_time = -1;
+        }
         recordMapper.setRecordStatus(record_id, status, running_time);
-        System.out.println("current_size_after_judge: " + usedDockerPool.getRunningList().size());
-        System.out.println("判题结束" + System.currentTimeMillis());
+        log.info("判题结束 " + "current_size_after_judge: " + usedDockerPool.getRunningList().size());
     }
 
     private int getSqlTypeIndex(String string_sql_type){
