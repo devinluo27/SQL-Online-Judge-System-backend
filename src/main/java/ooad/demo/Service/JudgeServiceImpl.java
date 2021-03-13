@@ -39,7 +39,6 @@ public class JudgeServiceImpl implements JudgeService {
 
     private Random random = new Random();
 
-
     private final String query = "_query";
 
     private final String trigger = "_trigger";
@@ -49,17 +48,18 @@ public class JudgeServiceImpl implements JudgeService {
     public void judgeCodeDocker(int record_id,
                                 Question question, String code) throws IOException, JSchException {
 
+        // get basic information of questions
         String standard_ans = question.getQuestion_standard_ans();
         String database_id = String.valueOf(question.getDatabase_id());
         String operation_type = question.getOperation_type();
         int question_id = question.getQuestion_id();
         String string_sql_type = question.getQuestion_sql_type();
+        // specify sql type: 0 for postgresql
         int sql_type = getSqlTypeIndex(string_sql_type);
         boolean is_order = question.getIs_order();
 
+        // key of hashmap 1. _query 2. _trigger
         String mapKey;
-
-        // 获得 哈希表的键值
         if(operation_type.equals("query")){
             mapKey = database_id + query;
         }
@@ -67,15 +67,17 @@ public class JudgeServiceImpl implements JudgeService {
             mapKey = database_id + trigger;
         }
 
+        // get the only single instance from ManageDockersPool
         HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
         DockerPool usedDockerPool = map.get(mapKey);
+        // get the arraylist of available dockers
         ArrayList<String> dockers = usedDockerPool.getRunningList();
 
 //        System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
         Judge.QUERY_RESULT response = null;
 
-        // TODO: QUERY
+        // TODO: QUERY Judging
         if(operation_type.equals("query")){
             int rand = random.nextInt(dockers.size());
             String dockID;
@@ -84,15 +86,17 @@ public class JudgeServiceImpl implements JudgeService {
                     // 等待某个docker 建好后唤醒它
                     // 放入等待队列
                     try {
-                        System.out.println("Waiting! Rid: " + record_id);
+                        System.out.println("No Docker Available! Waiting! Record_id: " + record_id);
                         usedDockerPool.getRunningList().wait();
                     } catch(InterruptedException e) {
+                        // TODO: 异常处理
                         e.printStackTrace();
                     }
                 }
                 dockID = dockers.get(rand);
             }
-            //  TODO: 硬编码 postgres： 0 Health 才判题
+            //  TODO: 硬编码 postgres： 0
+            //  check if docker is Health 才判题
             if (DockerPool.checkIfRunning(dockID)){
                 response =  Judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
             }
@@ -102,15 +106,12 @@ public class JudgeServiceImpl implements JudgeService {
                 usedDockerPool.RemoveDockerOnly(dockID);
                 usedDockerPool.rebuildDocker(1);
             }
-            System.out.println("query_docker_id" + dockID);
-            System.out.println();
+            System.out.println("Query_Docker_ID: " + dockID);
         }
 
         // TODO: TRIGGER
         else if(operation_type.equals("trigger")){
-
             String dockID = null;
-
             // TODO: !!!!!!! 动态判题
             try{
                 Map<String, String> triggerJudgeInfo = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
@@ -135,7 +136,6 @@ public class JudgeServiceImpl implements JudgeService {
                     usedDockerPool.getSleepingList().remove(dockID);
                 }
                 //  TODO: 更换各种硬编码 postgres： 0
-
                 response = Judge.EXEC_TRIGGER(ans_table_file_full_path,
                         code,
                         test_data_file_full_path,
@@ -149,10 +149,11 @@ public class JudgeServiceImpl implements JudgeService {
                 e.printStackTrace();
             }
             finally {
-                log.info("remove_docker_id" + dockID);
+                log.info("remove_docker_id: " + dockID);
                 usedDockerPool.RemoveDockerOnly(dockID);
             }
         }
+
         // TODO: not trigger or query case ERROR
         if (response == null){
             response = new Judge.QUERY_RESULT(-2, -1, "", "");
@@ -168,7 +169,7 @@ public class JudgeServiceImpl implements JudgeService {
             case 100: status = 1;  break; // accept
             case 0:   status = -1; break; // wrong
             case -1:  status = -2; break; // 提交的sql 跑出 exception
-            case -3: status = -3; break; // 对一部分
+            case -3:  status = -3; break; // 对一部分
             case -2:
             case -4:
                 status = -4;  break; // 后端判题出现异常 请稍后再试
