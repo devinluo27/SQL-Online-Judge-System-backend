@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# add by Yunhao
+*.yaml
+
 ### STS ###
 .apt_generated
 .classpath

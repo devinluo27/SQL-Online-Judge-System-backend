@@ -10,7 +10,7 @@ public class HealthyTest {
     public static void main(String[] args) throws IOException, JSchException {
         String dockerNAME = "test-mysql";
 //        System.out.println(DockerPool.HealthyCheck(dockerNAME,"running"));
-        System.out.println(DockerPool.checkIfRunning(dockerNAME));
+//        System.out.println(DockerPool.checkIfRunning(dockerNAME));
     }
 
 }

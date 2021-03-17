@@ -33,14 +33,31 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (username == null || "".equals(username)) {
             // TODO 不知道怎么处理异常
 //            throw new InternalAuthenticationServiceException("用户不能为空");
+            System.out.println("用户不能为空");
             throw new UsernameNotFoundException("用户不能为空");
 //            throw new RuntimeException("用户不能为空");
         }
+
+        // TODO: Testing
+        List<UserDB> userDBs = userMapper.queryAllUserDBList();
+        for (UserDB u: userDBs) {
+            System.out.println(u.getSid() + " " + u.getUser_name());
+        }
+        System.out.println("username: " + username);
+
+
+
+
         //根据用户名查询用户
         UserDB userDB = userMapper.selectUserDBBySidAllInfo(Integer.parseInt(username));
         if (userDB == null) {
+            System.out.println("用户不存在");
             throw new UsernameNotFoundException("用户不存在");
         }
+
+
+        System.out.println("password: " +  userDB.getUser_password());
+
         // list of authorities
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         //获取该用户所拥有的权限

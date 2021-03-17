@@ -21,44 +21,45 @@ import java.util.Arrays;
 public class Remote {
 
     public static class Log{
-        long exec_time;
-        String OUT;
-        String ERROR;
+        public long exec_time;
+        public String OUT;
+        public String ERROR;
         public Log(long exec_time, String OUT, String ERROR) {
             this.exec_time = exec_time;
             this.OUT = OUT;
             this.ERROR = ERROR;
         }
-
         public String getOUT() {
             return OUT;
         }
     }
 
-    @Autowired
-    private SftpProperties sftpConfig;
+//    @Autowired
+//    private SftpProperties sftpConfig;
 
 
     @Autowired
     UserFileMapper userFileMapper;
 
     @Value("${judge.remote.host}")
-    private String remoteHost = "10.20.83.122";
+    private String remoteHost;
 
     @Value("${judge.remote.port}")
-    private int remotePort = 22;
+    private int remotePort;
+
+    private String rootDir;
 
     @Value("${judge.remote.username}")
-    private String remoteUsername = "dboj_manager";
+    private String remoteUsername;
 
     @Value("${judge.remote.password}")
-    private String remotePassword = "789ab73077cb";
+    private String remotePassword;
 
     @Value("${judge.remote.database-path}")
-    private final String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
+    private String remoteDatabasePath;
 
     @Value("${judge.remote.file-path}")
-    private final String remoteFilePath = "/data2/DBOJ/JudgeFile/";
+    private String remoteFilePath;
 
     private  String SESSION_CONFIG_STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
 
@@ -73,11 +74,11 @@ public class Remote {
     private int sessionConnectTimeout = 15000;
 
 
-    public static ArrayList<Log> EXEC_CMD(String[] CMD) throws JSchException, IOException {
-        String host =  "10.20.83.122";
-        int port = 22;
-        String userName = "dboj_manager";
-        String password = "789ab73077cb";
+    public ArrayList<Log> EXEC_CMD(String[] CMD) throws JSchException, IOException {
+        String host =  remoteHost;
+        int port = remotePort;
+        String userName = remoteUsername;
+        String password = remotePassword;
         JSch jsch = new JSch();
         Session session = jsch.getSession(userName, host, port);
         session.setPassword(password);
@@ -179,10 +180,10 @@ public class Remote {
 
 
     private ChannelSftp createSftp() throws Exception {
-        String host =  "10.20.83.122";
-        int port = 22;
-        String userName = "dboj_manager";
-        String password = "789ab73077cb";
+        String host =  remoteHost;
+        int port = remotePort;
+        String userName = remoteUsername;
+        String password = remotePassword;
         int time_out = 10000;
 
         JSch jsch = new JSch();
@@ -190,6 +191,8 @@ public class Remote {
 
         Session session = createSession(jsch, host, userName, port);
         session.setPassword(password);
+        // one new line here
+        session.setConfig("StrictHostKeyChecking", "no");
         session.connect(time_out);
 
         log.info("Session connected to {}.", host);
@@ -262,8 +265,12 @@ public class Remote {
         ChannelSftp sftp = this.createSftp();
         OutputStream outputStream = null;
         try {
-            sftp.cd(sftpConfig.getRoot());
-            log.info("Change path to {}", sftpConfig.getRoot());
+            // TODO: switch
+//            sftp.cd(sftpConfig.getRoot());
+//            log.info("Change path to {}", sftpConfig.getRoot());
+
+            sftp.cd(rootDir);
+            log.info("Change path to {}", rootDir);
 
             File file = new File(targetPath.substring(targetPath.lastIndexOf("/") + 1));
 

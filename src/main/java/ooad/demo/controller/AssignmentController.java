@@ -3,6 +3,7 @@ package ooad.demo.controller;
 
 import cn.shuibo.annotation.Decrypt;
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.utils.JsonResult;
 import ooad.demo.utils.ResultTool;
 import ooad.demo.mapper.AssignmentMapper;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
+@Slf4j
 @RestController
 public class AssignmentController {
 
@@ -93,17 +95,19 @@ public class AssignmentController {
      * @throws IOException
      */
     @PostMapping("/admin/addAssignment")
-    public void addAssignment(@RequestBody @Validated Assignment assignment, HttpServletResponse response) throws IOException {
+    public void addAssignment(@RequestBody @Validated Assignment assignment, HttpServletResponse response){
 
         try {
             assignment.setAssignment_create_time(new Timestamp(System.currentTimeMillis()));
             assignmentMapper.addAssignment(assignment);
             ResultTool.writeResponseSuccess(response);
         } catch (Exception e){
+            e.printStackTrace();
+            log.error("addAssignment: ", e);
             ResultTool.writeResponseFail(response);
             return;
         }
-        System.out.println(assignment.getAssignment_name());
+        log.info("add assignment: " + assignment.getAssignment_name());
     }
 
     /***
@@ -118,21 +122,30 @@ public class AssignmentController {
     @GetMapping("/admin/updateAssignment")
     public void updateAssignment(@RequestBody @Validated Assignment assignment,
                                 @RequestParam(value = "id") Integer id, HttpServletResponse response) throws IOException {
-        assignment.setId(id);
-        assignmentMapper.updateAssignment(assignment);
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(String.valueOf(result));
-    }
+        try {
+            assignment.setId(id);
+            assignmentMapper.updateAssignment(assignment);
+            ResultTool.writeResponseSuccess(response);
+        }
+        catch (Exception e){
+            ResultTool.writeResponseFail(response);
+            e.printStackTrace();
+            log.error("update assignment: ", e);
+        }
 
+    }
 
 
     @GetMapping("/admin/deleteAssignment")
     public void deleteAssignment(
-            @RequestParam(value = "assignment_id") Integer assignment_id){
+            @RequestParam(value = "assignment_id") Integer assignment_id, HttpServletResponse response){
         try{
             assignmentMapper.deleteAssignment(assignment_id);
+            ResultTool.writeResponseSuccess(response);
         } catch (Exception e){
+            ResultTool.writeResponseFail(response);
             e.printStackTrace();
+            log.error("delete assignment: ", e);
         }
     }
 

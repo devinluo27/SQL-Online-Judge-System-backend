@@ -25,6 +25,7 @@ public class DatabaseController {
     @Autowired
     DataBaseMapper dataBaseMapper;
 
+    // 18
     @GetMapping("/admin/initDatabaseDocker")
     public void initDatabaseDocker(
             @RequestParam(value = "database_id") Integer database_id,
@@ -43,6 +44,7 @@ public class DatabaseController {
         }
     }
 
+    // 19
     @GetMapping("/admin/queryDatabaseList")
     public ArrayList<Database> queryDatabaseList(){
         try {
@@ -53,6 +55,7 @@ public class DatabaseController {
         }
     }
 
+    // 8
     @GetMapping("/admin/deleteDatabaseById")
     public void deleteDatabaseById(
             @RequestParam(value = "database_id") Integer database_id

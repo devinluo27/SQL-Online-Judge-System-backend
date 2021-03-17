@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AsyncController {
-    @Autowired
-    AsyncService asyncService;
-
-    @RequestMapping("/async")
-    public String as(){
-        asyncService.hello();
-        return "ok";
-    }
-
-    @RequestMapping("/hi")
-    public String hi(){
-        return "hi";
-    }
+//    @Autowired
+//    AsyncService asyncService;
+//
+//    @RequestMapping("/async")
+//    public String as(){
+//        asyncService.hello();
+//        return "ok";
+//    }
+//
+//    @RequestMapping("/hi")
+//    public String hi(){
+//        return "hi";
+//    }
 }

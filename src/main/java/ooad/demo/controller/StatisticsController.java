@@ -29,13 +29,13 @@ public class StatisticsController {
     @Autowired
     SimilarityCheck similarityCheck;
 
-    // TODO: NEW URL
+    // TODO: NEW URL 54
     @GetMapping("/user/loginCountToday")
     public Integer loginCountToday(HttpServletResponse response){
         return userMapper.getTodayUserLoginCount();
     }
 
-    // TODO: NEW URL
+    // TODO: NEW URL 55
     @GetMapping("/user/getRecordCountForAWeek")
     public ArrayList<Map<String, Object>> getRecordCountForAWeek(){
         try{
@@ -46,7 +46,7 @@ public class StatisticsController {
         }
     }
 
-    // TODO: NEW URL
+    // TODO: NEW URL 105
     @GetMapping("/admin/checkSimilarityByQid")
     public Object[] checkSimilarityByQid(@RequestParam(value = "question_id") Integer question_id){
         List<Record> recordList = recordMapper.selectLatestRecordByQid(question_id);
@@ -73,7 +73,7 @@ public class StatisticsController {
         return queue.toArray();
     }
 
-    // TODO: NEW URL
+    // TODO: NEW URL 56
     @GetMapping("/user/getLeaderBoardByQid")
     public void getLeaderBoardByQid(@RequestParam(value = "question_id") Integer question_id,
 

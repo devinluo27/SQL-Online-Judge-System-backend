@@ -310,8 +310,6 @@
     </dependencies>
 
     <build>
-
-
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -319,6 +317,9 @@
                     <include>**/*.xml</include>
                 </includes>
                 <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
         </resources>
 

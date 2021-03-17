@@ -1,14 +1,21 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Service
 public class Judge {
 
+
+    @Autowired
+    Remote remote;
 
     public static class QUERY_RESULT {
         int score = 0;
@@ -120,13 +127,13 @@ public class Judge {
     }};
 
 
-    public static QUERY_RESULT EXEC_QUERY(String ANS_SQL, String TEST_SQL, String DockerName, boolean Ordered, int DBMS) throws IOException, JSchException {
+    public QUERY_RESULT EXEC_QUERY(String ANS_SQL, String TEST_SQL, String DockerName, boolean Ordered, int DBMS) throws IOException, JSchException {
         String CMD = QUERY_SQL[DBMS];
         CMD = Ordered ? CMD.replaceAll("#CONFIG#", QUERY_CONFIG[DBMS]) : CMD.replaceAll("#CONFIG#", "");
         CMD = CMD.replaceAll("#DockerNAME#", DockerName).replaceAll("#ANS_SQL#", ANS_SQL).replaceAll("#TEST_SQL#", TEST_SQL);
         Remote.Log logs = new Remote.Log(-1, "" ,"");
         try {
-            logs = Remote.EXEC_CMD(new String[]{CMD}).get(0);
+            logs = remote.EXEC_CMD(new String[]{CMD}).get(0);
         } catch (Exception e){
             return new QUERY_RESULT(-2, -1.0, logs.OUT, logs.ERROR);
         }
@@ -150,7 +157,7 @@ public class Judge {
         return new QUERY_RESULT(SCORE, EXEC_TIME, logs.OUT, logs.ERROR);
     }
 
-    public static QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE) throws IOException, JSchException {
+    public QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE) throws IOException, JSchException {
 
         TEST_SQL = TEST_SQL.replaceAll("\\$\\$", "####");
         TEST_SQL = java.util.regex.Matcher.quoteReplacement(TEST_SQL);
@@ -171,7 +178,7 @@ public class Judge {
         int score = 0;
         ArrayList<Remote.Log> logs = new ArrayList<>();
         try {
-            logs = Remote.EXEC_CMD(CMD);
+            logs = remote.EXEC_CMD(CMD);
             score = logs.get(logs.size() - 1).OUT != null
                     && logs.get(logs.size() - 1).OUT.length() > 0 ?
                     Math.max(Integer.parseInt(logs.get(logs.size() - 1).OUT

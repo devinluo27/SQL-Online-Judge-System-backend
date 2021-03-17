@@ -1,5 +1,6 @@
 package ooad.demo.controller;
 
+
 import cn.shuibo.annotation.Encrypt;
 import com.alibaba.fastjson.JSON;
 import ooad.demo.utils.AccessLimit;
@@ -41,7 +42,9 @@ public class UserController {
     @Autowired
     JavaMailSenderImpl mailSender;
 
-    // TESTING
+
+
+    // 获得当前user的用户名 8
     @GetMapping(value = "/username")
     @ResponseBody
     public String currentUserNameSimple(HttpServletRequest request) {
@@ -51,26 +54,21 @@ public class UserController {
         return principal.getName();
     }
 
+    // 35
     @GetMapping("/admin/queryUserList")
     public List<UserDB> queryUserDBList(){
         List<UserDB> userDBList = userMapper.queryUserDBList();
         return  userDBList;
     }
 
-    // TODO: NEW API
-    @GetMapping("/admin/queryALLUserList")
-    public List<UserDB> queryAllUserDBList(){
-        List<UserDB> userDBList = userMapper.queryUserDBList();
-        return  userDBList;
-    }
-
+    // 40
     @GetMapping(value = "/admin/findUserBySid")
     public UserDB findUserDBBySid(int sid){
         return userMapper.selectUserDBBySidBasicInfo(sid); //user_sid already exists
     }
 
     @AccessLimit(maxCount = 3,seconds = 30, needLogin = false)
-    @PostMapping(value = "/user/addUser")
+    @PostMapping(value = "/admin/addUser")
     public void addUser(
             @RequestParam(value = "sid") int sid,
             @RequestParam(value = "sid") String user_name,
@@ -86,7 +84,7 @@ public class UserController {
             ResultTool.writeResponseFail(response, ResultCode.USER_ALREADY_EXISTS);
             return; //user_sid already exists
         }
-        UserDB new_user = new UserDB(sid, user_name, new BCryptPasswordEncoder().encode(password));
+        UserDB new_user = new UserDB(sid, user_name, passwordEncoder.encode(password));
         userMapper.addUserDB(new_user);
         ResultTool.writeResponseSuccess(response);
     }

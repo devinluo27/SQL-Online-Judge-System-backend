@@ -18,7 +18,7 @@ public class SysPermissionController {
     @Autowired
     SysPermissionMapper sysPermissionMapper;
 
-    // TODO: NEW URL
+    // TODO: NEW URL 108
     @GetMapping("/admin/addPermissionToRole")
     public void addPermissionToRole(@RequestParam(value = "role_code") String role_code,
                                     @RequestParam(value = "permission_code") String permission_code,
@@ -32,7 +32,7 @@ public class SysPermissionController {
         }
     }
 
-    // TODO: NEW URL
+    // TODO: NEW URL 107
     @GetMapping("/admin/deletePermissionOfRole")
     public void deletePermissionOfRole(@RequestParam(value = "role_code") String role_code,
                                        @RequestParam(value = "permission_code") String permission_code,
@@ -49,7 +49,7 @@ public class SysPermissionController {
         ResultTool.writeResponseSuccess(response);
     }
 
-    // TODO: NEW URL  有锅！！！！
+    // TODO: NEW URL  有锅！！！！ 109
     @GetMapping("/admin/addUserToNewRole")
     public void addUserToNewRole(@RequestParam(value = "sid") Integer sid,
                                 @RequestParam(value = "role_code") String role_code,
@@ -63,7 +63,8 @@ public class SysPermissionController {
         }
     }
 
-    // TODO: NEW URL
+
+    // TODO: NEW URL 110
     @GetMapping("/admin/deleteUserRole")
     public void deleteUserRole(@RequestParam(value = "sid") Integer sid,
                                  @RequestParam(value = "role_code") String role_code,

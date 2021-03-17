@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.Judge;
 import ooad.demo.judge.ManageDockersPool;
+import ooad.demo.judge.Remote;
 import ooad.demo.mapper.QuestionMapper;
 import ooad.demo.mapper.QuestionTriggerMapper;
 import ooad.demo.mapper.RecordMapper;
@@ -37,11 +38,30 @@ public class JudgeServiceImpl implements JudgeService {
     @Autowired
     DockerPoolService dockerPoolService;
 
+    // TODO: !!!
+//    @Autowired
+//    DockerPool dockerPool;
+
+    @Autowired
+    Remote remote;
+
+    @Autowired
+    Judge judge;
+
     private Random random = new Random();
 
     private final String query = "_query";
 
     private final String trigger = "_trigger";
+
+    static String checkIfRunningCMD = "docker ps --filter name=#DockerNAME# --filter status=running --format \"{{.Names}}\"";
+
+    // TODO: THE SAME
+    public boolean checkIfRunning(String DockerNAME) throws IOException, JSchException {
+        String CMD = checkIfRunningCMD.replaceAll("#DockerNAME#",DockerNAME);
+        Remote.Log log = remote.EXEC_CMD(new String[]{CMD}).get(0);
+        return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
+    }
 
 
     @Async
@@ -97,8 +117,8 @@ public class JudgeServiceImpl implements JudgeService {
             }
             //  TODO: 硬编码 postgres： 0
             //  check if docker is Health 才判题
-            if (DockerPool.checkIfRunning(dockID)){
-                response =  Judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
+            if (checkIfRunning(dockID)){
+                response =  judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
             }
             else {
                 usedDockerPool.getRunningList().remove(dockID);
@@ -136,7 +156,7 @@ public class JudgeServiceImpl implements JudgeService {
                     usedDockerPool.getSleepingList().remove(dockID);
                 }
                 //  TODO: 更换各种硬编码 postgres： 0
-                response = Judge.EXEC_TRIGGER(ans_table_file_full_path,
+                response = judge.EXEC_TRIGGER(ans_table_file_full_path,
                         code,
                         test_data_file_full_path,
                         Integer.parseInt(test_config),

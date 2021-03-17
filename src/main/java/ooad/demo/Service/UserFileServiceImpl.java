@@ -1,6 +1,7 @@
 package ooad.demo.Service;
 
 
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.judge.Remote;
 import ooad.demo.mapper.UserFileMapper;
 import ooad.demo.pojo.UserFile;
@@ -16,7 +17,7 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-
+@Slf4j
 @Service
 @Transactional
 public class UserFileServiceImpl implements UserFileService {
@@ -33,24 +34,24 @@ public class UserFileServiceImpl implements UserFileService {
     Remote remote;
 
     @Value("${judge.remote.host}")
-    private String remoteHost = "10.20.83.122";
+    private String remoteHost;
 
     @Value("${judge.remote.port}")
-    private int remotePort = 22;
+    private int remotePort;
 
     @Value("${judge.remote.username}")
-    private String remoteUsername = "dboj_manager";
+    private String remoteUsername;
 
     @Value("${judge.remote.password}")
-    private String remotePassword = "789ab73077cb";
+    private String remotePassword;
 
-    private String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
+    @Value("${judge.remote.database-path}")
+    private String remoteDatabasePath;
 
 
     @Override
     public void save(UserFile userFile) {
-        //是否是图片解决方案：当类型中含有image时 说明当前类型一定为图片类型
-//        userFile.setIsImg()
+        // 是否是图片解决方案：当类型中含有image时 说明当前类型一定为图片类型
         String isImg = userFile.getFile_type().startsWith("image") ? "yes" : "no";
         userFile.setIs_img(isImg);
         userFile.setDown_counts(0);
@@ -101,9 +102,9 @@ public class UserFileServiceImpl implements UserFileService {
         for(String path:pathArray){
             basePath += path + "/";
             //3.指定目录 返回布尔类型 true表示该目录存在
-            boolean dirExsists = ftpClient.changeWorkingDirectory(basePath);
+            boolean dirExists = ftpClient.changeWorkingDirectory(basePath);
             //4.如果指定的目录不存在，则创建目录
-            if(!dirExsists){
+            if(!dirExists){
                 // 此方式，每次，只能创建一级目录
                 boolean flag = ftpClient.makeDirectory(basePath);
                 if (flag){
@@ -131,18 +132,11 @@ public class UserFileServiceImpl implements UserFileService {
          */
         try(InputStream input =  new FileInputStream(uploadFile)) {
             return uploadFile(ftpClient,  newFileName, input);
-        } catch (FileNotFoundException e) {
-//            log.error("文件上传失败"+e);
-            return false;
         } catch (IOException e) {
-//            log.error("文件上传失败" + e);
+            log.error("文件上传失败: " + e);
             return false;
         }
 
-//        boolean uploadFlag = ftpClient.storeFile(uuid + suffix , inputStream);
-//        if(uploadFlag)
-//            System.out.println("上传成功！");
-//        return uuid + suffix;
     }
 
 
@@ -152,7 +146,7 @@ public class UserFileServiceImpl implements UserFileService {
      * @param inputStream 输入文件流
      * @return
      */
-    private  boolean uploadFile(FTPClient ftpClient, String fileName,InputStream inputStream) {
+    private  boolean uploadFile(FTPClient ftpClient, String fileName, InputStream inputStream) {
         try {
 //            log.info("开始上传文件");
             ftpClient.setFileType(ftpClient.BINARY_FILE_TYPE);
@@ -169,7 +163,7 @@ public class UserFileServiceImpl implements UserFileService {
                 if (null != inputStream)
                     inputStream.close();
             } catch (IOException e) {
-//                log.error("上传文件失败" + e);
+                log.error("上传文件失败: " + e);
                 return false;
             }
         }

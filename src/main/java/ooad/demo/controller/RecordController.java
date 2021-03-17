@@ -144,7 +144,6 @@ public class RecordController{
 //        int question_id = record.getRecord_question_id();
 //        String code = record.getRecord_code();
 //        String sql_type = record.getRecord_code_type();
-
 //        System.out.println(request.isUserInRole("admin"));
 
         if (request.getUserPrincipal() == null){
@@ -158,11 +157,12 @@ public class RecordController{
             ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL, "Rejected! No such question!");
             log.info(request.getUserPrincipal().getName(), "Submit to a wrong question!");
         }
-        // TODO: Check DDL
-        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
-            ResultTool.writeResponseFail(response, ResultCode.CANNOT_SUBMIT);
-            return;
-        }
+
+        // Check DDL
+//        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
+//            ResultTool.writeResponseFail(response, ResultCode.CANNOT_SUBMIT);
+//            return;
+//        }
 
         Record r = new Record(sid, question_id, PENDING, code, question.getQuestion_sql_type());
         // add record first, set to PENDING Status
@@ -196,12 +196,19 @@ public class RecordController{
         return question.getIs_visible() && question.getIs_enabled();
     }
 
+    /***
+     * 该函数将学生代码提交到Docker中
+     * @param record_id 该条record在数据库中的id
+     * @param question 需要判的题
+     * @param code 学生代码
+     * @throws IOException
+     * @throws JSchException
+     */
     private void submitToDocker(int record_id,  Question question, String code) throws IOException, JSchException {
-
         // 什么sql语言与建dockerPool无关
         String dockerPoolMapKey = dockerPoolService.InitDockerPool(question.getDatabase_id(), question.getOperation_type());
         // Trigger Judge will remove a docker
-        // TODO: add a docker if it is a trigger question
+        // add a docker if it is a trigger question
         if(question.getOperation_type().equals("trigger")){
             dockerPoolService.createADocker(ManageDockersPool.getInstance().getDockersPoolHashMap().get(dockerPoolMapKey));
         }
@@ -214,10 +221,10 @@ public class RecordController{
     }
 
     @GetMapping("/admin/getDockerPoolSize")
-    public void getDockerPoolSize(int database_id, HttpServletResponse response) throws IOException {
+    public void getDockerPoolSize(int database_id, HttpServletResponse response){
         int sizeQuery = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + query).getRunningList().size();
         int sizeTrigger = ManageDockersPool.getInstance().getDockersPoolHashMap().get(database_id + trigger).getRunningList().size();
-        String ret_data = ("sizeQuery: " + sizeQuery + "sizeTrigger: " + sizeTrigger);
+        String ret_data = ("sizeQuery: " + sizeQuery + ".\nsizeTrigger: " + sizeTrigger);
         ResultTool.writeResponseSuccessWithData(response, ret_data);
     }
 
@@ -230,7 +237,6 @@ public class RecordController{
     public void rejudgeByQuestionId(
             @RequestParam(value = "question_id") Integer question_id,
             HttpServletResponse response) throws IOException, JSchException {
-        response.setContentType("text/json;charset=utf-8");
         List<Record> rejudgeList = recordMapper.selectLatestRecordByQid(question_id);
         Question question = questionMapper.getInfoForJudge(question_id);
         try {
@@ -239,16 +245,18 @@ public class RecordController{
                 Record newRecord = new Record(r.getRecord_sid(), question_id, PENDING, r.getRecord_code(), question.getQuestion_sql_type());
                 recordMapper.addRecord(newRecord);
                 submitToDocker(newRecord.getRecord_id(), question, r.getRecord_code());
+                Thread.sleep(10);
             }
         } catch (Exception e){
             JsonResult result = ResultTool.fail(ResultCode.JUDGE_FAIL);
-            e.printStackTrace();
+            log.error("rejudgeByQuestionID: ",e);
             response.getWriter().write(JSON.toJSONString(result));
             return;
         }
-        JsonResult result = ResultTool.success();
-        response.getWriter().write(JSON.toJSONString(result));
+        ResultTool.writeResponseSuccess(response);
     }
+
+
 
 
 

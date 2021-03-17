@@ -64,7 +64,7 @@ public class DockerPoolService {
             synchronized (ManageDockersPool.getInstance().getCreateDockerPoolLock()){
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
                 if (manageDockersPool.getDockersPoolHashMap().get(mapKey) == null){
-                    log.info("Init dockersPool " + mapKey);
+                    log.info("Init dockersPool: " + mapKey);
                     HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
                     int randomDockerID = random.nextInt(100000000);
                     while (manageDockersPool.getDockerPoolIDList().contains(randomDockerID)){
@@ -81,7 +81,7 @@ public class DockerPoolService {
 //                            new DockerPool(dockerNum, randomDockerID, 0,"film",
 //                                    "/data2/DBOJ/DockerTest/film.sql")
 
-                            // TODO： 大锅
+                            // TODO： 大锅 默认为postgresql判题
 
                             new DockerPool(dockerNum, randomDockerID, 0, database_name,
                                     database_full_address)

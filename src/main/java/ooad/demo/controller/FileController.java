@@ -54,10 +54,12 @@ public class FileController  {
     private Remote remote;
 
     @Value("${judge.remote.file-path}")
-    private  String remoteFilePath = "/data2/DBOJ/JudgeFile/";
+//    private  String remoteFilePath = "/data2/DBOJ/JudgeFile/";
+    private  String remoteFilePath;
 
     @Value("${judge.remote.database-path}")
-    private String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
+    private String remoteDatabasePath;
+//    private String remoteDatabasePath = "/data2/DBOJ/DockerTest/";
 
     private String localRemoteFileRelativePATH =  "/static/remote_files/";
 
@@ -72,7 +74,7 @@ public class FileController  {
         }
     }
 
-    //    展示所有文件信息
+    // 展示所有文件信息 12
     @GetMapping("/admin/files/findByUserId")
     @ResponseBody
     public List<UserFile> findByUserId(HttpServletRequest request){
@@ -87,7 +89,7 @@ public class FileController  {
     }
 
     /*
-    * 删除文件信息
+    * 删除文件信息 10
     * */
     @GetMapping("/admin/files/deleteFile")
     public void delete(@RequestParam("file_id") Integer id, HttpServletResponse response){
@@ -115,7 +117,7 @@ public class FileController  {
     }
 
     /***
-     * 下载文件
+     * 下载文件 11
      * @param openStyle
      * @param id 文件在数据库中对应的ID
      * @param response
@@ -159,89 +161,9 @@ public class FileController  {
 
     }
 
-    /*
-    * 上传文件处理 并保存文件信息到数据库中
-    * 新建一个
-    * */
-//    @PostMapping("/admin/files/uploadOld")
-    public void uploadOld(@RequestParam("file") @NotNull MultipartFile  aaa,
-                       @RequestParam("assignment_id") @Validated @NotBlank(message = "作业号不允许为空")  @Max(100) String assignment_id,
-//                        BindingResult bindingResult,
-                       @RequestParam("question_id") String question_id,
-                       @RequestParam("sort_num") Integer sort_num,
-                       HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        if (bindingResult.hasErrors()){
-//            return;
-//        }
-
-        response.setContentType("text/json;charset=utf-8");
-        //获取用户的id
-        Principal userPrincipal = request.getUserPrincipal();
-
-        if (userPrincipal == null || assignment_id == null || question_id == null || aaa == null){
-            //根据用户id查询有的文件信息
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
-            return;
-        }
-
-
-        //获取文件原始名称
-        String originalFilename = aaa.getOriginalFilename();
-        //获取文件后缀
-        String extension = "."+FilenameUtils.getExtension(aaa.getOriginalFilename());
-        //生成新的文件名称
-        String newFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + UUID.randomUUID().toString().replace("-", "") + extension;
-
-        //文件大小
-        long size = aaa.getSize();
-        //文件类型
-        String type = aaa.getContentType();
-        System.out.println(type);
-        //处理根据日期生成目录 classpath:/static/files
-        //处理根据题目生成目录 classpath:/files_for_students
-
-//        String realPath = ResourceUtils.getURL("classpath:").getPath() + "/static/files"
-//                +"/A"+ assignment_id + "/Q" + question_id + "/";
-        // TODO
-        String relative_path =  "static/files_for_students" + "/A" + assignment_id + "/Q" + question_id + "/";
-        String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
-
-//        String dateFormat = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-//        String dateDirPath = realPath + "/" + dateFormat + "/";
-        File post_file = new File(realPath);
-
-        if (!post_file.exists()) post_file.mkdirs();
-
-        System.out.println(post_file);
-        //处理文件上传
-        aaa.transferTo(new File(post_file, newFileName));
-
-        //将文件信息放入数据库中
-        // TODO: 异常处理
-        UserFile userFile = new UserFile();
-        userFile.setOld_file_name(originalFilename)
-                .setNew_file_name(newFileName)
-                .setExt(extension)
-                .setFile_size(String.valueOf(size))
-                .setFile_type(type)
-                .setUser_id(Integer.parseInt(userPrincipal.getName()))
-                .setAssignment_id(Integer.parseInt(assignment_id))
-                .setQuestion_id(Integer.parseInt(question_id));
-
-        userFile.setRelative_path(relative_path);
-        System.out.println(userFile);
-
-        // 保存文件相关信息到数据库
-        userFileService.save(userFile);
-        String retrieve_url = realPath + newFileName;
-        JsonResult<String> result = ResultTool.success();
-        result.setData(retrieve_url);
-        response.getWriter().write(JSON.toJSONString(result));
-    }
 
     /*
-     * 上传文件处理 并保存文件信息到数据库中
+     * 上传文件处理 并保存文件信息到数据库中 14
      * 新建一个
      * */
     // TODO:  异常处理!!!!!
@@ -307,7 +229,7 @@ public class FileController  {
 
 
 
-    //    展示所有文件信息
+    //    展示所有文件信息 45
     @GetMapping("/admin/files/showAllFiles")
     @ResponseBody
     public List<UserFile> findAll(HttpServletResponse response) throws IOException {
@@ -315,38 +237,7 @@ public class FileController  {
         return userFiles;
     }
 
-    /***
-     * The file must end with
-     * @param file
-     * @param database_name
-     * @param database_description
-     * @param request
-     * @param response
-     * @throws Exception
-     */
-//    @AccessLimit(seconds = 100, maxCount = 10)
-//    @PostMapping("/admin/files/uploadToRemoteDatabase")
-//    public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
-//                             @RequestParam(value = "database_name") String database_name,
-//                             @RequestParam(value = "database_description") String database_description,
-//                             HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        //获取用户的id
-//        Principal userPrincipal = request.getUserPrincipal();
-//        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-//        if (userPrincipal == null || file.isEmpty() || extension == null || !extension.toLowerCase().equals("sql")){
-//            ResultTool.writeResponseFail(response, ResultCode.FILE_TYPE_ERROR);
-//            return;
-//        }
-//        FileInfo fileInfo = uploadToRemoteProcessing(file, Integer.parseInt(userPrincipal.getName()), true);
-//        if (fileInfo.file_id == -1){
-//            ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL,"upload to remote failed!");
-//            return;
-//        }
-//        Database database = new Database(fileInfo.file_id, database_name, database_description, remoteDatabasePath, fileInfo.newFileName);
-//        dataBaseMapper.addDatabase(database);
-//        ResultTool.writeResponseSuccess(response);
-//    }
-
+    // 46
     @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/uploadToRemoteDatabase")
     public void uploadToRemoteDatabase(@RequestParam(value = "file") MultipartFile  file,
@@ -366,7 +257,7 @@ public class FileController  {
         ResultTool.writeResponseSuccessWithData(response,fileInfo.file_id);
     }
 
-    // TODO: NEW URL
+    // TODO: NEW URL 100
     @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/createDatabase")
     public void createDatabase(@RequestParam(value = "file_id") Integer file_id,
@@ -386,7 +277,7 @@ public class FileController  {
 
 
 
-
+    // 47
     @AccessLimit(seconds = 100, maxCount = 10)
     @PostMapping("/admin/files/uploadToRemote")
     public void uploadToRemote(@RequestParam(value = "file") MultipartFile  file,
@@ -443,7 +334,7 @@ public class FileController  {
         String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
         File post_file = new File(realPath);
         if (!post_file.exists()) post_file.mkdirs();
-
+        log.info("upload path: "+realPath);
         //处理文件上传 将文件保存到本地来
         file.transferTo(new File(post_file, newFileName));
 
@@ -481,7 +372,7 @@ public class FileController  {
     }
 
 
-    // TODO: New API
+    // TODO: New API 103
     @GetMapping("/admin/deleteRemoteFileById")
     public void deleteRemoteFileById(
             @RequestParam(value = "file_id") Integer file_id,
@@ -500,7 +391,7 @@ public class FileController  {
         }
     }
 
-    // TODO: New API
+    // TODO: New API 101
     @GetMapping("/admin/queryRemoteFileList")
     public  void queryRemoteFileList(HttpServletResponse response){
         try{
@@ -512,7 +403,7 @@ public class FileController  {
     }
 
 
-    // TODO:
+    // TODO: New API 50
     @GetMapping("/admin/copyToRemote")
     @ResponseBody
     public String copyToRemote(Integer file_id) throws Exception {

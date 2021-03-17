@@ -20,6 +20,7 @@ public class UserDB implements Serializable {
     private Integer sid;
 
     private String user_name;
+
     @JsonIgnore
     private String user_password;
 
