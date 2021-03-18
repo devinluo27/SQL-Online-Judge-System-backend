@@ -1,5 +1,6 @@
 package ooad.demo.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.utils.AccessLimit;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
@@ -17,12 +18,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
+@Slf4j
 @Transactional(timeout = 100)
 @RestController
 public class QuestionController implements Serializable {
 
     @Autowired
     private QuestionMapper questionMapper;
+
     @Autowired
     private QuestionTriggerMapper questionTriggerMapper;
 
@@ -91,13 +94,15 @@ public class QuestionController implements Serializable {
      */
     @PostMapping("/admin/addQuestion")
     public void addQuestion(@RequestBody Question question, HttpServletResponse response) throws IOException {
-        System.out.println(question.getQuestion_output());
-        System.out.println(question.getOperation_type());
-
+        log.info("Add Question Now!");
         if (!question.getOperation_type().equals("query")){
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this query question!");
             return;
         }
+        // TODO: Should test whether ANS it is valid
+        String ans = question.getQuestion_standard_ans();
+        question.setQuestion_standard_ans(ans.replace(';', ' ').trim());
+
         try {
             questionMapper.addQuestion(question);
         }catch (Exception e){
@@ -180,18 +185,18 @@ public class QuestionController implements Serializable {
     @GetMapping("/admin/deleteQuestion")
     public void deleteQuestion(@RequestParam(value = "question_id") Integer question_id,
                                HttpServletResponse response){
-        if (questionMapper.disableQuestion(question_id) == 1){
-            ResultTool.writeResponseSuccess(response);
-//            try{
-//                int i = 1/0;
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-            return;
+        try{
+            if (questionMapper.disableQuestion(question_id) == 1){
+                ResultTool.writeResponseSuccess(response);
+                return;
+            }
+            ResultTool.writeResponseFail(response);
+        } catch (Exception e){
+            log.error("Delete Question: ", e);
+            ResultTool.writeResponseFail(response);
         }
-        ResultTool.writeResponseFail(response);
-    }
 
+    }
 
 
 }

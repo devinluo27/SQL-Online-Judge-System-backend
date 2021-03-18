@@ -158,7 +158,7 @@ public class RecordController{
             log.info(request.getUserPrincipal().getName(), "Submit to a wrong question!");
         }
 
-        // Check DDL
+        // TODO: Check DDL
 //        if (!(checkDDL(question_id) && checkIsQuestionAvailable(question))){
 //            ResultTool.writeResponseFail(response, ResultCode.CANNOT_SUBMIT);
 //            return;
@@ -214,7 +214,6 @@ public class RecordController{
         }
         else {
             // query 判题删掉分号
-//            int index = code.lastIndexOf(',');
             code = code.replace(';', ' ').trim();
         }
         judgeService.judgeCodeDocker(record_id, question, code);

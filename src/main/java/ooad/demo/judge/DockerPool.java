@@ -4,12 +4,16 @@ import com.jcraft.jsch.JSchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+/* TODO: Something to fix there
+*   DockerPool is created by new, so cannot Autowired anything! */
+
 @Slf4j
-@Component
+@Service
 public class DockerPool {
     int poolSize;
     int DockerSeq;
@@ -24,8 +28,8 @@ public class DockerPool {
     final ArrayList<String>  runningList = new ArrayList<>();
     volatile ArrayList<String> sleepingList = new ArrayList<>();
 
-    @Autowired
-    Remote remote;
+//    @Autowired
+//    private Remote remote;
 
     private String KillDockerCMD = "docker kill #DockerNAME#";
     private String RemoveDockerCMD = "docker rm -f #DockerNAME#";
@@ -96,18 +100,18 @@ public class DockerPool {
     Remote.Log killDocker(String DockerName) throws IOException, JSchException {
         runningList.remove(DockerName);
         if (!sleepingList.contains(DockerName)) sleepingList.add(DockerName);
-        return remote.EXEC_CMD(new String[]{KillDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
+        return Remote.EXEC_CMD(new String[]{KillDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
     public Remote.Log RemoveDocker(String DockerName) throws IOException, JSchException {
 //        runningList.remove(DockerName);
 //        sleepingList.remove(DockerName);
-        return remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
+        return Remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
     public Remote.Log RemoveDockerOnly(String DockerName) throws IOException, JSchException {
         if (DockerName != null)
-            return remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
+            return Remote.EXEC_CMD(new String[]{RemoveDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
         return null;
     }
 
@@ -115,13 +119,16 @@ public class DockerPool {
     public Remote.Log AwakeDocker(String DockerName) throws IOException, JSchException {
         if (!runningList.contains(DockerName)) runningList.add(DockerName);
         sleepingList.remove(DockerName);
-        return remote.EXEC_CMD(new String[]{AwakeDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
+        return Remote.EXEC_CMD(new String[]{AwakeDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
-    public ArrayList<Remote.Log> BuildDocker(String[] CMD, String DockerName) throws IOException, JSchException {
+    public ArrayList<Remote.Log> BuildDocker(String[] CMD, String DockerName) throws JSchException, IOException {
         for (int j = 0; j < CMD.length; j++) CMD[j] = CMD[j].replaceAll("#DockerNAME#", DockerName);
         runningList.add(DockerName);
-        return remote.EXEC_CMD(CMD);
+        // TODO: Test
+//        System.out.println("REMOTE: " + Remote);
+//        System.out.println("CMD:" + CMD);
+        return Remote.EXEC_CMD(CMD);
     }
 
 
@@ -159,7 +166,7 @@ public class DockerPool {
 
     public ArrayList<Remote.Log> createDockerOnly(String[] CMD, String DockerName) throws IOException, JSchException {
         for (int j = 0; j < CMD.length; j++) CMD[j] = CMD[j].replaceAll("#DockerNAME#", DockerName);
-        return remote.EXEC_CMD(CMD);
+        return Remote.EXEC_CMD(CMD);
     }
 
 
@@ -182,14 +189,14 @@ public class DockerPool {
     // TODO: THE SAME
     public boolean checkIfRunning(String DockerNAME) throws IOException, JSchException {
         String CMD = checkIfRunningCMD.replaceAll("#DockerNAME#",DockerNAME);
-        Remote.Log log = remote.EXEC_CMD(new String[]{CMD}).get(0);
+        Remote.Log log = Remote.EXEC_CMD(new String[]{CMD}).get(0);
         return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
     }
 
     // TODO:
     private boolean HealthyCheck(String DockerNAME, String STATUS) throws IOException, JSchException {
         String CMD = HealthyCheckCMD.replaceAll("#DockerNAME#",DockerNAME).replaceAll("#STATUS#", STATUS);
-        Remote.Log log = remote.EXEC_CMD(new String[]{CMD}).get(0);
+        Remote.Log log = Remote.EXEC_CMD(new String[]{CMD}).get(0);
         return log.OUT != null && log.OUT.replaceAll("\n","").equals(DockerNAME);
     }
 

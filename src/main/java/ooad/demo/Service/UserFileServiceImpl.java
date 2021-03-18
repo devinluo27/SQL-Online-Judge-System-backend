@@ -79,6 +79,7 @@ public class UserFileServiceImpl implements UserFileService {
         return userFileMapper.getAllFileInfo();
     }
 
+    // For Database
     public boolean copyToRemoteHost(Integer file_id) throws IOException {
         FTPClient ftpClient = new FTPClient();
         //设置登陆超时时间,默认是20s
@@ -146,16 +147,16 @@ public class UserFileServiceImpl implements UserFileService {
      * @param inputStream 输入文件流
      * @return
      */
-    private  boolean uploadFile(FTPClient ftpClient, String fileName, InputStream inputStream) {
+    private boolean uploadFile(FTPClient ftpClient, String fileName, InputStream inputStream) {
         try {
-//            log.info("开始上传文件");
+            log.info("开始上传文件");
             ftpClient.setFileType(ftpClient.BINARY_FILE_TYPE);
             ftpClient.storeFile(fileName, inputStream);
             inputStream.close();
             ftpClient.logout();
-//            log.info("上传文件成功");
+            log.info("上传文件成功");
         } catch (Exception e) {
-//            log.error("上传文件失败" + e);
+            log.error("上传文件失败" + e);
         } finally {
             try {
                 if (ftpClient.isConnected())

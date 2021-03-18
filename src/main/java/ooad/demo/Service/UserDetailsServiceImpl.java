@@ -1,10 +1,11 @@
 package ooad.demo.Service;
 
-import cn.shuibo.util.RSAUtil;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.mapper.SysPermissionMapper;
 import ooad.demo.mapper.UserMapper;
 import ooad.demo.pojo.SysPermission;
 import ooad.demo.pojo.UserDB;
+import ooad.demo.utils.AccessLimit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,8 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
-
 
     @Autowired
     private UserMapper userMapper;
@@ -39,14 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // TODO: Testing
-        List<UserDB> userDBs = userMapper.queryAllUserDBList();
-        for (UserDB u: userDBs) {
-            System.out.println(u.getSid() + " " + u.getUser_name());
-        }
-        System.out.println("username: " + username);
-
-
-
+        log.info("Login username: " + username);
 
         //根据用户名查询用户
         UserDB userDB = userMapper.selectUserDBBySidAllInfo(Integer.parseInt(username));
@@ -54,9 +48,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             System.out.println("用户不存在");
             throw new UsernameNotFoundException("用户不存在");
         }
-
-
-        System.out.println("password: " +  userDB.getUser_password());
 
         // list of authorities
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.jcraft.jsch.*;
 import lombok.extern.slf4j.Slf4j;
 import ooad.demo.mapper.UserFileMapper;
 import ooad.demo.pojo.UserFile;
+import ooad.demo.utils.JudgeProperties;
 import ooad.demo.utils.SftpProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,33 +36,30 @@ public class Remote {
         }
     }
 
-//    @Autowired
-//    private SftpProperties sftpConfig;
-
-
     @Autowired
     UserFileMapper userFileMapper;
 
-    @Value("${judge.remote.host}")
-    private String remoteHost;
+    @Autowired
+    JudgeProperties judgeProperties;
 
-    @Value("${judge.remote.port}")
-    private int remotePort;
+    private static String remoteHost;
 
-    private String rootDir;
+    private static int remotePort;
 
-    @Value("${judge.remote.username}")
-    private String remoteUsername;
+    private static String rootDir;
 
-    @Value("${judge.remote.password}")
-    private String remotePassword;
+    private static String remoteUsername;
 
-    @Value("${judge.remote.database-path}")
-    private String remoteDatabasePath;
+    private static String remotePassword;
 
-    @Value("${judge.remote.file-path}")
-    private String remoteFilePath;
+    private static String remoteDatabasePath;
 
+    private static String remoteFilePath;
+
+    // TODO: TO BE COMPLETE
+
+    //    @Autowired
+    //    private SftpProperties sftpConfig;
     private  String SESSION_CONFIG_STRICT_HOST_KEY_CHECKING = "StrictHostKeyChecking";
 
     private String SessionStrictHostKeyChecking = "no";
@@ -73,8 +72,18 @@ public class Remote {
 
     private int sessionConnectTimeout = 15000;
 
+    @PostConstruct
+    public void postInit(){
+        remoteHost = judgeProperties.getRemoteHost();
+        remotePort = judgeProperties.getRemotePort();
+        rootDir = judgeProperties.getRootDir();
+        remoteUsername = judgeProperties.getRemoteUsername();
+        remotePassword = judgeProperties.getRemotePassword();
+        remoteDatabasePath = judgeProperties.getRemoteDatabasePath();
+        remoteFilePath = judgeProperties.getRemoteFilePath();
+    }
 
-    public ArrayList<Log> EXEC_CMD(String[] CMD) throws JSchException, IOException {
+    public static ArrayList<Log> EXEC_CMD(String[] CMD) throws JSchException, IOException {
         String host =  remoteHost;
         int port = remotePort;
         String userName = remoteUsername;

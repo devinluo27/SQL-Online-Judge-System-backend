@@ -1,6 +1,7 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+@Slf4j
 @Service
 public class Judge {
 
@@ -133,25 +135,38 @@ public class Judge {
         CMD = CMD.replaceAll("#DockerNAME#", DockerName).replaceAll("#ANS_SQL#", ANS_SQL).replaceAll("#TEST_SQL#", TEST_SQL);
         Remote.Log logs = new Remote.Log(-1, "" ,"");
         try {
+            // TODO: how to support many languages
             logs = remote.EXEC_CMD(new String[]{CMD}).get(0);
         } catch (Exception e){
+            log.error("EXEC_QUERY: ", e);
             return new QUERY_RESULT(-2, -1.0, logs.OUT, logs.ERROR);
         }
-//        System.out.println("OUT: " + logs.OUT);
-//        System.out.println("ERROR: " + logs.ERROR);
+        System.out.println("OUT: " + logs.OUT);
+        System.out.println("ERROR: " + logs.ERROR);
         String[] result = logs.OUT.split("\n");
         int SCORE = 0;
         double EXEC_TIME = 0;
         if (DBMS == 0) {
-            if (result.length != 4) return new QUERY_RESULT(-1, -1, logs.OUT, logs.ERROR);
+
+            // TODO: DEBUGGING HERE
+            if (result.length != 4) {
+                System.out.println("Here != 4");
+                for (int i = 0; i<result.length;i++){
+                    System.out.println(result[i]);
+                }
+                return new QUERY_RESULT(-1, -1, logs.OUT, logs.ERROR);
+            }
+
             SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;
             EXEC_TIME = Double.parseDouble(result[3].replaceAll("Time: ", "").replaceAll(" ms", ""));
         }else if(DBMS == 1){
             SCORE = Integer.parseInt(result[0].replaceAll(" ", "")) == 0 ? 100 : 0;
-            EXEC_TIME = (double) logs.exec_time - 300;
+            EXEC_TIME = Double.parseDouble(result[3].replaceAll("Time: ", "").replaceAll(" ms", ""));
+//            EXEC_TIME = (double) logs.exec_time - 300;
         }else if (DBMS == 2){
             SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;
-            EXEC_TIME = (double) logs.exec_time - 300;
+            EXEC_TIME = Double.parseDouble(result[3].replaceAll("Time: ", "").replaceAll(" ms", ""));
+//            EXEC_TIME = (double) logs.exec_time - 300;
         }
         System.out.println(SCORE + "  " + EXEC_TIME);
         return new QUERY_RESULT(SCORE, EXEC_TIME, logs.OUT, logs.ERROR);

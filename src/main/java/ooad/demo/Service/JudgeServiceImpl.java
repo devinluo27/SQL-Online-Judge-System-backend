@@ -118,6 +118,7 @@ public class JudgeServiceImpl implements JudgeService {
             //  TODO: 硬编码 postgres： 0
             //  check if docker is Health 才判题
             if (checkIfRunning(dockID)){
+                System.out.println("SQL Type: " + sql_type);
                 response =  judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
             }
             else {

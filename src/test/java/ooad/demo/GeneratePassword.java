@@ -26,6 +26,7 @@ public class GeneratePassword {
 
     @Autowired
     private SysPermissionController sysPermissionController;
+
     @Test
     public void generateNewPwdRandom() {
         List<UserDB> list = userMapper.queryAllUserDBList();
@@ -72,12 +73,20 @@ public class GeneratePassword {
             sysPermissionMapper.addNewRoleToUser(sid, "TA");
             sysPermissionMapper.addNewRoleToUser(sid, "admin");
         }
-
     }
 
     @Test
     public void addUserWith2Roles() {
-
+        ArrayList<UserDB> userDBs = new ArrayList<>();
+        UserDB u1 = new UserDB(11812613,"香佳宏",
+                passwordEncoder.encode("DBOJ666!"));
+        userDBs.add(u1);
+        for (int i = 0 ; i< userDBs.size(); i++){
+            UserDB temp = userDBs.get(i);
+            userMapper.addUserDB(temp);
+            sysPermissionMapper.addNewRoleToUser(temp.getSid(), "user");
+            sysPermissionMapper.addNewRoleToUser(temp.getSid(), "TA");
+        }
     }
 
     @Test

@@ -1,566 +1,178 @@
-2021-03-17 00:04:27.814  INFO 25552 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 00:04:27.970  WARN 25552 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 00:04:27.971  INFO 25552 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:04:28.054  INFO 25552 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 00:04:28.070  INFO 25552 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 00:09:55.168  INFO 27122 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 27122 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 00:09:55.170  INFO 27122 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
-2021-03-17 00:09:56.668  INFO 27122 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:09:56.672  INFO 27122 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 00:09:56.729  INFO 27122 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37ms. Found 0 JPA repository interfaces.
-2021-03-17 00:09:56.761  INFO 27122 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:09:56.763  INFO 27122 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 00:09:56.789  INFO 27122 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
-2021-03-17 00:09:58.333  INFO 27122 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 00:09:58.411  INFO 27122 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 00:09:58.701  INFO 27122 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 00:09:58.996  INFO 27122 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 00:09:59.567  INFO 27122 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 00:09:59.929  INFO 27122 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 00:09:59.940  INFO 27122 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:09:59.957  INFO 27122 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 00:10:00.604  WARN 27122 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 00:10:01.585  WARN 27122 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 00:10:01.801  INFO 27122 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 00:10:01.815  INFO 27122 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 00:10:03.204  INFO 27122 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6106dfb6, org.springframework.security.web.context.SecurityContextPersistenceFilter@5daad59a, org.springframework.security.web.header.HeaderWriterFilter@70439c3, org.springframework.web.filter.CorsFilter@14239223, org.springframework.security.web.authentication.logout.LogoutFilter@5e7cd0df, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@25589735, org.springframework.security.web.session.ConcurrentSessionFilter@416c8bb5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@58f50dd0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5d297d4d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@68df8c6, org.springframework.security.web.session.SessionManagementFilter@57fce8b, org.springframework.security.web.access.ExceptionTranslationFilter@35fb3209, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@101330ad, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@69f69078]
-2021-03-17 00:10:04.173  INFO 27122 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 00:10:04.174  INFO 27122 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 00:10:04.191  INFO 27122 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 9.905 seconds (JVM running for 12.198)
-2021-03-17 00:10:04.651  INFO 27122 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 00:10:04.675  WARN 27122 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 00:10:04.675  INFO 27122 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:10:04.678  INFO 27122 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 00:10:04.684  INFO 27122 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 00:16:11.280  INFO 27163 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 27163 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 00:16:11.284  INFO 27163 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
-2021-03-17 00:16:12.807  INFO 27163 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:16:12.809  INFO 27163 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 00:16:12.846  INFO 27163 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 25ms. Found 0 JPA repository interfaces.
-2021-03-17 00:16:12.871  INFO 27163 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:16:12.873  INFO 27163 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 00:16:12.898  INFO 27163 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10ms. Found 0 Redis repository interfaces.
-2021-03-17 00:16:14.345  INFO 27163 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 00:16:14.435  INFO 27163 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 00:16:14.708  INFO 27163 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 00:16:14.961  INFO 27163 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 00:16:15.488  INFO 27163 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 00:16:15.898  INFO 27163 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 00:16:15.908  INFO 27163 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:16:15.924  INFO 27163 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 00:16:16.529  WARN 27163 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 00:16:17.484  WARN 27163 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 00:16:17.717  INFO 27163 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 00:16:17.731  INFO 27163 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 00:16:19.222  INFO 27163 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@46d148bd, org.springframework.security.web.context.SecurityContextPersistenceFilter@526893f, org.springframework.security.web.header.HeaderWriterFilter@1dd44289, org.springframework.web.filter.CorsFilter@37f41a81, org.springframework.security.web.authentication.logout.LogoutFilter@6dd38df2, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3fe98084, org.springframework.security.web.session.ConcurrentSessionFilter@1fc3df43, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@37caecda, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6fa2a006, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@47c81e89, org.springframework.security.web.session.SessionManagementFilter@43fe2008, org.springframework.security.web.access.ExceptionTranslationFilter@56f2c9e8, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@6744707b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@432a6a69]
-2021-03-17 00:16:20.288  INFO 27163 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 00:16:20.289  INFO 27163 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 00:16:20.304  INFO 27163 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 9.777 seconds (JVM running for 11.913)
-2021-03-17 00:16:20.658  INFO 27163 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 00:16:20.683  WARN 27163 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 00:16:20.684  INFO 27163 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:16:20.687  INFO 27163 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 00:16:20.692  INFO 27163 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 00:17:59.164  INFO 27179 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 27179 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 00:17:59.167  INFO 27179 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
-2021-03-17 00:18:00.524  INFO 27179 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:18:00.526  INFO 27179 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 00:18:00.577  INFO 27179 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32ms. Found 0 JPA repository interfaces.
-2021-03-17 00:18:00.601  INFO 27179 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:18:00.602  INFO 27179 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 00:18:00.624  INFO 27179 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13ms. Found 0 Redis repository interfaces.
-2021-03-17 00:18:02.031  INFO 27179 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 00:18:02.114  INFO 27179 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 00:18:02.295  INFO 27179 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 00:18:02.524  INFO 27179 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 00:18:03.046  INFO 27179 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 00:18:03.511  INFO 27179 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 00:18:03.520  INFO 27179 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:18:03.533  INFO 27179 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 00:18:04.158  WARN 27179 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 00:18:05.054  WARN 27179 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 00:18:05.294  INFO 27179 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 00:18:05.307  INFO 27179 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 00:18:06.782  INFO 27179 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6f52a229, org.springframework.security.web.context.SecurityContextPersistenceFilter@6a543e09, org.springframework.security.web.header.HeaderWriterFilter@3620eab, org.springframework.web.filter.CorsFilter@3fe98084, org.springframework.security.web.authentication.logout.LogoutFilter@2fdf7da2, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@79d14037, org.springframework.security.web.session.ConcurrentSessionFilter@5d297d4d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1fc3df43, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@37caecda, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5f33e6d, org.springframework.security.web.session.SessionManagementFilter@2619cb76, org.springframework.security.web.access.ExceptionTranslationFilter@11295cb1, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@79be91eb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4a944af9]
-2021-03-17 00:18:07.754  INFO 27179 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 00:18:07.755  INFO 27179 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 00:18:07.768  INFO 27179 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 9.256 seconds (JVM running for 11.263)
-2021-03-17 00:18:08.236  INFO 27179 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 00:18:08.260  WARN 27179 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 00:18:08.260  INFO 27179 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:18:08.263  INFO 27179 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 00:18:08.269  INFO 27179 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 00:18:29.100  INFO 27188 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 27188 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 00:18:29.104  INFO 27188 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
-2021-03-17 00:18:29.224  INFO 27188 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2021-03-17 00:18:29.225  INFO 27188 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2021-03-17 00:18:30.253  INFO 27188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:18:30.254  INFO 27188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 00:18:30.282  INFO 27188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 JPA repository interfaces.
-2021-03-17 00:18:30.298  INFO 27188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 00:18:30.299  INFO 27188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 00:18:30.313  INFO 27188 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6ms. Found 0 Redis repository interfaces.
-2021-03-17 00:18:31.084  INFO 27188 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
-2021-03-17 00:18:31.115  INFO 27188 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-03-17 00:18:31.115  INFO 27188 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
-2021-03-17 00:18:31.203  INFO 27188 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-03-17 00:18:31.203  INFO 27188 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1978 ms
-2021-03-17 00:18:31.752  WARN 27188 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 00:18:31.876  INFO 27188 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 00:18:31.917  INFO 27188 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 00:18:32.023  INFO 27188 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 00:18:32.121  INFO 27188 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 00:18:32.400  INFO 27188 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 00:18:32.655  INFO 27188 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 00:18:32.665  INFO 27188 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:18:32.716  INFO 27188 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2021-03-17 00:18:32.720  INFO 27188 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 00:18:33.094  WARN 27188 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 00:18:33.197  INFO 27188 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 00:18:33.198  INFO 27188 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 00:18:33.512  INFO 27188 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4200c00, org.springframework.security.web.context.SecurityContextPersistenceFilter@2fbc2d42, org.springframework.security.web.header.HeaderWriterFilter@68f15a82, org.springframework.web.filter.CorsFilter@50c7e9c8, org.springframework.security.web.authentication.logout.LogoutFilter@182d5dd5, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5e89dea8, org.springframework.security.web.session.ConcurrentSessionFilter@76ba813f, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@45837536, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@21e7873, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25c7e6e5, org.springframework.security.web.session.SessionManagementFilter@2a88d329, org.springframework.security.web.access.ExceptionTranslationFilter@2491e5e, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@1b927fe9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3eaf6280]
-2021-03-17 00:18:34.041  INFO 27188 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
-2021-03-17 00:18:34.043  INFO 27188 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 00:18:34.044  INFO 27188 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 00:18:34.057  INFO 27188 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 5.577 seconds (JVM running for 6.732)
-2021-03-17 00:23:59.404  INFO 27188 --- [https-jsse-nio-2733-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-03-17 00:23:59.405  INFO 27188 --- [https-jsse-nio-2733-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2021-03-17 00:23:59.416  INFO 27188 --- [https-jsse-nio-2733-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 11 ms
-2021-03-17 00:29:23.017  INFO 27188 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 00:29:23.145  WARN 27188 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 00:29:23.145  INFO 27188 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 00:29:23.154  INFO 27188 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 00:29:23.159  INFO 27188 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 10:10:59.647  INFO 27954 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 27954 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 10:10:59.650  INFO 27954 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
-2021-03-17 10:11:01.370  INFO 27954 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:11:01.373  INFO 27954 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 10:11:01.431  INFO 27954 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37ms. Found 0 JPA repository interfaces.
-2021-03-17 10:11:01.475  INFO 27954 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:11:01.477  INFO 27954 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 10:11:01.511  INFO 27954 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
-2021-03-17 10:11:03.238  INFO 27954 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 10:11:03.380  INFO 27954 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 10:11:03.724  INFO 27954 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 10:11:04.055  INFO 27954 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 10:11:04.737  INFO 27954 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 10:11:05.422  INFO 27954 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 10:11:05.433  INFO 27954 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:11:05.449  INFO 27954 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 10:11:06.196  WARN 27954 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 10:11:07.228  WARN 27954 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 10:11:07.496  INFO 27954 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 10:11:07.511  INFO 27954 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 10:11:09.104  INFO 27954 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@151a6598, org.springframework.security.web.context.SecurityContextPersistenceFilter@15130002, org.springframework.security.web.header.HeaderWriterFilter@56f2c9e8, org.springframework.web.filter.CorsFilter@6fa3def8, org.springframework.security.web.authentication.logout.LogoutFilter@304068, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2e0fdc83, org.springframework.security.web.session.ConcurrentSessionFilter@43fe2008, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@900649e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5599dc60, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1c3d9e28, org.springframework.security.web.session.SessionManagementFilter@350342e0, org.springframework.security.web.access.ExceptionTranslationFilter@58f50dd0, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@65593327, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6c1e40d9]
-2021-03-17 10:11:10.262  INFO 27954 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 10:11:10.263  INFO 27954 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 10:11:10.280  INFO 27954 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 11.619 seconds (JVM running for 14.25)
-2021-03-17 10:11:10.678  INFO 27954 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 10:11:10.718  WARN 27954 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 10:11:10.719  INFO 27954 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:11:10.722  INFO 27954 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 10:11:10.729  INFO 27954 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 10:40:24.675  INFO 28156 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 28156 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 10:40:24.678  INFO 28156 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
-2021-03-17 10:40:26.230  INFO 28156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:40:26.233  INFO 28156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 10:40:26.288  INFO 28156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 37ms. Found 0 JPA repository interfaces.
-2021-03-17 10:40:26.322  INFO 28156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:40:26.325  INFO 28156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 10:40:26.355  INFO 28156 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12ms. Found 0 Redis repository interfaces.
-2021-03-17 10:40:28.005  INFO 28156 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 10:40:28.108  INFO 28156 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 10:40:28.399  INFO 28156 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 10:40:28.690  INFO 28156 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 10:40:29.318  INFO 28156 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 10:40:29.755  INFO 28156 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 10:40:29.774  INFO 28156 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:40:29.806  INFO 28156 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 10:40:30.559  WARN 28156 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 10:40:31.605  WARN 28156 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 10:40:31.881  INFO 28156 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 10:40:31.896  INFO 28156 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 10:40:33.433  INFO 28156 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6fa3def8, org.springframework.security.web.context.SecurityContextPersistenceFilter@5e7cd0df, org.springframework.security.web.header.HeaderWriterFilter@56f2c9e8, org.springframework.web.filter.CorsFilter@1c3d9e28, org.springframework.security.web.authentication.logout.LogoutFilter@54d60fa1, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5dacf18d, org.springframework.security.web.session.ConcurrentSessionFilter@43fe2008, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@8b89b3a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@35554635, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@a1cb94, org.springframework.security.web.session.SessionManagementFilter@350342e0, org.springframework.security.web.access.ExceptionTranslationFilter@58f50dd0, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@65593327, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4b50c21]
-2021-03-17 10:40:34.431  INFO 28156 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 10:40:34.432  INFO 28156 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 10:40:34.451  INFO 28156 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 11.484 seconds (JVM running for 13.742)
-2021-03-17 10:40:34.850  INFO 28156 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 10:40:34.879  WARN 28156 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 10:40:34.880  INFO 28156 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:40:34.885  INFO 28156 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 10:40:34.890  INFO 28156 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 10:40:51.527  INFO 28163 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 28163 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 10:40:51.532  INFO 28163 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
-2021-03-17 10:40:51.653  INFO 28163 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2021-03-17 10:40:51.654  INFO 28163 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2021-03-17 10:40:52.915  INFO 28163 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:40:52.916  INFO 28163 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 10:40:52.955  INFO 28163 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 26ms. Found 0 JPA repository interfaces.
-2021-03-17 10:40:52.980  INFO 28163 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:40:52.981  INFO 28163 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 10:40:53.003  INFO 28163 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 10ms. Found 0 Redis repository interfaces.
-2021-03-17 10:40:53.793  INFO 28163 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
-2021-03-17 10:40:53.825  INFO 28163 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-03-17 10:40:53.825  INFO 28163 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
-2021-03-17 10:40:53.913  INFO 28163 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-03-17 10:40:53.914  INFO 28163 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2259 ms
-2021-03-17 10:40:54.439  WARN 28163 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 10:40:54.581  INFO 28163 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 10:40:54.625  INFO 28163 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 10:40:54.734  INFO 28163 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 10:40:54.830  INFO 28163 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 10:40:55.164  INFO 28163 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 10:40:55.451  INFO 28163 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 10:40:55.459  INFO 28163 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:40:55.510  INFO 28163 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2021-03-17 10:40:55.516  INFO 28163 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 10:40:55.899  WARN 28163 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 10:40:56.004  INFO 28163 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 10:40:56.005  INFO 28163 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 10:40:56.344  INFO 28163 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5c6a8ad, org.springframework.security.web.context.SecurityContextPersistenceFilter@50d86c48, org.springframework.security.web.header.HeaderWriterFilter@5bed04fb, org.springframework.web.filter.CorsFilter@7d4b4f94, org.springframework.security.web.authentication.logout.LogoutFilter@3aae05b3, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@37085fc7, org.springframework.security.web.session.ConcurrentSessionFilter@7cb60c4e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@61cbec3a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@55278213, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@11e21c68, org.springframework.security.web.session.SessionManagementFilter@405b3365, org.springframework.security.web.access.ExceptionTranslationFilter@6d1b23bf, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@69cb655d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@314658fd]
-2021-03-17 10:40:56.890  INFO 28163 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
-2021-03-17 10:40:56.892  INFO 28163 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 10:40:56.893  INFO 28163 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 10:40:56.907  INFO 28163 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 5.995 seconds (JVM running for 6.922)
-2021-03-17 10:42:29.614  INFO 28163 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-03-17 10:42:29.614  INFO 28163 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2021-03-17 10:42:29.625  INFO 28163 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
-2021-03-17 10:45:48.328  INFO 28163 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 10:45:48.350  WARN 28163 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 10:45:48.350  INFO 28163 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:45:48.358  INFO 28163 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 10:45:48.363  INFO 28163 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 10:45:55.661  INFO 28204 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 28204 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 10:45:55.664  INFO 28204 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
-2021-03-17 10:45:55.741  INFO 28204 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2021-03-17 10:45:55.742  INFO 28204 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2021-03-17 10:45:56.937  INFO 28204 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:45:56.939  INFO 28204 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 10:45:56.981  INFO 28204 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 27ms. Found 0 JPA repository interfaces.
-2021-03-17 10:45:56.997  INFO 28204 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 10:45:56.998  INFO 28204 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 10:45:57.012  INFO 28204 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6ms. Found 0 Redis repository interfaces.
-2021-03-17 10:45:57.821  INFO 28204 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
-2021-03-17 10:45:57.852  INFO 28204 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-03-17 10:45:57.852  INFO 28204 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
-2021-03-17 10:45:58.002  INFO 28204 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-03-17 10:45:58.003  INFO 28204 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2261 ms
-2021-03-17 10:45:58.555  WARN 28204 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 10:45:58.684  INFO 28204 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 10:45:58.723  INFO 28204 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 10:45:58.837  INFO 28204 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 10:45:58.938  INFO 28204 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 10:45:59.310  INFO 28204 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 10:45:59.598  INFO 28204 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 10:45:59.605  INFO 28204 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 10:45:59.647  INFO 28204 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2021-03-17 10:45:59.649  INFO 28204 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 10:45:59.992  WARN 28204 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 10:46:00.111  INFO 28204 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 10:46:00.113  INFO 28204 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 10:46:00.474  INFO 28204 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@31d6cd88, org.springframework.security.web.context.SecurityContextPersistenceFilter@18fb20bb, org.springframework.security.web.header.HeaderWriterFilter@f243ef8, org.springframework.web.filter.CorsFilter@5430cf21, org.springframework.security.web.authentication.logout.LogoutFilter@cc7d1ad, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@35c09da4, org.springframework.security.web.session.ConcurrentSessionFilter@197b6711, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@60650b8e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@32f0286e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@308f253d, org.springframework.security.web.session.SessionManagementFilter@397cc617, org.springframework.security.web.access.ExceptionTranslationFilter@3e99e956, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@dd5ba71, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@17f56839]
-2021-03-17 10:46:01.228  INFO 28204 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
-2021-03-17 10:46:01.230  INFO 28204 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 10:46:01.230  INFO 28204 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 10:46:01.244  INFO 28204 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 6.128 seconds (JVM running for 7.887)
-2021-03-17 10:46:08.922  INFO 28204 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-03-17 10:46:08.923  INFO 28204 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2021-03-17 10:46:08.931  INFO 28204 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
-2021-03-17 11:20:21.377  INFO 28204 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 11:20:21.428  WARN 28204 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 11:20:21.429  INFO 28204 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 11:20:21.444  INFO 28204 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 11:20:21.446  INFO 28204 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 12:05:00.157  INFO 29049 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 29049 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 12:05:00.162  INFO 29049 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
-2021-03-17 12:05:00.283  INFO 29049 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2021-03-17 12:05:00.284  INFO 29049 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2021-03-17 12:05:02.036  INFO 29049 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 12:05:02.037  INFO 29049 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 12:05:02.084  INFO 29049 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 31ms. Found 0 JPA repository interfaces.
-2021-03-17 12:05:02.107  INFO 29049 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 12:05:02.110  INFO 29049 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 12:05:02.135  INFO 29049 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8ms. Found 0 Redis repository interfaces.
-2021-03-17 12:05:03.144  INFO 29049 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
-2021-03-17 12:05:03.180  INFO 29049 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-03-17 12:05:03.180  INFO 29049 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
-2021-03-17 12:05:03.282  INFO 29049 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-03-17 12:05:03.283  INFO 29049 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2999 ms
-2021-03-17 12:05:03.928  WARN 29049 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 12:05:04.065  INFO 29049 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 12:05:04.114  INFO 29049 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 12:05:04.273  INFO 29049 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 12:05:04.384  INFO 29049 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 12:05:04.745  INFO 29049 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-2021-03-17 12:05:05.196  INFO 29049 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2021-03-17 12:05:05.222  INFO 29049 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 12:05:05.357  INFO 29049 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2021-03-17 12:05:05.369  INFO 29049 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
-2021-03-17 12:05:06.391  WARN 29049 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-03-17 12:05:06.521  INFO 29049 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
-2021-03-17 12:05:06.523  INFO 29049 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
-2021-03-17 12:05:07.069  INFO 29049 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6163f508, org.springframework.security.web.context.SecurityContextPersistenceFilter@7580fa84, org.springframework.security.web.header.HeaderWriterFilter@2f1c0fc1, org.springframework.web.filter.CorsFilter@4f8370e, org.springframework.security.web.authentication.logout.LogoutFilter@2ffba5b3, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2572c984, org.springframework.security.web.session.ConcurrentSessionFilter@443d0a8c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29df67a6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5c22bfa0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@76263613, org.springframework.security.web.session.SessionManagementFilter@25b6deaa, org.springframework.security.web.access.ExceptionTranslationFilter@69d8b98c, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@6ad1012e, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@83eb270]
-2021-03-17 12:05:08.043  INFO 29049 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
-2021-03-17 12:05:08.045  INFO 29049 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
-2021-03-17 12:05:08.046  INFO 29049 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
-2021-03-17 12:05:08.062  INFO 29049 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 8.556 seconds (JVM running for 12.691)
-2021-03-17 12:05:30.034  INFO 29049 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
-2021-03-17 12:05:30.222  WARN 29049 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
-2021-03-17 12:05:30.222  INFO 29049 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2021-03-17 12:05:30.227  INFO 29049 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
-2021-03-17 12:05:30.231  INFO 29049 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
-2021-03-17 12:05:33.878  INFO 29053 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 29053 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
-2021-03-17 12:05:33.882  INFO 29053 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
-2021-03-17 12:05:34.026  INFO 29053 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2021-03-17 12:05:34.031  INFO 29053 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2021-03-17 12:05:35.463  INFO 29053 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 12:05:35.464  INFO 29053 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
-2021-03-17 12:05:35.501  INFO 29053 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 26ms. Found 0 JPA repository interfaces.
-2021-03-17 12:05:35.518  INFO 29053 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
-2021-03-17 12:05:35.520  INFO 29053 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-2021-03-17 12:05:35.539  INFO 29053 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9ms. Found 0 Redis repository interfaces.
-2021-03-17 12:05:36.344  INFO 29053 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
-2021-03-17 12:05:36.374  INFO 29053 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2021-03-17 12:05:36.375  INFO 29053 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
-2021-03-17 12:05:36.454  INFO 29053 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2021-03-17 12:05:36.455  INFO 29053 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2424 ms
-2021-03-17 12:05:37.001  WARN 29053 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
-2021-03-17 12:05:37.118  INFO 29053 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2021-03-17 12:05:37.157  INFO 29053 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
-2021-03-17 12:05:37.269  INFO 29053 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2021-03-17 12:05:37.370  INFO 29053 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
-2021-03-17 12:05:37.398 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:37.403 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:37.404  INFO 29053 --- [Druid-ConnectionPool-Create-1964808528] c.a.druid.pool.DruidAbstractDataSource   : {dataSource-1} failContinuous is true
-2021-03-17 12:05:37.912 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:38.426 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:38.935 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:39.445 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:39.955 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:40.478 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:40.988 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:41.494 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:42.623 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:43.505 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
-2021-03-17 12:05:44.411 ERROR 29053 --- [Druid-ConnectionPool-Create-1964808528] com.alibaba.druid.pool.DruidDataSource   : create connection SQLException, url: jdbc:postgresql://10.20.93.42:5433/dboj_v1?useSSL=false&requireSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai, errorCode 0, state 08001
-
-org.postgresql.util.PSQLException: The connection attempt failed.
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:315) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:51) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:225) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.makeConnection(Driver.java:465) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.Driver.connect(Driver.java:264) ~[postgresql-42.2.16.jar:42.2.16]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1644) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidAbstractDataSource.createPhysicalConnection(DruidAbstractDataSource.java:1710) ~[druid-1.1.24.jar:1.1.24]
-	at com.alibaba.druid.pool.DruidDataSource$CreateConnectionThread.run(DruidDataSource.java:2777) ~[druid-1.1.24.jar:1.1.24]
-Caused by: java.io.EOFException: null
-	at org.postgresql.core.PGStream.receiveChar(PGStream.java:443) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.enableGSSEncrypted(ConnectionFactoryImpl.java:436) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:144) ~[postgresql-42.2.16.jar:42.2.16]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:213) ~[postgresql-42.2.16.jar:42.2.16]
-	... 7 common frames omitted
-
+2021-03-18 00:05:38.914  INFO 1726 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-03-18 00:05:38.919  INFO 1726 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-03-18 00:05:38.929  INFO 1726 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2021-03-18 00:05:39.595  INFO 1726 --- [https-jsse-nio-2733-exec-6] ooad.demo.Service.DockerPoolService      : Init dockersPool: 10_trigger
+2021-03-18 00:06:14.214  INFO 1726 --- [LocustTask-2] ooad.demo.Service.JudgeServiceImpl       : remove_docker_id: DBOJ_postgres_20201223133617ecccce083063481599a0049839ab6214.sql_7603026_1
+2021-03-18 00:06:14.826  INFO 1726 --- [LocustTask-2] ooad.demo.Service.JudgeServiceImpl       : score: 0
+2021-03-18 00:06:14.831  INFO 1726 --- [LocustTask-2] ooad.demo.Service.JudgeServiceImpl       : 判题结束 current_size_after_judge: 3
+2021-03-18 00:11:40.378  INFO 1726 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2021-03-18 00:11:40.514  WARN 1726 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2021-03-18 00:11:40.514  INFO 1726 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:11:40.524  INFO 1726 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2021-03-18 00:11:40.529  INFO 1726 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2021-03-18 00:11:46.306  INFO 1917 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 1917 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
+2021-03-18 00:11:46.309  INFO 1917 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
+2021-03-18 00:11:46.364  INFO 1917 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-18 00:11:46.364  INFO 1917 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-18 00:11:47.242  INFO 1917 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:11:47.242  INFO 1917 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-18 00:11:47.268  INFO 1917 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18ms. Found 0 JPA repository interfaces.
+2021-03-18 00:11:47.282  INFO 1917 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:11:47.283  INFO 1917 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-03-18 00:11:47.299  INFO 1917 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7ms. Found 0 Redis repository interfaces.
+2021-03-18 00:11:48.045  INFO 1917 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
+2021-03-18 00:11:48.072  INFO 1917 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-03-18 00:11:48.072  INFO 1917 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2021-03-18 00:11:48.152  INFO 1917 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-03-18 00:11:48.153  INFO 1917 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1789 ms
+2021-03-18 00:11:48.660  WARN 1917 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2021-03-18 00:11:48.781  INFO 1917 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-03-18 00:11:48.819  INFO 1917 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2021-03-18 00:11:48.933  INFO 1917 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-03-18 00:11:49.036  INFO 1917 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2021-03-18 00:11:49.349  INFO 1917 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-03-18 00:11:49.632  INFO 1917 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-03-18 00:11:49.640  INFO 1917 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:11:49.684  INFO 1917 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-03-18 00:11:49.688  INFO 1917 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2021-03-18 00:11:50.064  WARN 1917 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-18 00:11:50.161  INFO 1917 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2021-03-18 00:11:50.162  INFO 1917 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2021-03-18 00:11:50.475  INFO 1917 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6d6fc1a8, org.springframework.security.web.context.SecurityContextPersistenceFilter@4d9a87b1, org.springframework.security.web.header.HeaderWriterFilter@2234ddfa, org.springframework.web.filter.CorsFilter@53a38163, org.springframework.security.web.authentication.logout.LogoutFilter@1a60a5d3, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5ab8580f, org.springframework.security.web.session.ConcurrentSessionFilter@6db37d6b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1a746f73, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6213f9bc, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@28c4ea7f, org.springframework.security.web.session.SessionManagementFilter@1856acad, org.springframework.security.web.access.ExceptionTranslationFilter@7f1e09a2, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@55d80c29, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4b0662ce]
+2021-03-18 00:11:50.963  INFO 1917 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
+2021-03-18 00:11:50.965  INFO 1917 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2021-03-18 00:11:50.966  INFO 1917 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2021-03-18 00:11:50.977  INFO 1917 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 5.153 seconds (JVM running for 6.56)
+2021-03-18 00:12:41.373  INFO 1917 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-03-18 00:12:41.374  INFO 1917 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-03-18 00:12:41.384  INFO 1917 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2021-03-18 00:12:41.527  INFO 1917 --- [https-jsse-nio-2733-exec-6] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:43.038  INFO 1917 --- [https-jsse-nio-2733-exec-7] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:43.794  INFO 1917 --- [https-jsse-nio-2733-exec-8] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:44.451  INFO 1917 --- [https-jsse-nio-2733-exec-9] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:45.000  INFO 1917 --- [https-jsse-nio-2733-exec-10] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:45.552  INFO 1917 --- [https-jsse-nio-2733-exec-1] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:46.124  INFO 1917 --- [https-jsse-nio-2733-exec-2] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:46.693  INFO 1917 --- [https-jsse-nio-2733-exec-3] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:47.281  INFO 1917 --- [https-jsse-nio-2733-exec-4] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:47.825  INFO 1917 --- [https-jsse-nio-2733-exec-5] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:48.381  INFO 1917 --- [https-jsse-nio-2733-exec-6] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:49.065  INFO 1917 --- [https-jsse-nio-2733-exec-7] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:49.845  INFO 1917 --- [https-jsse-nio-2733-exec-8] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:12:50.623  INFO 1917 --- [https-jsse-nio-2733-exec-9] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:13:01.060  INFO 1917 --- [https-jsse-nio-2733-exec-10] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:13:01.501  INFO 1917 --- [https-jsse-nio-2733-exec-1] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:13:02.183  INFO 1917 --- [https-jsse-nio-2733-exec-2] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:15:42.765  INFO 1917 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2021-03-18 00:15:42.781  WARN 1917 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2021-03-18 00:15:42.781  INFO 1917 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:15:42.785  INFO 1917 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2021-03-18 00:15:42.788  INFO 1917 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2021-03-18 00:15:48.637  INFO 1945 --- [restartedMain] ooad.demo.DemoApplication                : Starting DemoApplication on Aloof.local with PID 1945 (/Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1/target/classes started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
+2021-03-18 00:15:48.640  INFO 1945 --- [restartedMain] ooad.demo.DemoApplication                : No active profile set, falling back to default profiles: default
+2021-03-18 00:15:48.702  INFO 1945 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2021-03-18 00:15:48.702  INFO 1945 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2021-03-18 00:15:49.604  INFO 1945 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:15:49.605  INFO 1945 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-18 00:15:49.631  INFO 1945 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19ms. Found 0 JPA repository interfaces.
+2021-03-18 00:15:49.646  INFO 1945 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:15:49.647  INFO 1945 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-03-18 00:15:49.660  INFO 1945 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6ms. Found 0 Redis repository interfaces.
+2021-03-18 00:15:50.403  INFO 1945 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 2733 (https) 2735 (http)
+2021-03-18 00:15:50.438  INFO 1945 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-03-18 00:15:50.438  INFO 1945 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2021-03-18 00:15:50.519  INFO 1945 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-03-18 00:15:50.520  INFO 1945 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1818 ms
+2021-03-18 00:15:51.034  WARN 1945 --- [restartedMain] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2021-03-18 00:15:51.153  INFO 1945 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-03-18 00:15:51.191  INFO 1945 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2021-03-18 00:15:51.299  INFO 1945 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-03-18 00:15:51.399  INFO 1945 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2021-03-18 00:15:51.708  INFO 1945 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-03-18 00:15:51.983  INFO 1945 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-03-18 00:15:51.992  INFO 1945 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:15:52.033  INFO 1945 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2021-03-18 00:15:52.037  INFO 1945 --- [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2021-03-18 00:15:52.402  WARN 1945 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-18 00:15:52.502  INFO 1945 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2021-03-18 00:15:52.503  INFO 1945 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2021-03-18 00:15:52.831  INFO 1945 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4f8982f2, org.springframework.security.web.context.SecurityContextPersistenceFilter@3933276b, org.springframework.security.web.header.HeaderWriterFilter@19229c95, org.springframework.web.filter.CorsFilter@119771b2, org.springframework.security.web.authentication.logout.LogoutFilter@6a22bd7f, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@f2e0932, org.springframework.security.web.session.ConcurrentSessionFilter@1a7364fc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@704893d3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1daa7c43, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@42cfd2a6, org.springframework.security.web.session.SessionManagementFilter@222dd6dd, org.springframework.security.web.access.ExceptionTranslationFilter@720633aa, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@3ba7cb1b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2b6fe0c]
+2021-03-18 00:15:53.336  INFO 1945 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 2733 (https) 2735 (http) with context path ''
+2021-03-18 00:15:53.338  INFO 1945 --- [restartedMain] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2021-03-18 00:15:53.338  INFO 1945 --- [restartedMain] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2021-03-18 00:15:53.349  INFO 1945 --- [restartedMain] ooad.demo.DemoApplication                : Started DemoApplication in 5.277 seconds (JVM running for 6.43)
+2021-03-18 00:15:57.744  INFO 1945 --- [https-jsse-nio-2733-exec-6] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-03-18 00:15:57.745  INFO 1945 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-03-18 00:15:57.753  INFO 1945 --- [https-jsse-nio-2733-exec-6] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2021-03-18 00:15:57.901  INFO 1945 --- [https-jsse-nio-2733-exec-6] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:15:58.974  INFO 1945 --- [https-jsse-nio-2733-exec-7] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:15:59.691  INFO 1945 --- [https-jsse-nio-2733-exec-8] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:16:00.320  INFO 1945 --- [https-jsse-nio-2733-exec-9] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:16:01.025  INFO 1945 --- [https-jsse-nio-2733-exec-10] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:16:01.592  INFO 1945 --- [https-jsse-nio-2733-exec-2] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:16:02.217  INFO 1945 --- [https-jsse-nio-2733-exec-1] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:16:02.837  INFO 1945 --- [https-jsse-nio-2733-exec-3] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:16:05.831  INFO 1945 --- [https-jsse-nio-2733-exec-4] o.demo.Service.UserDetailsServiceImpl    : Login username: 11813221
+2021-03-18 00:30:04.360  INFO 1945 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2021-03-18 00:30:04.392  WARN 1945 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2021-03-18 00:30:04.392  INFO 1945 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:30:04.407  INFO 1945 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2021-03-18 00:30:04.418  INFO 1945 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2021-03-18 00:30:09.832  INFO 2091 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 2091 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
+2021-03-18 00:30:09.834  INFO 2091 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
+2021-03-18 00:30:11.006  INFO 2091 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:30:11.011  INFO 2091 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-18 00:30:11.061  INFO 2091 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 33ms. Found 0 JPA repository interfaces.
+2021-03-18 00:30:11.088  INFO 2091 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:30:11.090  INFO 2091 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-03-18 00:30:11.116  INFO 2091 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 14ms. Found 0 Redis repository interfaces.
+2021-03-18 00:30:12.507  INFO 2091 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-03-18 00:30:12.577  INFO 2091 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2021-03-18 00:30:12.758  INFO 2091 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-03-18 00:30:12.992  INFO 2091 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2021-03-18 00:30:13.557  INFO 2091 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-03-18 00:30:13.934  INFO 2091 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-03-18 00:30:13.943  INFO 2091 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:30:13.955  INFO 2091 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2021-03-18 00:30:14.479  WARN 2091 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2021-03-18 00:30:15.278  WARN 2091 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-18 00:30:15.498  INFO 2091 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2021-03-18 00:30:15.511  INFO 2091 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2021-03-18 00:30:16.687  INFO 2091 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@47c81e89, org.springframework.security.web.context.SecurityContextPersistenceFilter@37caecda, org.springframework.security.web.header.HeaderWriterFilter@6cc56b32, org.springframework.web.filter.CorsFilter@49bb808f, org.springframework.security.web.authentication.logout.LogoutFilter@57b711b6, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@151a6598, org.springframework.security.web.session.ConcurrentSessionFilter@15130002, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4ab9d160, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2fdf7da2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@563ada5, org.springframework.security.web.session.SessionManagementFilter@552bee2f, org.springframework.security.web.access.ExceptionTranslationFilter@457692cb, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@68bd8ca7, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3fe98084]
+2021-03-18 00:30:17.511  INFO 2091 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2021-03-18 00:30:17.511  INFO 2091 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2021-03-18 00:30:17.523  INFO 2091 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 8.59 seconds (JVM running for 10.425)
+2021-03-18 00:30:17.927  INFO 2091 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2021-03-18 00:30:17.959  WARN 2091 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2021-03-18 00:30:17.959  INFO 2091 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:30:17.963  INFO 2091 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2021-03-18 00:30:17.972  INFO 2091 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2021-03-18 00:31:07.254  INFO 2102 --- [main] ooad.demo.GeneratePassword               : Starting GeneratePassword on Aloof.local with PID 2102 (started by nongnong in /Users/nongnong/Desktop/大三下/数据库助教/DBOJ_v1)
+2021-03-18 00:31:07.266  INFO 2102 --- [main] ooad.demo.GeneratePassword               : No active profile set, falling back to default profiles: default
+2021-03-18 00:31:08.572  INFO 2102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:31:08.574  INFO 2102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2021-03-18 00:31:08.611  INFO 2102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 24ms. Found 0 JPA repository interfaces.
+2021-03-18 00:31:08.631  INFO 2102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2021-03-18 00:31:08.633  INFO 2102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2021-03-18 00:31:08.649  INFO 2102 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8ms. Found 0 Redis repository interfaces.
+2021-03-18 00:31:09.878  INFO 2102 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2021-03-18 00:31:09.971  INFO 2102 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.21.Final
+2021-03-18 00:31:10.176  INFO 2102 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2021-03-18 00:31:10.532  INFO 2102 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2021-03-18 00:31:11.032  INFO 2102 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2021-03-18 00:31:11.480  INFO 2102 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2021-03-18 00:31:11.499  INFO 2102 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:31:11.525  INFO 2102 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static org.springframework.data.redis.core.StringRedisTemplate ooad.demo.DemoApplication.stringRedisTemplate
+2021-03-18 00:31:12.688  WARN 2102 --- [main] d.S.CustomizeAbstractSecurityInterceptor : Could not validate configuration attributes as the SecurityMetadataSource did not return any attributes from getAllConfigAttributes()
+2021-03-18 00:31:14.171  WARN 2102 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2021-03-18 00:31:14.568  INFO 2102 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService
+2021-03-18 00:31:14.596  INFO 2102 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'asyncExecutor'
+2021-03-18 00:31:16.300  INFO 2102 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@563ada5, org.springframework.security.web.context.SecurityContextPersistenceFilter@4ab9d160, org.springframework.security.web.header.HeaderWriterFilter@552bee2f, org.springframework.web.filter.CorsFilter@12548f9a, org.springframework.security.web.authentication.logout.LogoutFilter@5c79c5ec, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1c3d9e28, org.springframework.security.web.session.ConcurrentSessionFilter@900649e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@35554635, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@39695803, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@156ff70f, org.springframework.security.web.session.SessionManagementFilter@2d0f548a, org.springframework.security.web.access.ExceptionTranslationFilter@5d297d4d, ooad.demo.Service.CustomizeAbstractSecurityInterceptor@4b28a7bf, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@151a6598]
+2021-03-18 00:31:17.393  INFO 2102 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2021-03-18 00:31:17.394  INFO 2102 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2021-03-18 00:31:17.414  INFO 2102 --- [main] ooad.demo.GeneratePassword               : Started GeneratePassword in 10.659 seconds (JVM running for 12.224)
+2021-03-18 00:31:17.844  INFO 2102 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'asyncExecutor'
+2021-03-18 00:31:17.864  WARN 2102 --- [SpringContextShutdownHook] .s.c.a.CommonAnnotationBeanPostProcessor : Destroy method on bean with name 'demoApplication' threw an exception: java.lang.NullPointerException
+2021-03-18 00:31:17.864  INFO 2102 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2021-03-18 00:31:17.868  INFO 2102 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2021-03-18 00:31:17.876  INFO 2102 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed

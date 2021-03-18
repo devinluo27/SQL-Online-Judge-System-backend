@@ -1,7 +1,5 @@
 package ooad.demo.controller;
 
-
-import cn.shuibo.annotation.Encrypt;
 import com.alibaba.fastjson.JSON;
 import ooad.demo.utils.AccessLimit;
 import ooad.demo.utils.JsonResult;
@@ -15,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -41,7 +37,6 @@ public class UserController {
 
     @Autowired
     JavaMailSenderImpl mailSender;
-
 
 
     // 获得当前user的用户名 8
@@ -67,7 +62,7 @@ public class UserController {
         return userMapper.selectUserDBBySidBasicInfo(sid); //user_sid already exists
     }
 
-    @AccessLimit(maxCount = 3,seconds = 30, needLogin = false)
+    @AccessLimit(maxCount = 3,seconds = 3, needLogin = false)
     @PostMapping(value = "/admin/addUser")
     public void addUser(
             @RequestParam(value = "sid") int sid,
@@ -124,6 +119,7 @@ public class UserController {
      * @return mail sends succeed: 1
      * need to wait: 0
      */
+    @AccessLimit(seconds = 10, maxCount = 1, needLogin = false)
     @GetMapping(value = "/user/sendVerifyCode")
     @Async
     public void sendVerifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {

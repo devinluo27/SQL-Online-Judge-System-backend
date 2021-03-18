@@ -164,7 +164,7 @@ public class FileController  {
 
     /*
      * 上传文件处理 并保存文件信息到数据库中 14
-     * 新建一个
+     * 上传至本地
      * */
     // TODO:  异常处理!!!!!
     @AccessLimit(maxCount = 10, seconds = 60)
@@ -254,6 +254,7 @@ public class FileController  {
             ResultTool.writeResponseFailWithData(response, ResultCode.COMMON_FAIL,"upload to remote failed!");
             return;
         }
+        System.out.println("uploadToRemoteDatabase: success!");
         ResultTool.writeResponseSuccessWithData(response,fileInfo.file_id);
     }
 
@@ -267,6 +268,7 @@ public class FileController  {
          try {
              UserFile userFile = userFileService.findById(file_id);
              Database database = new Database(file_id, database_name, database_description, remoteDatabasePath, userFile.getNew_file_name());
+             System.out.println("database: " + database);
              dataBaseMapper.addDatabase(database);
              ResultTool.writeResponseSuccess(response);
          }catch (Exception e){
@@ -334,7 +336,7 @@ public class FileController  {
         String realPath = ResourceUtils.getURL("classpath:").getPath() + relative_path;
         File post_file = new File(realPath);
         if (!post_file.exists()) post_file.mkdirs();
-        log.info("upload path: "+realPath);
+        log.info("upload path: " + realPath);
         //处理文件上传 将文件保存到本地来
         file.transferTo(new File(post_file, newFileName));
 
