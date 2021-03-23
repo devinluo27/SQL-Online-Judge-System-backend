@@ -105,7 +105,8 @@
             as is_finished
     from
         question q left outer join record r on q.question_id = r.record_question_id and record_sid = #{sid} and record_status = 1
-    where  q.question_of_assignment = #{assignment_id} and q.is_enabled = true;
+    where  q.question_of_assignment = #{assignment_id} and q.is_enabled = true
+    order by q.question_index asc;
     </select>
 
     <cache/>

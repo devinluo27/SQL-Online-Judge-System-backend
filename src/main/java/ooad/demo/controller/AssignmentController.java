@@ -119,7 +119,7 @@ public class AssignmentController {
      * @return
      */
     @CrossOrigin
-    @GetMapping("/admin/updateAssignment")
+    @PostMapping("/admin/updateAssignment")
     public void updateAssignment(@RequestBody @Validated Assignment assignment,
                                 @RequestParam(value = "id") Integer id, HttpServletResponse response) throws IOException {
         try {

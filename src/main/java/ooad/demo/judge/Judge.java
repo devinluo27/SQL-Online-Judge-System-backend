@@ -15,7 +15,6 @@ import java.util.Arrays;
 @Service
 public class Judge {
 
-
     @Autowired
     Remote remote;
 
@@ -136,18 +135,17 @@ public class Judge {
         Remote.Log logs = new Remote.Log(-1, "" ,"");
         try {
             // TODO: how to support many languages
-            logs = remote.EXEC_CMD(new String[]{CMD}).get(0);
+            logs = Remote.EXEC_CMD(new String[]{CMD}).get(0);
         } catch (Exception e){
             log.error("EXEC_QUERY: ", e);
             return new QUERY_RESULT(-2, -1.0, logs.OUT, logs.ERROR);
         }
-        System.out.println("OUT: " + logs.OUT);
-        System.out.println("ERROR: " + logs.ERROR);
+//        System.out.println("OUT: " + logs.OUT);
+//        System.out.println("ERROR: " + logs.ERROR);
         String[] result = logs.OUT.split("\n");
         int SCORE = 0;
         double EXEC_TIME = 0;
         if (DBMS == 0) {
-
             // TODO: DEBUGGING HERE
             if (result.length != 4) {
                 System.out.println("Here != 4");
@@ -156,7 +154,6 @@ public class Judge {
                 }
                 return new QUERY_RESULT(-1, -1, logs.OUT, logs.ERROR);
             }
-
             SCORE = Integer.parseInt(result[1].replaceAll(" ", "")) == 0 ? 100 : 0;
             EXEC_TIME = Double.parseDouble(result[3].replaceAll("Time: ", "").replaceAll(" ms", ""));
         }else if(DBMS == 1){

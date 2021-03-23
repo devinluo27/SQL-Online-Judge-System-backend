@@ -93,7 +93,7 @@ public class QuestionController implements Serializable {
      * @param question
      */
     @PostMapping("/admin/addQuestion")
-    public void addQuestion(@RequestBody Question question, HttpServletResponse response) throws IOException {
+    public void addQuestion(@RequestBody Question question, HttpServletResponse response){
         log.info("Add Question Now!");
         if (!question.getOperation_type().equals("query")){
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this query question!");
@@ -101,8 +101,15 @@ public class QuestionController implements Serializable {
         }
         // TODO: Should test whether ANS it is valid
         String ans = question.getQuestion_standard_ans();
+        // remove ;
         question.setQuestion_standard_ans(ans.replace(';', ' ').trim());
 
+        if (question.getIs_order() == null){
+            question.setIs_order(false);
+        }
+        if (question.getIs_visible() == null){
+            question.setIs_order(false);
+        }
         try {
             questionMapper.addQuestion(question);
         }catch (Exception e){
@@ -140,12 +147,14 @@ public class QuestionController implements Serializable {
 
     // 将会直接覆盖原有题目!!!
     @PostMapping("/admin/updateQuestion")
-    public void updateQuestion(@RequestBody Question question, HttpServletResponse response) throws IOException {
+    public void updateQuestion(@RequestBody Question question, HttpServletResponse response){
         if (!question.getOperation_type().equals("query")
                 && questionMapper.selectQuestionById(question.getQuestion_id()) == null){
-            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
+            ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to update this query question!");
             return;
         }
+        String ans = question.getQuestion_standard_ans();
+        question.setQuestion_standard_ans(ans.replace(';', ' ').trim());
         try{
             questionMapper.updateQuestion(question);
         } catch (Exception e){

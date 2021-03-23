@@ -1,8 +1,7 @@
 package ooad.demo.controller;
 
-import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import ooad.demo.utils.AccessLimit;
-import ooad.demo.utils.JsonResult;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
 import ooad.demo.mapper.UserMapper;
@@ -23,7 +22,11 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Random;
 
+// TODO: Something wrong when using @Async cannot get cookie!!!
+
+
 @RestController
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -86,32 +89,59 @@ public class UserController {
 
     /***
      *
-     * @param sid
-     * @param v_code
+     * @param
+     * @param
      * @param pwd
      * @return
      * -1: user doesn't exist
      * -2: v_code error
      * -3: v_code expired
      */
+//    @GetMapping(value = "/user/resetPwd")
+//    public int resetPassword(
+//            @RequestParam(value = "sid") Integer sid,
+//            @RequestParam(value = "v_code") int v_code,
+//            @RequestParam(value = "pwd") String pwd,
+//            HttpServletRequest request){
+////        if(request.getUserPrincipal() == null){
+////            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+////          return -1;
+////        }
+//        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
+//        if (findUserDBBySid(sid) == null){
+//            return -1;
+//        }
+//        if (v == null || v_code != v.getV_code()){
+//            return -2;
+//        }
+//        if(System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
+//            return -3;
+//        }
+//        userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
+//        return 1;
+//    }
+
     @GetMapping(value = "/user/resetPwd")
     public int resetPassword(
-            @RequestParam(value = "sid") Integer sid,
-            @RequestParam(value = "v_code") int v_code,
-            @RequestParam(value = "pwd") String pwd){
-        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
+//            @RequestParam(value = "sid") Integer sid,
+//            @RequestParam(value = "v_code") int v_code,
+            @RequestParam(value = "pwd") String pwd,
+            HttpServletRequest request){
+        if(request.getUserPrincipal() == null){
+//            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+            return -1;
+        }
+        int sid = Integer.parseInt(request.getUserPrincipal().getName());
         if (findUserDBBySid(sid) == null){
             return -1;
         }
-        if (v == null || v_code != v.getV_code()){
-            return -2;
-        }
-        if(System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
-            return -3;
-        }
         userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
+        log.info(sid + ": changing password!");
         return 1;
     }
+
+
+
 
     /***
      *
@@ -120,26 +150,39 @@ public class UserController {
      * need to wait: 0
      */
     @AccessLimit(seconds = 10, maxCount = 1, needLogin = false)
-    @GetMapping(value = "/user/sendVerifyCode")
-    @Async
+//    @GetMapping(value = "/user/sendVerifyCode")
+    @ResponseBody
+//    @Async
     public void sendVerifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/json;charset=utf-8");
+//        response.setContentType("text/json;charset=utf-8");
+        System.out.println("request: " + request);
+        System.out.println("request cookies: " + request.getCookies());
+
         if (request.getUserPrincipal() == null){
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            response.getWriter().write(JSON.toJSONString(result));
+            log.warn("Reset password: Not Login!");
+            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
             return;
         }
         int sid = Integer.parseInt(request.getUserPrincipal().getName());
         VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
         if (v == null || System.currentTimeMillis() - v.getCreated_time().getTime() > 30000){
+            log.info("Generate V code!");
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setSubject("CS 307 Database Account Verification");
             Random random = new Random();
             int code = random.nextInt(899999) + 100000;
             verifyCodeMapper.insertVerifyCode(sid, code);
-            String mail_response = "Your Verification code is " + code + ".\n Expired in 5 minutes.";
+            String mail_response = "Your Verification code is " + code + ".\nExpired in 5 minutes.";
             mailMessage.setText(mail_response);
-            mailMessage.setTo( sid + "@mail.sustech.edu.cn");
+            // TODO: To be improved
+//            String receiver_address;
+//            if (sid >= 30000000){
+//                receiver_address = sid + "@sustech.edu.cn";
+//            }
+//            else{
+//                receiver_address = sid + "@mail.sustech.edu.cn";
+//            }
+            mailMessage.setTo(sid + "@mail.sustech.edu.cn");
             mailMessage.setFrom("945517787@qq.com");
             mailSender.send(mailMessage);
             ResultTool.writeResponseSuccess(response);

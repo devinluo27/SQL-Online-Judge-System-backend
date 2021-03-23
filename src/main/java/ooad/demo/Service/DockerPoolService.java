@@ -87,6 +87,7 @@ public class DockerPoolService {
                                     database_full_address)
                     );
                     manageDockersPool.getDockerPoolIDList().add(randomDockerID);
+                    log.info("Init dockersPool Finished: " + mapKey);
                 }
             }
         }

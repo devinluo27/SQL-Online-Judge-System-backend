@@ -138,6 +138,7 @@ public class RecordController{
 //            @Validated  @RequestBody Record record,
             @RequestParam(value = "question_id") Integer question_id,
                    @RequestParam(value = "code") String code,
+// TODO: type feature now is disabled
 //                   @RequestParam(value = "type") String sql_type,
                    HttpServletRequest request, HttpServletResponse response) throws IOException {
 //        System.out.println(request.getHeader("Content-Type"));
