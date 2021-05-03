@@ -115,15 +115,16 @@ public class AssignmentController {
      * @param assignment String assignment_id, long assignment_name,
      *          long assignment_start_time, String assignment_end_time,
      *           int is_visible
-     * @param id assignment id in database (primary key)
+     * // @param id assignment id in database (primary key)
      * @return
      */
     @CrossOrigin
     @PostMapping("/admin/updateAssignment")
     public void updateAssignment(@RequestBody @Validated Assignment assignment,
-                                @RequestParam(value = "id") Integer id, HttpServletResponse response) throws IOException {
+//                                @RequestParam(value = "id") Integer id,
+                                 HttpServletResponse response) throws IOException {
         try {
-            assignment.setId(id);
+//            assignment.setId(id);
             assignmentMapper.updateAssignment(assignment);
             ResultTool.writeResponseSuccess(response);
         }

@@ -30,6 +30,8 @@ public class UserDB implements Serializable {
     private Timestamp created_time;
     private Integer lab_num;
 
+    private String email_addr;
+
     public String getUser_name() {
         return user_name;
     }

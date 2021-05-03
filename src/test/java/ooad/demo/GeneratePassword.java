@@ -44,8 +44,8 @@ public class GeneratePassword {
 
     @Test
     public void resetPwd() {
-        int sid = 11911107;
-        String pwd = "11911107";
+        int sid = 11911716;
+        String pwd = "11911716";
         userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
     }
 

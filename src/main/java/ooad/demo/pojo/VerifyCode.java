@@ -15,21 +15,11 @@ public class VerifyCode implements Serializable {
     private int user_id;
     private int v_code;
     private Timestamp created_time;
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public int getV_code() {
-        return v_code;
-    }
-
-    public int getCid() {
-        return cid;
-    }
+    private String dest_addr;
 
     public Timestamp getCreated_time() {
         return created_time;
     }
+
 }
 

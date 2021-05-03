@@ -116,7 +116,7 @@ class DemoApplicationTests {
 
         @Test
     void  vCodeTest(){
-        verifyCodeMapper.insertVerifyCode(123,123321);
+//        verifyCodeMapper.insertVerifyCode(123,123321);
 //        VerifyCode v = verifyCodeMapper.getVerifyCode(1223);
 //        System.out.println(v.getCid());
 //        System.out.println(v.getV_code());

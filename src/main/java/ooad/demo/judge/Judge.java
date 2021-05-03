@@ -169,7 +169,8 @@ public class Judge {
         return new QUERY_RESULT(SCORE, EXEC_TIME, logs.OUT, logs.ERROR);
     }
 
-    public QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE) throws IOException, JSchException {
+    public QUERY_RESULT EXEC_TRIGGER(String ANS_TABLE_PATH, String TEST_SQL, String TEST_DATA_PATH, int TEST_CONFIG, String DockerName, int DBMS, String TARGET_TABLE)
+            throws IOException, JSchException {
 
         TEST_SQL = TEST_SQL.replaceAll("\\$\\$", "####");
         TEST_SQL = java.util.regex.Matcher.quoteReplacement(TEST_SQL);

@@ -34,6 +34,7 @@ public interface UserMapper{
 
     Integer getTodayUserLoginCount();
 
+    void setUserDBEmailAddr(Integer sid, String email_addr);
 
 
 }

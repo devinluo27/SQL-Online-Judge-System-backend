@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VerifyCodeMapper{
     VerifyCode getVerifyCode(int user_id);
-    int insertVerifyCode(int user_id, int v_code);
+    int insertVerifyCode(int user_id, int v_code, String dest_addr);
 }

@@ -165,6 +165,12 @@ public class RecordController{
 //            return;
 //        }
 
+        // TODO: Check if visible and enabled Done
+        if(!checkIsQuestionAvailable(question)){
+            ResultTool.writeResponseFail(response, ResultCode.CANNOT_SUBMIT);
+            return;
+        }
+
         Record r = new Record(sid, question_id, PENDING, code, question.getQuestion_sql_type());
         // add record first, set to PENDING Status
         recordMapper.addRecord(r);

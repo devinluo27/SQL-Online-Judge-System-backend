@@ -47,12 +47,13 @@ public class MultiAccessInterceptor  extends HandlerInterceptorAdapter {
                 //获取登录的session进行判断
                 //.....
                 if (request.getUserPrincipal() == null){
-                    System.out.println("Inside preHandle!");
+                    log.info("User Not Login: ");
+                    ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
                     return false;
                 }
                 String ipAddress = IpUtil.getIpAddr(request);
                 String username = request.getUserPrincipal().getName();
-                key = key + "-" +  username + "-" +ipAddress ;  //这里假设用户是1,项目中是动态获取的userId
+                key = key + "-" +  username + "-" + ipAddress ;  //这里假设用户是1,项目中是动态获取的userId
             }
 
 

@@ -44,6 +44,8 @@ public class Question implements Serializable{
     @NotNull
     private Boolean is_order;
 
+    private Integer question_score;
+
     private Boolean is_enabled = true;
 
     // postgresql or sqlite or mysql

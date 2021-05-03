@@ -3,6 +3,7 @@ package ooad.demo.pojo;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Assignment implements Serializable {
 
+    @JsonIgnore
     private Integer id;
 
     private Integer assignment_id;

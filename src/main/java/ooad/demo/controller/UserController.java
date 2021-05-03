@@ -1,6 +1,7 @@
 package ooad.demo.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import ooad.demo.Service.EmailService;
 import ooad.demo.utils.AccessLimit;
 import ooad.demo.utils.ResultCode;
 import ooad.demo.utils.ResultTool;
@@ -41,6 +42,8 @@ public class UserController {
     @Autowired
     JavaMailSenderImpl mailSender;
 
+    @Autowired
+    private EmailService emailService;
 
     // 获得当前user的用户名 8
     @GetMapping(value = "/username")
@@ -65,12 +68,13 @@ public class UserController {
         return userMapper.selectUserDBBySidBasicInfo(sid); //user_sid already exists
     }
 
+    // TODO:
     @AccessLimit(maxCount = 3,seconds = 3, needLogin = false)
     @PostMapping(value = "/admin/addUser")
     public void addUser(
             @RequestParam(value = "sid") int sid,
-            @RequestParam(value = "sid") String user_name,
-            @RequestParam(value = "sid") String password,
+            @RequestParam(value = "user_name") String user_name,
+            @RequestParam(value = "pwd") String password,
             HttpServletResponse response) {
         UserDB user_by_sid = userMapper.selectUserDBBySidAllInfo(sid);
         // password not null len >=6, sid must be int
@@ -87,6 +91,85 @@ public class UserController {
         ResultTool.writeResponseSuccess(response);
     }
 
+    // TODO: New API Request Path 112 Permission 100 Owner: null
+    @AccessLimit(maxCount = 3,seconds = 3, needLogin = true)
+    @GetMapping("/root/admin/resetOtherPwd")
+    public void resetOtherPwd(@RequestParam(value = "sid") Integer sid,
+                              @RequestParam(value = "newPwd") String newPwd,
+                              HttpServletResponse response){
+         try{
+             userMapper.resetUserDBPassword(sid, passwordEncoder.encode(newPwd));
+             log.info("Admin is Changing Other Password: " + sid + ": changing password!");
+             ResultTool.writeResponseSuccess(response);
+         } catch (Exception e){
+             log.error("Admin is Changing Other Password Fail! ", e);
+             ResultTool.writeResponseFail(response);
+         }
+    }
+
+
+    // TODO: New API
+    /***
+     * verify and set user email address
+     * @param
+     * @param request
+     * @param response
+     */
+    @AccessLimit(maxCount = 3,seconds = 3, needLogin = true)
+    @GetMapping("/user/getRegisterEmailVCode")
+    public void getRegisterEmailVCode(@RequestParam(value = "email_addr") String email_addr,
+                              HttpServletRequest request,
+                              HttpServletResponse response){
+        if(request.getUserPrincipal() == null){
+            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+            return;
+        }
+        try{
+            int sid = Integer.parseInt(request.getUserPrincipal().getName());
+            emailService.sendVerifyCodeWithAddress(sid, email_addr);
+            ResultTool.writeResponseSuccess(response);
+        } catch (Exception e){
+            log.error("User setting up email address Fails! ", e);
+            ResultTool.writeResponseFail(response);
+        }
+    }
+
+    // TODO: New API
+    /***
+     * verify and set user email address
+     * @param
+     * @param request
+     * @param response
+     */
+    @AccessLimit(maxCount = 3,seconds = 3, needLogin = true)
+    @GetMapping("/user/setEmailAddr")
+    public void setEmailAddr(@RequestParam(value = "v_code") Integer v_code,
+                                    HttpServletRequest request,
+                                    HttpServletResponse response){
+        if(request.getUserPrincipal() == null){
+            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+            return;
+        }
+        try{
+            int sid = Integer.parseInt(request.getUserPrincipal().getName());
+            VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
+
+            if (v == null || v_code != v.getV_code() ||
+                    System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
+                ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+                return;
+            }
+            userMapper.setUserDBEmailAddr(sid, v.getDest_addr());
+            ResultTool.writeResponseSuccess(response);
+        } catch (Exception e){
+            log.error("User setting up email address Fails! ", e);
+            ResultTool.writeResponseFail(response);
+        }
+    }
+
+
+
+    // TODO: New API! No Permission Required
     /***
      *
      * @param
@@ -97,34 +180,57 @@ public class UserController {
      * -2: v_code error
      * -3: v_code expired
      */
-//    @GetMapping(value = "/user/resetPwd")
-//    public int resetPassword(
-//            @RequestParam(value = "sid") Integer sid,
-//            @RequestParam(value = "v_code") int v_code,
-//            @RequestParam(value = "pwd") String pwd,
-//            HttpServletRequest request){
-////        if(request.getUserPrincipal() == null){
-////            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
-////          return -1;
-////        }
-//        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
-//        if (findUserDBBySid(sid) == null){
-//            return -1;
-//        }
-//        if (v == null || v_code != v.getV_code()){
-//            return -2;
-//        }
-//        if(System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5){
-//            return -3;
-//        }
-//        userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
-//        return 1;
-//    }
+    @GetMapping(value = "/user/resetPwdWithOutLogin")
+    public void resetPwdWithOutLogin(
+            @RequestParam(value = "sid") Integer sid,
+            @RequestParam(value = "v_code") int v_code,
+            @RequestParam(value = "pwd") String pwd,
+            HttpServletResponse response){
 
+        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
+        if (findUserDBBySid(sid) == null){
+            ResultTool.writeResponseFail(response, ResultCode.USER_ACCOUNT_NOT_EXIST);
+            return;
+        }
+        if(v == null || v_code != v.getV_code() ||
+                System.currentTimeMillis() - v.getCreated_time().getTime() > 3e5 ){
+            ResultTool.writeResponseFail(response);
+            return;
+        }
+        userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
+        ResultTool.writeResponseSuccess(response);
+    }
+
+    // TODO: New API! No Permission Required
+    @AccessLimit(maxCount = 1, seconds = 10, needLogin = false)
+    @GetMapping(value = "/user/getResetPwdVCode")
+    public void getResetPwdVCode(@RequestParam(value = "sid") Integer sid,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response){
+        // check if this user exists
+        if (findUserDBBySid(sid) == null){
+            ResultTool.writeResponseFail(response, ResultCode.USER_ACCOUNT_NOT_EXIST);
+            return;
+        }
+        try {
+            emailService.sendVerifyCodeNotGivenAddress(sid);
+            ResultTool.writeResponseSuccess(response);
+        } catch (Exception e){
+            log.error("/user/getResetPwdVCode", e);
+            ResultTool.writeResponseFail(response);
+        }
+    }
+
+
+    // TODO: New API
+    /***
+     * Reset Password after login (Normal Case)
+     * @param pwd
+     * @param request
+     * @return
+     */
     @GetMapping(value = "/user/resetPwd")
     public int resetPassword(
-//            @RequestParam(value = "sid") Integer sid,
-//            @RequestParam(value = "v_code") int v_code,
             @RequestParam(value = "pwd") String pwd,
             HttpServletRequest request){
         if(request.getUserPrincipal() == null){
@@ -138,57 +244,6 @@ public class UserController {
         userMapper.resetUserDBPassword(sid, passwordEncoder.encode(pwd));
         log.info(sid + ": changing password!");
         return 1;
-    }
-
-
-
-
-    /***
-     *
-     * @param
-     * @return mail sends succeed: 1
-     * need to wait: 0
-     */
-    @AccessLimit(seconds = 10, maxCount = 1, needLogin = false)
-//    @GetMapping(value = "/user/sendVerifyCode")
-    @ResponseBody
-//    @Async
-    public void sendVerifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        response.setContentType("text/json;charset=utf-8");
-        System.out.println("request: " + request);
-        System.out.println("request cookies: " + request.getCookies());
-
-        if (request.getUserPrincipal() == null){
-            log.warn("Reset password: Not Login!");
-            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
-            return;
-        }
-        int sid = Integer.parseInt(request.getUserPrincipal().getName());
-        VerifyCode v = verifyCodeMapper.getVerifyCode(sid);
-        if (v == null || System.currentTimeMillis() - v.getCreated_time().getTime() > 30000){
-            log.info("Generate V code!");
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setSubject("CS 307 Database Account Verification");
-            Random random = new Random();
-            int code = random.nextInt(899999) + 100000;
-            verifyCodeMapper.insertVerifyCode(sid, code);
-            String mail_response = "Your Verification code is " + code + ".\nExpired in 5 minutes.";
-            mailMessage.setText(mail_response);
-            // TODO: To be improved
-//            String receiver_address;
-//            if (sid >= 30000000){
-//                receiver_address = sid + "@sustech.edu.cn";
-//            }
-//            else{
-//                receiver_address = sid + "@mail.sustech.edu.cn";
-//            }
-            mailMessage.setTo(sid + "@mail.sustech.edu.cn");
-            mailMessage.setFrom("945517787@qq.com");
-            mailSender.send(mailMessage);
-            ResultTool.writeResponseSuccess(response);
-            return;
-        }
-        ResultTool.writeResponseFail(response);
     }
 
 

@@ -21,6 +21,7 @@ import java.io.IOException;
  * @Author: Yunhao Luo
  * @Description: 登录失败处理逻辑
  * @Date
+ * 添加新功能，每次登陆都记录IP等信息
  */
 @Slf4j
 @Component
@@ -57,7 +58,7 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
         log.warn("###Password Fail--Address: " + httpServletRequest.getRemoteAddr()
                 + "\tHost: " + httpServletRequest.getRemoteHost() +
                 "\tx-forwarded-for: " +  httpServletRequest.getHeader("x-forwarded-for")
-                + "\t sid: " + httpServletRequest.getParameter("sid"));
+                + "\t sid: " + httpServletRequest.getParameter("username"));
 
         //处理编码方式，防止中文乱码的情况
         httpServletResponse.setContentType("text/json;charset=utf-8");

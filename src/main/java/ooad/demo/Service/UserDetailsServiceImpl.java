@@ -40,10 +40,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // TODO: Testing
-        log.info("Login username: " + username);
-
+        log.info("Try to Login username: " + username);
+        Integer sid = null;
+        try{
+            sid = Integer.parseInt(username);
+        } catch (Exception e){
+            throw new UsernameNotFoundException("用户不存在");
+        }
         //根据用户名查询用户
-        UserDB userDB = userMapper.selectUserDBBySidAllInfo(Integer.parseInt(username));
+        UserDB userDB = userMapper.selectUserDBBySidAllInfo(sid);
         if (userDB == null) {
             System.out.println("用户不存在");
             throw new UsernameNotFoundException("用户不存在");
