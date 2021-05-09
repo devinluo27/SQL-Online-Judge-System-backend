@@ -1,3 +1,0 @@
-[2020-12-24 02:00:22.587] - 43750 INFO [restartedMain] --- org.apache.catalina.core.StandardService: Starting service [Tomcat]
-[2020-12-24 02:00:22.589] - 43750 INFO [restartedMain] --- org.apache.catalina.core.StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.38]
-[2020-12-24 02:00:22.689] - 43750 INFO [restartedMain] --- org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]: Initializing Spring embedded WebApplicationContext

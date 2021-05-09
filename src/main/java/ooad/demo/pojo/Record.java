@@ -27,7 +27,7 @@ public class Record implements Serializable {
     private String record_code;
 
     private String record_code_type;
-
+    private Double record_score;
     private Double running_time = -1.0;
 
     public Record(@NotNull Integer record_sid, Integer record_question_id, Integer record_status, String record_code,

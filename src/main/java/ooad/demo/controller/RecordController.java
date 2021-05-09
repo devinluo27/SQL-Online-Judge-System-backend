@@ -68,12 +68,11 @@ public class RecordController{
 
     @CrossOrigin
     @GetMapping("/user/selectRecordListBySid")
-    List<Record> selectRecordListBySid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    List<Record> selectRecordListBySid(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/json;charset=utf-8");
         try {
-            response.setContentType("text/json;charset=utf-8");
             if (request.getUserPrincipal() == null){
-                JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-                response.getWriter().write(JSON.toJSONString(result));
+                ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
                 return null;
             }
             int sid = Integer.parseInt(request.getUserPrincipal().getName());
@@ -83,6 +82,49 @@ public class RecordController{
             return null;
         }
     }
+
+    @GetMapping("/user/selectRecordListBySidNPNum")
+    List<Record> selectRecordListBySidNPNum(
+            @RequestParam(value = "page_num") Integer page_num,
+            @RequestParam(value = "page_size") Integer page_size,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        response.setContentType("text/json;charset=utf-8");
+        try {
+            if (request.getUserPrincipal() == null){
+                ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+                return null;
+            }
+            if (page_num <= 0 || page_size > 50){
+                ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+                return null;
+            }
+            int sid = Integer.parseInt(request.getUserPrincipal().getName());
+            return recordMapper.selectRecordListBySidNPNum(sid, page_num-1, page_size);
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/user/getNumOfRecordBySid")
+    void getNumOfRecordBySid(
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        try {
+            if (request.getUserPrincipal() == null){
+                ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+                return;
+            }
+            int sid = Integer.parseInt(request.getUserPrincipal().getName());
+            int record_num = recordMapper.getNumOfRecordBySid(sid);
+            ResultTool.writeResponseSuccessWithData(response, record_num);
+        } catch (Exception e){
+            log.error("getNumOfRecordBySid", e);
+            ResultTool.writeResponseFail(response, ResultCode.USER_NOT_LOGIN);
+        }
+    }
+
 
     @GetMapping("/user/selectRecordById")
     Record selectRecordById(@RequestParam(value = "record_id") int record_id,
@@ -132,7 +174,7 @@ public class RecordController{
      * @throws IOException
      */
 
-    @AccessLimit(maxCount = 3, seconds = 3)
+    @AccessLimit(maxCount = 3, seconds = 20)
     @PostMapping("/user/addRecord")
     public void addRecord(
 //            @Validated  @RequestBody Record record,
@@ -223,7 +265,14 @@ public class RecordController{
             // query 判题删掉分号
             code = code.replace(';', ' ').trim();
         }
-        judgeService.judgeCodeDocker(record_id, question, code);
+        // TODO: If exception Wrong!
+        try {
+            judgeService.judgeCodeDocker(record_id, question, code);
+        }
+        catch(Exception e) {
+            recordMapper.setRecordStatus(record_id, -1, -1.0);
+        }
+
     }
 
     @GetMapping("/admin/getDockerPoolSize")

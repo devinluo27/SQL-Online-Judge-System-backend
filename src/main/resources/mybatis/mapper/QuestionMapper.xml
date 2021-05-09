@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ooad.demo.mapper.QuestionMapper">
 
-    <cache/>
+<!--    <cache/>-->
 
     <!--  no question_description return-->
     <select id="queryQuestionList" resultType="Question">
@@ -72,11 +72,6 @@
 
     </update>
 
-<!--    <update id="updateQuestion" parameterType="Question">-->
-<!--        update question-->
-
-<!--        where question_id=#{question_id}-->
-<!--    </update>-->
 
     <update id="disableQuestion">
         update question
@@ -93,13 +88,13 @@
 --         where question_id = #{question_id}
     </delete>
 
-    <cache-ref namespace="ooad.demo.mapper.RecordMapper"/>
+<!--    <cache-ref namespace="ooad.demo.mapper.RecordMapper"/>-->
 
     <select id="selectQuestionsByAssignment" resultType="Question" useCache="false">
     select  distinct q.question_id, q.question_name,
             q.question_of_assignment,
             q.question_index, question_sql_type,
-            operation_type, q.question_score
+            operation_type, q.question_score,
         case
             when r.record_status is null then 0
             when r.record_status = -1 then 0

@@ -2,12 +2,15 @@ package ooad.demo.judge;
 
 import java.sql.Timestamp;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Data
 public class Docker {
-    Timestamp exec_start;
-    String docker_name;
+    public Timestamp exec_start = null;
+    public String docker_name = null;
+    public boolean is_running = false;
 
     public Docker(Timestamp exec_start, String docker_name) {
         this.exec_start = exec_start;
@@ -26,6 +29,9 @@ public class Docker {
     public boolean equals(Object o) {
         if (o == this) {
             return true;
+        }
+        if (o instanceof String) {
+            return this.docker_name.equals(o);
         }
         if (!(o instanceof Docker)) {
             return false;

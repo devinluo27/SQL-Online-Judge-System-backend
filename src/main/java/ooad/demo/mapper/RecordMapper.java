@@ -21,20 +21,29 @@ public interface RecordMapper {
     Record selectARecordById(Integer record_id, Integer sid);
 
 
-    List<LinkedHashMap<String, Object>> runSql(String code);
 
-    List<LinkedHashMap<String, Object>> judge(String standard, String code);
+
+// Todo: temporary comment
+    Integer getNumOfRecordBySid(Integer sid);
+
+    List<Record>  selectRecordListBySidNPNum(Integer sid, Integer page_num, Integer page_size);
+
+//    List<LinkedHashMap<String, Object>> runSql(String code);
+
+//    List<LinkedHashMap<String, Object>> judge(String standard, String code);
+
 
     List<Record> selectRecordBySidAndAssignment(int sid, int assignment_id);
 
     List<Record> selectLatestRecordByQid(int question_id);
-
 
     int addRecord(Record record);
 
     int deleteARecord(Integer record_id);
 
     int setRecordStatus(Integer record_id, Integer record_status, Double running_time);
+
+    int setRecordStatusNScore(Integer record_id, Integer record_status, Double running_time, Double score);
 
     ArrayList<Map<String, Object>> getRecordCountForNDays(int day_num);
 

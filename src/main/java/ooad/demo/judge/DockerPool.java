@@ -1,6 +1,7 @@
 package ooad.demo.judge;
 
 import com.jcraft.jsch.JSchException;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 @Slf4j
 @Service
+@Data
 public class DockerPool {
     int poolSize;
     int DockerSeq;
@@ -25,8 +27,9 @@ public class DockerPool {
     String[] CMD;
 
     // TODO: volatile 保护的是指向数组的引用
-    final ArrayList<String>  runningList = new ArrayList<>();
-    volatile ArrayList<String> sleepingList = new ArrayList<>();
+    final ArrayList<Docker>  runningList = new ArrayList<>();
+    volatile ArrayList<Docker> sleepingList = new ArrayList<>();
+    volatile ArrayList<Docker> executingList = new ArrayList<>();
 
 //    @Autowired
 //    private Remote remote;
@@ -76,6 +79,7 @@ public class DockerPool {
 
     /***
      *  DBMS: 0 Postgresql, 1: SQLite, 2: MySQL
+     *  automatically creates dockers in remote server
      * @param DockerSeq
      * @param ID
      * @param DBMS
@@ -99,7 +103,7 @@ public class DockerPool {
 
     Remote.Log killDocker(String DockerName) throws IOException, JSchException {
         runningList.remove(DockerName);
-        if (!sleepingList.contains(DockerName)) sleepingList.add(DockerName);
+        if (!sleepingList.contains(DockerName)) sleepingList.add(new Docker(DockerName));
         return Remote.EXEC_CMD(new String[]{KillDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
@@ -117,23 +121,19 @@ public class DockerPool {
 
 
     public Remote.Log AwakeDocker(String DockerName) throws IOException, JSchException {
-        if (!runningList.contains(DockerName)) runningList.add(DockerName);
+        if (!runningList.contains(DockerName)) runningList.add(new Docker(DockerName));
         sleepingList.remove(DockerName);
         return Remote.EXEC_CMD(new String[]{AwakeDockerCMD.replaceAll("#DockerNAME#", DockerName)}).get(0);
     }
 
     public ArrayList<Remote.Log> BuildDocker(String[] CMD, String DockerName) throws JSchException, IOException {
         for (int j = 0; j < CMD.length; j++) CMD[j] = CMD[j].replaceAll("#DockerNAME#", DockerName);
-        runningList.add(DockerName);
+
+        runningList.add(new Docker(DockerName));
         // TODO: Test
 //        System.out.println("REMOTE: " + Remote);
 //        System.out.println("CMD:" + CMD);
         return Remote.EXEC_CMD(CMD);
-    }
-
-
-    public ArrayList<String> getSleepingList() {
-        return sleepingList;
     }
 
     public ArrayList<ArrayList<Remote.Log>> InitDockerPool(int num) throws IOException, JSchException {
@@ -150,6 +150,7 @@ public class DockerPool {
     }
 
 
+    // ===== functions series for rebuild in trigger judging =====
     public int rebuildDocker(int num) throws IOException, JSchException {
         refillDockersAndUpdateList(num);
         return 1;
@@ -171,18 +172,14 @@ public class DockerPool {
 
 
     // TODO: ADD a docker to RunningList 并唤醒一个wait()的线程
-    public void refillRunningListOnly(String name){
+    public void refillRunningListOnly(String DockerName){
         synchronized (runningList){
-            runningList.add(name);
-            System.out.println("After ADDING Running list: " + runningList);
+            runningList.add(new Docker(DockerName));
+            System.out.println("After ADDING Running list: " + runningList.size());
             runningList.notify();
         }
     }
 
-    // TODO: getter and setter
-    public ArrayList<String> getRunningList() {
-        return runningList;
-    }
 
     static String checkIfRunningCMD = "docker ps --filter name=#DockerNAME# --filter status=running --format \"{{.Names}}\"";
 

@@ -108,7 +108,7 @@ public class QuestionController implements Serializable {
             question.setIs_order(false);
         }
         if (question.getIs_visible() == null){
-            question.setIs_order(false);
+            question.setIs_visible(false);
         }
         try {
             questionMapper.addQuestion(question);
@@ -132,12 +132,18 @@ public class QuestionController implements Serializable {
             return;
         }
         try {
+            if (question.getIs_order() == null) {
+                question.setIs_order(false);
+            }
+            if (question.getIs_visible() == null){
+                question.setIs_visible(false);
+            }
             questionMapper.addQuestion(question);
             int question_id = question.getQuestion_id();
             QuestionTrigger questionTrigger = new QuestionTrigger(question_id, ans_table_file_id,
                     test_data_file_id, test_config, target_table);
             questionTriggerMapper.addQuestionTrigger(questionTrigger);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
             return;

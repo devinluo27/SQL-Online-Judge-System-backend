@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
@@ -65,7 +66,7 @@ public class DockerPoolService {
                 ManageDockersPool manageDockersPool = ManageDockersPool.getInstance();
                 if (manageDockersPool.getDockersPoolHashMap().get(mapKey) == null){
                     log.info("Init dockersPool: " + mapKey);
-                    HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
+                    ConcurrentHashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
                     int randomDockerID = random.nextInt(100000000);
                     while (manageDockersPool.getDockerPoolIDList().contains(randomDockerID)){
                         randomDockerID = random.nextInt(100000000);

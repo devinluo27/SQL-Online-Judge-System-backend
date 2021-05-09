@@ -2,6 +2,7 @@ package ooad.demo.Service;
 
 import com.jcraft.jsch.JSchException;
 import lombok.extern.slf4j.Slf4j;
+import ooad.demo.judge.Docker;
 import ooad.demo.judge.DockerPool;
 import ooad.demo.judge.Judge;
 import ooad.demo.judge.ManageDockersPool;
@@ -13,13 +14,17 @@ import ooad.demo.pojo.Question;
 import ooad.demo.pojo.QuestionTrigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 //@PropertySource(value = "classpath:application.yml")
 @Service
@@ -88,21 +93,21 @@ public class JudgeServiceImpl implements JudgeService {
         }
 
         // get the only single instance from ManageDockersPool
-        HashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
+        ConcurrentHashMap<String, DockerPool> map  =  ManageDockersPool.getInstance().getDockersPoolHashMap();
         DockerPool usedDockerPool = map.get(mapKey);
-        // get the arraylist of available dockers
-        ArrayList<String> dockers = usedDockerPool.getRunningList();
 
-//        System.out.println("current_size_before_judge: " + usedDockerPool.getRunningList().size());
+        // get the arraylist of available dockers
+        ArrayList<Docker> dockers = usedDockerPool.getRunningList();
+
         log.info("\n判题开始 " + "current_size_before_judge: " + usedDockerPool.getRunningList().size());
 
         Judge.QUERY_RESULT response = null;
 
         // TODO: QUERY Judging
         if(operation_type.equals("query")){
-            int rand = random.nextInt(dockers.size());
-            String dockID;
+            Docker docker_selected;
             synchronized (usedDockerPool.getRunningList()){
+                int rand = random.nextInt(dockers.size());
                 if(usedDockerPool.getRunningList().size() == 0){
                     // 等待某个docker 建好后唤醒它
                     // 放入等待队列
@@ -114,26 +119,28 @@ public class JudgeServiceImpl implements JudgeService {
                         e.printStackTrace();
                     }
                 }
-                dockID = dockers.get(rand);
+                docker_selected = dockers.get(rand);
             }
+            String docker_name = docker_selected.docker_name;
             //  TODO: 硬编码 postgres： 0
             //  check if docker is Health 才判题
-            if (checkIfRunning(dockID)){
+            if (checkIfRunning(docker_name)){
 //                System.out.println("SQL Type: " + sql_type);
-                response =  judge.EXEC_QUERY(standard_ans, code, dockID, is_order, sql_type);
+                response =  judge.EXEC_QUERY(standard_ans, code, docker_name, is_order, sql_type);
             }
             else {
-                usedDockerPool.getRunningList().remove(dockID);
-                usedDockerPool.getSleepingList().remove(dockID);
-                usedDockerPool.RemoveDockerOnly(dockID);
+                usedDockerPool.getRunningList().remove(docker_selected);
+                usedDockerPool.getSleepingList().remove(docker_selected);
+                usedDockerPool.RemoveDockerOnly(docker_name);
                 usedDockerPool.rebuildDocker(1);
             }
-            System.out.println("Query_Docker_ID: " + dockID);
+            System.out.println("Query_Docker_ID: " + docker_name);
         }
 
         // TODO: TRIGGER
         else if(operation_type.equals("trigger")){
-            String dockID = null;
+//            String dockID = null;
+            Docker docker_selected = null;
             // TODO: !!!!!!! 动态判题
             try{
                 Map<String, String> triggerJudgeInfo = questionTriggerMapper.getTriggerQuestionJudgeInfoByQid(question_id);
@@ -142,7 +149,7 @@ public class JudgeServiceImpl implements JudgeService {
                 String target_table = triggerJudgeInfo.get("target_table");
                 String test_config = triggerJudgeInfo.get("test_config");
 
-                synchronized (usedDockerPool.getRunningList()){
+                synchronized (usedDockerPool.getRunningList()) {
                     if(usedDockerPool.getRunningList().size() == 0){
                         // 等待某个docker 建好后唤醒它
                         // 放入等待队列
@@ -153,26 +160,47 @@ public class JudgeServiceImpl implements JudgeService {
                             e.printStackTrace();
                         }
                     }
-                    dockID = dockers.get(0);
-                    usedDockerPool.getRunningList().remove(dockID);
-                    usedDockerPool.getSleepingList().remove(dockID);
+
+                    // TODO:
+                    docker_selected = dockers.get(0);
+                    usedDockerPool.getRunningList().remove(docker_selected);
+                    usedDockerPool.getSleepingList().remove(docker_selected);
                 }
-                //  TODO: 更换各种硬编码 postgres： 0
-                response = judge.EXEC_TRIGGER(ans_table_file_full_path,
+
+                docker_selected.set_running(true);
+                docker_selected.setExec_start(new Timestamp(System.currentTimeMillis()));
+
+                synchronized (usedDockerPool.getExecutingList()) {
+                    usedDockerPool.getExecutingList().add(docker_selected);
+                }
+
+
+                ans_table_file_full_path = "/data/testData/answer.sql";
+                test_data_file_full_path = "/data/testData/testData.sql";
+                String preJudgePath = "/data/testData/preJudge.sql";
+                String[] targetTable = {"account","account_log"};
+                String[] colConfig = {"*", "user_id, password"};
+                // TODO: 更换各种硬编码 postgres： 0 ================
+                response = judge.EXEC_TRIGGER(
+                        ans_table_file_full_path,
                         code,
                         test_data_file_full_path,
-                        Integer.parseInt(test_config),
-                        dockID,
-                        sql_type,
-                        target_table
+                        docker_selected.docker_name,
+                        targetTable,
+                        preJudgePath,
+                        colConfig
                 );
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
             finally {
-                log.info("remove_docker_id: " + dockID);
-                usedDockerPool.RemoveDockerOnly(dockID);
+                log.info("remove_docker_id: " + docker_selected.getDocker_name());
+                usedDockerPool.RemoveDockerOnly(docker_selected.getDocker_name());
+                // remove it from executingList
+                synchronized (usedDockerPool.getExecutingList()) {
+                    usedDockerPool.getExecutingList().remove(docker_selected);
+                }
             }
         }
 
@@ -182,9 +210,10 @@ public class JudgeServiceImpl implements JudgeService {
         }
 
         int score = response.getScore();
+        double real_score = (double)response.getScore();
         int status = 0;
         log.info("score: " + score);
-        if (score > 0 && score < 100){
+        if (score > 0 && score < 100) {
             score = -3;
         }
         switch (score){
@@ -201,7 +230,9 @@ public class JudgeServiceImpl implements JudgeService {
         if (status != 1){
             running_time = -1;
         }
-        recordMapper.setRecordStatus(record_id, status, running_time);
+        // TODO: New Change here
+//        recordMapper.setRecordStatus(record_id, status, running_time);
+        recordMapper.setRecordStatusNScore(record_id, status, running_time, real_score);
         log.info("判题结束 " + "current_size_after_judge: " + usedDockerPool.getRunningList().size());
     }
 
@@ -216,5 +247,6 @@ public class JudgeServiceImpl implements JudgeService {
             return 0;
         }
     }
+
 
 }
