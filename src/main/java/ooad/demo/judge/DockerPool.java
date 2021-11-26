@@ -67,6 +67,7 @@ public class DockerPool {
                 "docker run --name #DockerNAME# -e MYSQL_ROOT_PASSWORD=123123 -d mysql",
             "sleep 20",
             "docker cp #DockerFilePATH# #DockerNAME#:/data.sql",
+            // TODO: password issue there, though deprecated
             "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -e \"create database TASK\"",
             "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -D TASK -e\"source data.sql\"",
             "docker exec #DockerNAME#  mysql  -h localhost -u root --password=123123 -e \"create user tester; \"",
