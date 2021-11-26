@@ -7,7 +7,7 @@ target/
 # add by Yunhao
 #*.yaml
 src/main/resources/application.yaml
-
+src/main/resources/SSL/**
 ### STS ###
 .apt_generated
 .classpath
