@@ -5,7 +5,8 @@ target/
 !**/src/test/**/target/
 
 # add by Yunhao
-*.yaml
+#*.yaml
+src/main/resources/application.yaml
 
 ### STS ###
 .apt_generated

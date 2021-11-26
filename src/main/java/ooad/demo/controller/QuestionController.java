@@ -176,7 +176,7 @@ public class QuestionController implements Serializable {
                                       @RequestParam(value = "test_data_file_id") Integer test_data_file_id,
                                       @RequestParam(value = "target_table") String target_table,
                                       @RequestParam(value = "test_config") Integer test_config,
-                                      HttpServletResponse response) throws IOException {
+                                      HttpServletResponse response) {
         if (!question.getOperation_type().equals("trigger")
                 && questionMapper.selectQuestionById(question.getQuestion_id()) == null){
             ResultTool.writeResponseFailWithData(response,ResultCode.COMMON_FAIL, "Failed to create this trigger question!");
